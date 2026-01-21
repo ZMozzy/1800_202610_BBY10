@@ -66,7 +66,18 @@ elmo-hikes/
 
 
 ## Contributors
-YilongXu- BCIT CST Student. I love video games, collect cards.
+
+- **YilongXu** - BCIT CST Student. I love video games, collect cards.
+
+- **Zach** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
+
+- **Sarah** - I have a cat. 
+
+- **Annie** - I like gaming and reading.
+
+- **Yilong** - I like video games and collect cards
+
+
 - **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
