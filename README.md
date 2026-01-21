@@ -72,6 +72,8 @@ elmo-hikes/
 
 - **Annie** - I like gaming and reading.
 
+- **Yilong** - I like video games and collect cards
+
 - **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
