@@ -66,6 +66,7 @@ elmo-hikes/
 
 
 ## Contributors
+- **Zach** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
 
 - **Sarah** - I have a cat. 
 
