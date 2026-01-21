@@ -66,7 +66,11 @@ elmo-hikes/
 
 
 ## Contributors
+
+- **Sarah** - I have a cat. 
+
 - **Annie** - I like gaming and reading.
+
 - **Teammate Name** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
