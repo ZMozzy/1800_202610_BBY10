@@ -73,7 +73,7 @@ elmo-hikes/
 
 - **Sarah** - I have a cat. 
 
-- **Annie** - I like gaming and reading.
+- **Annie** - I like gaming and reading (Hello from the new laptop).
 
 - **Yilong** - I like video games and collect cards
 
