@@ -117,3 +117,31 @@ body {
 }
 
 
+/*
+* footer
+*/
+.custom-footer {
+  background-color: #606c38;
+}
+
+.custom-footer .nav-link {
+  padding: 10px 0;
+}
+
+
+.nav-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.home-icon{
+    width: 28px;
+    height: 28px;
+}
+
+.profile-icon{
+    width: 28px;
+    height: 28px;
+}
+
+
