@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>My BCIT Project</title>
+    <meta name="comp1800 template" content="My 1800 App" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body class="add-flow-page">
+    <nav class="navbar navbar-light topbar-custom">
+      <div class="container-fluid justify-content-center">
+        <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
+          FastPass <small class="topbar-subtitle">Business</small>
+        </a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <section class="add-flow-card">
+        <div class="add-flow-head">
+          <p class="step-label">Step 1/3</p>
+          <a href="./add-step2.html" id="step1NextBtn" class="btn btn-sm btn-outline-secondary">Next</a>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Restaurant name*</label>
+          <input type="text" id="restaurantNameInput" class="form-control add-input" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Address*</label>
+          <input type="text" class="form-control add-input" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Business type*</label>
+          <select class="form-select add-select">
+            <option selected>Restaurant</option>
+            <option>Cafe</option>
+            <option>Fast Food</option>
+            <option>Bar</option>
+            <option>Chinese</option>
+            <option>Italian</option>
+            <option>Mexican</option>
+            <option>Indian</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Website / Social (Optional)</label>
+          <input type="text" class="form-control add-input" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control add-textarea" rows="4"></textarea>
+        </div>
+      </section>
+    </main>
+
+    <nav class="navbar fixed-bottom custom-footer">
+      <div class="container-fluid d-flex justify-content-around text-center">
+        <a href="./add.html" class="nav-link active">
+          <img src="images/add.png" alt="Add" class="nav-icon" />
+        </a>
+        <a href="./index.html" class="nav-link">
+          <img src="images/home.png" alt="Home" class="home-icon" />
+        </a>
+        <a href="#" class="nav-link">
+          <img src="images/user.png" aria-label="Profile" class="profile-icon" />
+        </a>
+      </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const restaurantNameInput = document.getElementById("restaurantNameInput");
+      const step1NextBtn = document.getElementById("step1NextBtn");
+
+      const savedRestaurantName = localStorage.getItem("restaurantName");
+      if (savedRestaurantName) {
+        restaurantNameInput.value = savedRestaurantName;
+      }
+
+      step1NextBtn.addEventListener("click", function () {
+        localStorage.setItem("restaurantName", restaurantNameInput.value.trim());
+      });
+    </script>
+  </body>
+</html>
