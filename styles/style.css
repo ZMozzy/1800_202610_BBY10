@@ -144,4 +144,143 @@ body {
     height: 28px;
 }
 
+/* Add flow pages */
+.add-flow-page main {
+    padding-bottom: 96px;
+}
+
+.add-flow-card {
+    max-width: 480px;
+    margin: 24px auto;
+    background: #f4f4f4;
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    padding: 20px 14px;
+}
+
+.add-flow-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.step-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.add-input,
+.add-select,
+.add-textarea {
+    border-radius: 6px;
+}
+
+.add-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.success-wrap {
+    max-width: 480px;
+    margin: 24px auto;
+    background: #f4f4f4;
+    border: 1px solid #14da6a;
+    border-radius: 12px;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+}
+
+.success-check {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 10px solid #1a9124;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 68px;
+    font-weight: 700;
+    margin: 16px 0;
+}
+
+/* Screenshot wireframe-style top bar on index */
+.wireframe-topbar {
+    background: #d6d6d6;
+    border-bottom: 1px solid #c7c7c7;
+    padding: 10px 0;
+}
+
+.wireframe-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wireframe-title-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.wireframe-title {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1;
+    font-family: "Arial", sans-serif;
+    font-weight: 500;
+    color: #1e1e1e;
+}
+
+.wireframe-subtitle {
+    font-size: 0.6rem;
+    color: #3a3a3a;
+}
+
+.wireframe-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #7b7b7b;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #2f2f2f;
+    background: #ececec;
+    user-select: none;
+}
+
+/* Functional top bar for index page */
+.topbar-custom {
+    background-color: #606c38;
+    border-bottom: 1px solid #4f5a2e;
+    padding: 10px 0;
+}
+
+.topbar-brand {
+    font-family: "Arial", sans-serif;
+    font-size: 1.9rem;
+    line-height: 1;
+    font-weight: 500;
+}
+
+.topbar-subtitle {
+    font-size: 0.58rem;
+    color: #3a3a3a;
+    font-weight: 500;
+}
+
+.topbar-search-wrap {
+    background-color: #e6e9ed;
+    border-bottom: 1px solid #d0d5db;
+}
+
 
