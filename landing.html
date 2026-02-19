@@ -1,29 +1,284 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <title>FastPass Landing</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
 
+  <body class="add-flow-page">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-light topbar-custom">
+      <div
+        class="container-fluid d-flex justify-content-between align-items-center"
+      >
+        <!-- Filter Dropdown -->
+        <div class="dropdown">
+          <button
+            class="btn btn-outline-dark btn-sm"
+            type="button"
+            id="filterDropdownBtn"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            title="Filter"
+          >
+            ☰
+          </button>
 
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App">
+          <div class="dropdown-menu p-3" style="min-width: 270px">
+            <!-- Cuisine -->
+            <label class="form-label mb-1"><strong>Cuisine</strong></label>
+            <div class="mb-2 filter-group" data-filter="cuisine">
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="pizza"
+              >
+                Pizza
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="sushi"
+              >
+                Sushi
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="burger"
+              >
+                Burger
+              </button>
+            </div>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!-- Wait Time -->
+            <label class="form-label mb-1"><strong>Wait Time</strong></label>
+            <div class="mb-2 filter-group" data-filter="wait">
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="0-5"
+              >
+                0–5
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="6-15"
+              >
+                6–15
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="16-25"
+              >
+                16–25+
+              </button>
+            </div>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="./style.css">
-</head>
+            <!-- Location -->
+            <label class="form-label mb-1"><strong>Location</strong></label>
+            <div class="mb-2 filter-group" data-filter="location">
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="downtown"
+              >
+                Downtown
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="uptown"
+              >
+                Uptown
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm me-1 mb-1 filter-btn"
+                data-value="suburbs"
+              >
+                Suburbs
+              </button>
+            </div>
 
+            <!-- Clear -->
+            <button
+              id="clearFilterBtn"
+              class="btn btn-outline-secondary btn-sm w-100 mt-2"
+            >
+              Clear Filter
+            </button>
+          </div>
+        </div>
 
-<body>
+        <!-- Back to home through fastpass -->
+        <a class="navbar-brand mx-auto mb-0 topbar-brand" href="./index.html">
+          FastPass
+        </a>
 
-<!-- insert Navbar from index -->
+        <!-- Search Button -->
+        <button
+          id="searchToggleBtn"
+          class="btn btn-outline-dark btn-sm"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSearch"
+        >
+          🔍
+        </button>
+      </div>
+    </nav>
 
+    <!-- Search Bar -->
+    <div class="collapse" id="navbarSearch">
+      <div class="container-fluid py-2">
+        <input
+          class="form-control"
+          type="search"
+          placeholder="Search restaurants..."
+        />
+      </div>
+    </div>
 
+    <!-- RESTAURANTS -->
+    <main class="container my-5 d-flex flex-column align-items-center">
+      <!-- Pizza -->
+      <div
+        class="card mb-4 restaurant-card"
+        data-cuisine="pizza"
+        data-wait="0-5"
+        data-location="downtown"
+        style="max-width: 480px; width: 100%"
+      >
+        <img class="card-img-top" src="images/pizzaresturant.jpg" alt="Pizza" />
+        <div class="card-body">
+          <h5 class="card-title">Pizza Palooza</h5>
+          <p class="card-text">Fresh, cheesy, and loaded with flavor.</p>
+          <span class="badge bg-success mb-2">Wait Time: 5 mins</span>
+          <a href="#" class="btn btn-primary">See Menu</a>
+        </div>
+      </div>
 
+      <!-- Sushi -->
+      <div
+        class="card mb-4 restaurant-card"
+        data-cuisine="sushi"
+        data-wait="6-15"
+        data-location="uptown"
+        style="max-width: 480px; width: 100%"
+      >
+        <img class="card-img-top" src="images/resturantJapan.jpg" alt="Sushi" />
+        <div class="card-body">
+          <h5 class="card-title">Miso Hungry</h5>
+          <p class="card-text">Bold sushi and ramen flavors.</p>
+          <span class="badge bg-warning text-dark mb-2"
+            >Wait Time: 15 mins</span
+          >
+          <a href="#" class="btn btn-primary">See Menu</a>
+        </div>
+      </div>
 
-    <script type="module" src="./src/main.js"></script>
-</body>
+      <!-- Burger -->
+      <div
+        class="card mb-4 restaurant-card"
+        data-cuisine="burger"
+        data-wait="16-25"
+        data-location="suburbs"
+        style="max-width: 480px; width: 100%"
+      >
+        <img
+          class="card-img-top"
+          src="images/burgerresturant.jpg"
+          alt="Burger"
+        />
+        <div class="card-body">
+          <h5 class="card-title">Grill & Thrill</h5>
+          <p class="card-text">Juicy burgers and steaks.</p>
+          <span class="badge bg-danger mb-2">Wait Time: 25 mins</span>
+          <a href="#" class="btn btn-primary">See Menu</a>
+        </div>
+      </div>
+    </main>
 
+    <!-- FOOTER -->
+    <nav class="navbar fixed-bottom custom-footer">
+      <div class="container-fluid d-flex justify-content-around text-center">
+        <a href="./add.html" class="nav-link">
+          <img src="images/add.png" alt="Add" class="nav-icon" />
+        </a>
+        <a href="./index.html" class="nav-link active">
+          <img src="images/home.png" alt="Home" class="home-icon" />
+        </a>
+        <a href="#" class="nav-link">
+          <img src="images/user.png" alt="Profile" class="profile-icon" />
+        </a>
+      </div>
+    </nav>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const clearBtn = document.getElementById("clearFilterBtn");
+      const restaurantCards = document.querySelectorAll(".restaurant-card");
+
+      const selectedFilters = {
+        cuisine: [],
+        wait: [],
+        location: [],
+      };
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const group = button.closest(".filter-group").dataset.filter;
+          const value = button.dataset.value;
+
+          button.classList.toggle("active");
+          button.classList.toggle("btn-dark");
+          button.classList.toggle("btn-outline-dark");
+
+          if (selectedFilters[group].includes(value)) {
+            selectedFilters[group] = selectedFilters[group].filter(
+              (v) => v !== value,
+            );
+          } else {
+            selectedFilters[group].push(value);
+          }
+
+          applyFilters();
+        });
+      });
+
+      function applyFilters() {
+        restaurantCards.forEach((card) => {
+          const cuisineMatch =
+            selectedFilters.cuisine.length === 0 ||
+            selectedFilters.cuisine.includes(card.dataset.cuisine);
+
+          const waitMatch =
+            selectedFilters.wait.length === 0 ||
+            selectedFilters.wait.includes(card.dataset.wait);
+
+          const locationMatch =
+            selectedFilters.location.length === 0 ||
+            selectedFilters.location.includes(card.dataset.location);
+
+          card.style.display =
+            cuisineMatch && waitMatch && locationMatch ? "" : "none";
+        });
+      }
+
+      clearBtn.addEventListener("click", () => {
+        Object.keys(selectedFilters).forEach(
+          (key) => (selectedFilters[key] = []),
+        );
+        filterButtons.forEach((btn) => {
+          btn.classList.remove("active", "btn-dark");
+          btn.classList.add("btn-outline-dark");
+        });
+        restaurantCards.forEach((card) => (card.style.display = ""));
+      });
+    </script>
+  </body>
 </html>
