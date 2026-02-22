@@ -1,96 +1,188 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles/style.css" />
-  </head>
-  <body class="add-flow-page">
-    <nav class="navbar navbar-light topbar-custom">
-      <div class="container-fluid justify-content-center">
-        <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
-          FastPass <small class="topbar-subtitle">Business</small>
+
+<head>
+  <!-- Page title shown in the browser tab -->
+  <title>My BCIT Project</title>
+
+  <!-- Template metadata -->
+  <meta name="comp1800 template" content="My 1800 App" />
+
+  <!-- Character encoding -->
+  <meta charset="utf-8" />
+
+  <!-- Responsive layout for mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS framework -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom project stylesheet -->
+  <link rel="stylesheet" href="./styles/style.css" />
+</head>
+
+<body class="add-flow-page">
+  <!-- Top navigation bar -->
+  <nav class="navbar navbar-light topbar-custom">
+    <div class="container-fluid justify-content-center">
+      <!-- Brand/logo link (goes back to home page) -->
+      <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
+        FastPass <small class="topbar-subtitle">Business</small>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main page content -->
+  <main class="container">
+    <!-- Step 1 card container -->
+    <section class="add-flow-card">
+      <!-- Header area: step label + Next button -->
+      <div class="add-flow-head">
+        <!-- Left placeholder to balance the Next button width -->
+        <span class="review-btn-placeholder"></span>
+
+        <p class="step-label review-title-center">Step 1/3</p>
+
+        <a href="./add-step2.html" id="step1NextBtn" class="btn review-btn-primary review-btn-small">
+          Next
         </a>
       </div>
-    </nav>
 
-    <main class="container">
-      <section class="add-flow-card">
-        <div class="add-flow-head">
-          <p class="step-label">Step 1/3</p>
-          <a href="./add-step2.html" id="step1NextBtn" class="btn btn-sm btn-outline-secondary">Next</a>
-        </div>
+      <!-- Validation error message (hidden by default)
+             Shown when user clicks Next without completing required fields -->
+      <p id="step1ErrorMsg" class="text-danger small mb-2" style="display: none;">
+        Please fill out all required (*) fields before continuing.
+      </p>
 
-        <div class="mb-3">
-          <label class="form-label">Restaurant name*</label>
-          <input type="text" id="restaurantNameInput" class="form-control add-input" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Address*</label>
-          <input type="text" class="form-control add-input" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Business type*</label>
-          <select class="form-select add-select">
-            <option selected>Restaurant</option>
-            <option>Cafe</option>
-            <option>Fast Food</option>
-            <option>Bar</option>
-            <option>Chinese</option>
-            <option>Italian</option>
-            <option>Mexican</option>
-            <option>Indian</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Website / Social (Optional)</label>
-          <input type="text" class="form-control add-input" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea class="form-control add-textarea" rows="4"></textarea>
-        </div>
-      </section>
-    </main>
-
-    <nav class="navbar fixed-bottom custom-footer">
-      <div class="container-fluid d-flex justify-content-around text-center">
-        <a href="./add.html" class="nav-link active">
-          <img src="images/add.png" alt="Add" class="nav-icon" />
-        </a>
-        <a href="./index.html" class="nav-link">
-          <img src="images/home.png" alt="Home" class="home-icon" />
-        </a>
-        <a href="#" class="nav-link">
-          <img src="images/user.png" aria-label="Profile" class="profile-icon" />
-        </a>
+      <!-- Restaurant name (required) -->
+      <div class="mb-3">
+        <label class="form-label">Restaurant name*</label>
+        <input type="text" id="restaurantNameInput" class="form-control add-input" required />
       </div>
-    </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      const restaurantNameInput = document.getElementById("restaurantNameInput");
-      const step1NextBtn = document.getElementById("step1NextBtn");
+      <!-- Address (required) -->
+      <div class="mb-3">
+        <label class="form-label">Address*</label>
+        <input type="text" id="addressInput" class="form-control add-input" required />
+      </div>
 
-      const savedRestaurantName = localStorage.getItem("restaurantName");
-      if (savedRestaurantName) {
-        restaurantNameInput.value = savedRestaurantName;
+      <!-- Business type (required) -->
+      <div class="mb-3">
+        <label class="form-label">Business type*</label>
+        <select id="businessTypeSelect" class="form-select add-select" required>
+          <!-- Empty default option so user must actively choose a type -->
+          <option value="" selected disabled>Select business type</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Cafe">Cafe</option>
+          <option value="Fast Food">Fast Food</option>
+          <option value="Bar">Bar</option>
+          <option value="Chinese">Chinese</option>
+          <option value="Italian">Italian</option>
+          <option value="Mexican">Mexican</option>
+          <option value="Indian">Indian</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Website / Social (optional) -->
+      <div class="mb-3">
+        <label class="form-label">Website / Social (Optional)</label>
+        <input type="text" id="websiteInput" class="form-control add-input" />
+      </div>
+
+      <!-- Description (optional) -->
+      <div class="mb-3">
+        <label class="form-label">Description (Optional)</label>
+        <textarea id="descriptionInput" class="form-control add-textarea" rows="4"></textarea>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom navigation bar -->
+  <nav class="navbar fixed-bottom custom-footer">
+    <div class="container-fluid d-flex justify-content-around text-center">
+      <!-- Add page icon -->
+      <a href="./add.html" class="nav-link active">
+        <img src="images/add.png" alt="Add" class="nav-icon" />
+      </a>
+
+      <!-- Home page icon -->
+      <a href="./index.html" class="nav-link">
+        <img src="images/home.png" alt="Home" class="home-icon" />
+      </a>
+
+      <!-- Profile icon (placeholder link for now) -->
+      <a href="#" class="nav-link">
+        <img src="images/user.png" aria-label="Profile" class="profile-icon" />
+      </a>
+    </div>
+  </nav>
+
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ================================
+    // Get references to form elements
+    // ================================
+    const restaurantNameInput = document.getElementById("restaurantNameInput");
+    const addressInput = document.getElementById("addressInput");
+    const businessTypeSelect = document.getElementById("businessTypeSelect");
+    const websiteInput = document.getElementById("websiteInput");
+    const descriptionInput = document.getElementById("descriptionInput");
+    const step1NextBtn = document.getElementById("step1NextBtn");
+    const step1ErrorMsg = document.getElementById("step1ErrorMsg");
+
+    // ============================================
+    // Load saved Step 1 data from localStorage
+    // (This lets user return to the page without
+    // losing previously entered values)
+    // ============================================
+    const savedRestaurantName = localStorage.getItem("restaurantName");
+    const savedAddress = localStorage.getItem("restaurantAddress");
+    const savedBusinessType = localStorage.getItem("businessType");
+    const savedWebsite = localStorage.getItem("restaurantWebsite");
+    const savedDescription = localStorage.getItem("restaurantDescription");
+
+    // Restore saved values if they exist
+    if (savedRestaurantName) restaurantNameInput.value = savedRestaurantName;
+    if (savedAddress) addressInput.value = savedAddress;
+    if (savedBusinessType) businessTypeSelect.value = savedBusinessType;
+    if (savedWebsite) websiteInput.value = savedWebsite;
+    if (savedDescription) descriptionInput.value = savedDescription;
+
+    // ======================================================
+    // Validate required fields before going to Step 2
+    // - If missing required fields: block navigation
+    // - If valid: save values to localStorage and continue
+    // ======================================================
+    step1NextBtn.addEventListener("click", function (event) {
+      // Read and trim user input values
+      const restaurantName = restaurantNameInput.value.trim();
+      const address = addressInput.value.trim();
+      const businessType = businessTypeSelect.value.trim();
+
+      // Check required fields (Restaurant Name, Address, Business Type)
+      if (!restaurantName || !address || !businessType) {
+        // Stop the link from moving to Step 2
+        event.preventDefault();
+
+        // Show error message
+        step1ErrorMsg.style.display = "block";
+        return;
       }
 
-      step1NextBtn.addEventListener("click", function () {
-        localStorage.setItem("restaurantName", restaurantNameInput.value.trim());
-      });
-    </script>
-  </body>
+      // Hide error message if validation passes
+      step1ErrorMsg.style.display = "none";
+
+      // Save Step 1 values for use in Step 2 / Step 3
+      localStorage.setItem("restaurantName", restaurantName);
+      localStorage.setItem("restaurantAddress", address);
+      localStorage.setItem("businessType", businessType);
+      localStorage.setItem("restaurantWebsite", websiteInput.value.trim());
+      localStorage.setItem("restaurantDescription", descriptionInput.value.trim());
+    });
+  </script>
+</body>
+
 </html>

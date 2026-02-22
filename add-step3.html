@@ -1,81 +1,216 @@
 ﻿<!doctype html>
 <html lang="en">
-  <head>
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles/style.css" />
-  </head>
-  <body class="add-flow-page">
-    <nav class="navbar navbar-light topbar-custom">
-      <div class="container-fluid justify-content-center">
-        <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
-          FastPass <small class="topbar-subtitle">Business</small>
+
+<head>
+  <!-- Page title shown in the browser tab -->
+  <title>My BCIT Project</title>
+
+  <!-- Template metadata -->
+  <meta name="comp1800 template" content="My 1800 App" />
+
+  <!-- Character encoding -->
+  <meta charset="utf-8" />
+
+  <!-- Responsive layout for mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS framework -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom project stylesheet -->
+  <link rel="stylesheet" href="./styles/style.css" />
+</head>
+
+<body class="add-flow-page">
+  <!-- Top navigation bar -->
+  <nav class="navbar navbar-light topbar-custom">
+    <div class="container-fluid justify-content-center">
+      <!-- Brand/logo link (goes back to home page) -->
+      <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
+        FastPass <small class="topbar-subtitle">Business</small>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main page content -->
+  <main class="container">
+    <!-- Step 3 card container -->
+    <section class="add-flow-card">
+      <!-- Header area: back button + step label -->
+      <div class="add-flow-head">
+        <a href="./add-step2.html" class="btn review-btn-secondary review-btn-small">Back</a>
+        <p class="step-label">Step 3/3</p>
+        <span></span>
+      </div>
+
+      <!-- Validation error message (hidden by default) -->
+      <p id="step3ErrorMsg" class="text-danger small mb-2" style="display: none;">
+        Please fill out all required fields before submitting.
+      </p>
+
+      <!-- Password rules helper text -->
+      <p class="small text-muted mb-3">
+        Password must be at least 8 characters and include uppercase, lowercase, number, and special character.
+      </p>
+
+      <!-- Email (required) -->
+      <div class="mb-3">
+        <label class="form-label">E-mail*</label>
+        <input type="email" id="emailInput" class="form-control add-input" required />
+      </div>
+
+      <!-- Password (required) -->
+      <div class="mb-3">
+        <label class="form-label">Password*</label>
+        <input type="password" id="passwordInput" class="form-control add-input" required />
+      </div>
+
+      <!-- Confirm Password (required) -->
+      <div class="mb-3">
+        <label class="form-label">Confirm Password*</label>
+        <input type="password" id="confirmPasswordInput" class="form-control add-input" required />
+      </div>
+
+      <!-- Phone (required) -->
+      <div class="mb-3">
+        <label class="form-label">Phone*</label>
+        <input type="tel" id="phoneInput" class="form-control add-input" required />
+      </div>
+
+      <!-- Business License file (required) -->
+      <div class="mb-4">
+        <label class="form-label">Business License*</label>
+        <input type="file" id="businessLicenseInput" class="form-control add-input" required />
+      </div>
+
+      <!-- Review button -->
+      <div class="text-center">
+        <a href="./add-review.html" id="submitBtn" class="btn review-btn-primary review-btn-large">
+          Review
         </a>
       </div>
-    </nav>
+    </section>
+  </main>
 
-    <main class="container">
-      <section class="add-flow-card">
-        <div class="add-flow-head">
-          <a href="./add-step2.html" class="btn btn-sm btn-outline-secondary"
-            >Back</a
-          >
-          <p class="step-label">Step 3/3</p>
-          <span></span>
-        </div>
+  <!-- Bottom navigation bar -->
+  <nav class="navbar fixed-bottom custom-footer">
+    <div class="container-fluid d-flex justify-content-around text-center">
+      <a href="./add.html" class="nav-link active">
+        <img src="images/add.png" alt="Add" class="nav-icon" />
+      </a>
+      <a href="./index.html" class="nav-link">
+        <img src="images/home.png" alt="Home" class="home-icon" />
+      </a>
+      <a href="#" class="nav-link">
+        <img src="images/user.png" aria-label="Profile" class="profile-icon" />
+      </a>
+    </div>
+  </nav>
 
-        <div class="mb-3">
-          <label class="form-label">E-mail</label>
-          <input type="email" class="form-control add-input" />
-        </div>
+  <!-- Bootstrap JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control add-input" />
-        </div>
+  <script>
+    // ================================
+    // Get references to Step 3 elements
+    // ================================
+    const emailInput = document.getElementById("emailInput");
+    const passwordInput = document.getElementById("passwordInput");
+    const confirmPasswordInput = document.getElementById("confirmPasswordInput");
+    const phoneInput = document.getElementById("phoneInput");
+    const businessLicenseInput = document.getElementById("businessLicenseInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const step3ErrorMsg = document.getElementById("step3ErrorMsg");
 
-        <div class="mb-3">
-          <label class="form-label">Phone</label>
-          <input type="tel" class="form-control add-input" />
-        </div>
+    // ============================================
+    // Load saved Step 3 data from localStorage
+    // (Note: file inputs cannot be restored for security reasons)
+    // ============================================
+    const savedEmail = localStorage.getItem("ownerEmail");
+    const savedPassword = localStorage.getItem("ownerPassword");
+    const savedPhone = localStorage.getItem("ownerPhone");
 
-        <div class="mb-4">
-          <label class="form-label">Business License</label>
-          <input type="file" class="form-control add-input" />
-        </div>
+    if (savedEmail) emailInput.value = savedEmail;
+    if (savedPassword) passwordInput.value = savedPassword;
+    if (savedPhone) phoneInput.value = savedPhone;
 
-        <div class="text-center">
-          <a href="./add-success.html" class="btn btn-outline-secondary px-4"
-            >Submit</a
-          >
-        </div>
-      </section>
-    </main>
+    // ======================================================
+    // Password strength checker (common website-style rules)
+    // Rules:
+    // - At least 8 characters
+    // - At least 1 uppercase letter
+    // - At least 1 lowercase letter
+    // - At least 1 number
+    // - At least 1 special character
+    // ======================================================
+    function isStrongPassword(password) {
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]).{8,}$/;
+      return passwordRegex.test(password);
+    }
 
-    <nav class="navbar fixed-bottom custom-footer">
-      <div class="container-fluid d-flex justify-content-around text-center">
-        <a href="./add.html" class="nav-link active">
-          <img src="images/add.png" alt="Add" class="nav-icon" />
-        </a>
-        <a href="./index.html" class="nav-link">
-          <img src="images/home.png" alt="Home" class="home-icon" />
-        </a>
-        <a href="#" class="nav-link">
-          <img
-            src="images/user.png"
-            aria-label="Profile"
-            class="profile-icon"
-          />
-        </a>
-      </div>
-    </nav>
+    // ======================================================
+    // Validate required fields before final submit
+    // - If missing required fields: block navigation
+    // - If invalid password / mismatch: block navigation
+    // - If valid: save values to localStorage and continue
+    // ======================================================
+    submitBtn.addEventListener("click", function (event) {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const phone = phoneInput.value.trim();
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+      // File input must be checked using .files.length
+      const hasBusinessLicense = businessLicenseInput.files.length > 0;
+
+      // 1) Basic required-field validation
+      if (!email || !password || !confirmPassword || !phone || !hasBusinessLicense) {
+        event.preventDefault();
+        step3ErrorMsg.textContent =
+          "Please fill out all required fields before submitting.";
+        step3ErrorMsg.style.display = "block";
+        return;
+      }
+
+      // 2) Password strength validation
+      if (!isStrongPassword(password)) {
+        event.preventDefault();
+        step3ErrorMsg.textContent =
+          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+        step3ErrorMsg.style.display = "block";
+        return;
+      }
+
+      // 3) Confirm password must match password
+      if (password !== confirmPassword) {
+        event.preventDefault();
+        step3ErrorMsg.textContent =
+          "Confirm Password must match Password.";
+        step3ErrorMsg.style.display = "block";
+        return;
+      }
+
+      // Hide error message if validation passes
+      step3ErrorMsg.style.display = "none";
+      step3ErrorMsg.textContent =
+        "Please fill out all required fields before submitting.";
+
+      // Save Step 3 values (for testing/debugging/future Firebase use)
+      localStorage.setItem("ownerEmail", email);
+      localStorage.setItem("ownerPassword", password);
+      localStorage.setItem("ownerPhone", phone);
+
+      // Save file name only (not the file itself)
+      localStorage.setItem(
+        "businessLicenseFileName",
+        hasBusinessLicense ? businessLicenseInput.files[0].name : ""
+      );
+
+      // Optional: mark flow as complete
+      localStorage.setItem("restaurantSignupCompleted", "true");
+    });
+  </script>
+</body>
+
 </html>
