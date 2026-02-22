@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Page title shown in browser tab -->
+    <title>Review Restaurant Submission</title>
+
+    <!-- Template metadata -->
+    <meta name="comp1800 template" content="My 1800 App" />
+
+    <!-- Character encoding -->
+    <meta charset="utf-8" />
+
+    <!-- Responsive layout for mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./styles/style.css" />
+</head>
+
+<body class="add-flow-page">
+    <!-- Top navigation bar -->
+    <nav class="navbar navbar-light topbar-custom">
+        <div class="container-fluid justify-content-center">
+            <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
+                FastPass <small class="topbar-subtitle">Business</small>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container">
+        <section class="add-flow-card">
+            <!-- Header: back + step label + final submit -->
+            <div class="add-flow-head">
+                <a href="./add-step3.html" class="btn review-btn-secondary review-btn-small">Back</a>
+
+                <p class="step-label review-title-center">Review</p>
+
+                <!-- placeholder to balance the Back button width -->
+                <span class="review-btn-placeholder"></span>
+            </div>
+
+            <!-- Summary title -->
+            <h5 class="mb-3">Review Your Restaurant Information</h5>
+            <p class="text-muted small mb-3">
+                Please review all details before final submission.
+            </p>
+
+            <!-- Summary content -->
+            <div class="mb-3">
+                <h6>Step 1: Basic Information</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Restaurant Name:</strong>
+                        <span id="reviewRestaurantName">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Address:</strong>
+                        <span id="reviewAddress">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Business Type:</strong>
+                        <span id="reviewBusinessType">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Website / Social:</strong>
+                        <span id="reviewWebsite">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Description:</strong>
+                        <span id="reviewDescription">-</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mb-3">
+                <h6>Step 2: Hours & Services</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Service Days:</strong>
+                        <span id="reviewServiceDays">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Hours:</strong>
+                        <span id="reviewHours">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Holiday Hours:</strong>
+                        <span id="reviewHolidayHours">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Price Range:</strong>
+                        <span id="reviewPriceRange">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Seats:</strong>
+                        <span id="reviewSeats">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Photo File:</strong>
+                        <span id="reviewPhotoFile">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Menu File:</strong>
+                        <span id="reviewMenuFile">-</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <h6>Step 3: Owner Account</h6>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <strong>Email:</strong>
+                        <span id="reviewEmail">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Phone:</strong>
+                        <span id="reviewPhone">-</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Business License File:</strong>
+                        <span id="reviewBusinessLicenseFile">-</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Optional note -->
+            <div class="alert alert-light border small">
+                <strong>Note:</strong> For security, passwords are not displayed on this review page.
+            </div>
+
+            <!-- Bottom action buttons (bigger, easier on mobile) -->
+            <div class="d-grid gap-2">
+                <a href="./add-step3.html" class="btn review-btn-secondary review-btn-large">Back to Step 3</a>
+                <a href="./add-success.html" id="finalSubmitBtnBottom" class="btn review-btn-primary review-btn-large">
+                    Confirm and Submit
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom navigation bar -->
+    <nav class="navbar fixed-bottom custom-footer">
+        <div class="container-fluid d-flex justify-content-around text-center">
+            <a href="./add.html" class="nav-link active">
+                <img src="images/add.png" alt="Add" class="nav-icon" />
+            </a>
+            <a href="./index.html" class="nav-link">
+                <img src="images/home.png" alt="Home" class="home-icon" />
+            </a>
+            <a href="#" class="nav-link">
+                <img src="images/user.png" aria-label="Profile" class="profile-icon" />
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ============================================
+        // Helper function:
+        // Returns fallback text when localStorage value is empty
+        // ============================================
+        function displayValue(value, fallback = "Not provided") {
+            if (!value || value.trim() === "") return fallback;
+            return value;
+        }
+
+        // ============================================
+        // Read Step 1 data from localStorage
+        // ============================================
+        const restaurantName = localStorage.getItem("restaurantName") || "";
+        const restaurantAddress = localStorage.getItem("restaurantAddress") || "";
+        const businessType = localStorage.getItem("businessType") || "";
+        const restaurantWebsite = localStorage.getItem("restaurantWebsite") || "";
+        const restaurantDescription = localStorage.getItem("restaurantDescription") || "";
+
+        // ============================================
+        // Read Step 2 data from localStorage
+        // ============================================
+        const startDay = localStorage.getItem("startDay") || "";
+        const endDay = localStorage.getItem("endDay") || "";
+        const openTime = localStorage.getItem("openTime") || "";
+        const closeTime = localStorage.getItem("closeTime") || "";
+        const holidayHours = localStorage.getItem("holidayHours") || "";
+        const priceRange = localStorage.getItem("priceRange") || "";
+        const seats = localStorage.getItem("seats") || "";
+        const photoFileName = localStorage.getItem("photoFileName") || "";
+        const menuFileName = localStorage.getItem("menuFileName") || "";
+
+        // ============================================
+        // Read Step 3 data from localStorage
+        // ============================================
+        const ownerEmail = localStorage.getItem("ownerEmail") || "";
+        const ownerPhone = localStorage.getItem("ownerPhone") || "";
+        const businessLicenseFileName =
+            localStorage.getItem("businessLicenseFileName") || "";
+
+        // ============================================
+        // Fill Step 1 summary
+        // ============================================
+        document.getElementById("reviewRestaurantName").textContent =
+            displayValue(restaurantName);
+
+        document.getElementById("reviewAddress").textContent =
+            displayValue(restaurantAddress);
+
+        document.getElementById("reviewBusinessType").textContent =
+            displayValue(businessType);
+
+        document.getElementById("reviewWebsite").textContent =
+            displayValue(restaurantWebsite, "Not provided (optional)");
+
+        document.getElementById("reviewDescription").textContent =
+            displayValue(restaurantDescription, "Not provided");
+
+        // ============================================
+        // Fill Step 2 summary
+        // ============================================
+        const serviceDaysText =
+            startDay && endDay ? `${startDay} - ${endDay}` : "Not provided";
+        const hoursText =
+            openTime && closeTime ? `${openTime} - ${closeTime}` : "Not provided";
+
+        document.getElementById("reviewServiceDays").textContent = serviceDaysText;
+        document.getElementById("reviewHours").textContent = hoursText;
+        document.getElementById("reviewHolidayHours").textContent =
+            displayValue(holidayHours, "Not provided (optional)");
+        document.getElementById("reviewPriceRange").textContent =
+            displayValue(priceRange);
+        document.getElementById("reviewSeats").textContent =
+            displayValue(seats);
+        document.getElementById("reviewPhotoFile").textContent =
+            displayValue(photoFileName);
+        document.getElementById("reviewMenuFile").textContent =
+            displayValue(menuFileName);
+
+        // ============================================
+        // Fill Step 3 summary
+        // ============================================
+        document.getElementById("reviewEmail").textContent =
+            displayValue(ownerEmail);
+
+        document.getElementById("reviewPhone").textContent =
+            displayValue(ownerPhone);
+
+        document.getElementById("reviewBusinessLicenseFile").textContent =
+            displayValue(businessLicenseFileName);
+
+        // ============================================
+        // Optional safety check:
+        // Prevent confirming if key required data is missing
+        // (e.g., user opened review page directly)
+        // ============================================
+        const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+        const finalSubmitBtnBottom = document.getElementById("finalSubmitBtnBottom");
+
+        const hasMinimumRequiredData =
+            restaurantName &&
+            restaurantAddress &&
+            businessType &&
+            startDay &&
+            endDay &&
+            openTime &&
+            closeTime &&
+            priceRange &&
+            seats &&
+            ownerEmail &&
+            ownerPhone;
+
+        if (!hasMinimumRequiredData) {
+            finalSubmitBtn.classList.add("disabled");
+            finalSubmitBtnBottom.classList.add("disabled");
+            finalSubmitBtn.removeAttribute("href");
+            finalSubmitBtnBottom.removeAttribute("href");
+        }
+    </script>
+</body>
+
+</html>

@@ -210,6 +210,94 @@ body {
     font-weight: 700;
     margin: 16px 0;
 }
+/* --------------------------------------------------
+* Review page button styles (reuse project theme vars)
+* -------------------------------------------------- */
+
+/* Base style for review page action buttons */
+.review-btn-primary,
+.review-btn-secondary {
+    border-radius: 999px;         /* same pill shape */
+    font-weight: 600;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+/* Title centering helper */
+.review-title-center {
+    margin: 0;
+    text-align: center;
+    flex: 1;
+}
+
+/* Placeholder width to balance header layout */
+.review-btn-placeholder {
+    display: inline-block;
+    min-width: 86px;
+}
+
+/* Primary action button (Next / Review / Confirm) */
+.review-btn-primary {
+    color: var(--light-text);
+    background-color: var(--secondary);
+    border: 2px solid var(--primary);
+}
+
+.review-btn-primary:hover,
+.review-btn-primary:focus {
+    color: var(--light-text);
+    background-color: var(--secondary);
+    border-color: var(--accent);
+    box-shadow: none;
+}
+
+/* Secondary action button (Back) */
+.review-btn-secondary {
+    color: var(--primary);
+    background-color: transparent;
+    border: 2px solid var(--secondary);
+}
+
+.review-btn-secondary:hover,
+.review-btn-secondary:focus {
+    color: var(--primary);
+    background-color: rgba(96, 108, 56, 0.08);
+    border-color: var(--accent);
+    box-shadow: none;
+}
+
+/* Same size for top header buttons (Back / Next) */
+.review-btn-small {
+    min-width: 86px;
+    height: 40px;
+    padding: 0 14px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+/* Bottom buttons (if needed) */
+.review-btn-large {
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Disabled state */
+.review-btn-primary.disabled,
+.review-btn-secondary.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Optional: keep header buttons visually balanced */
+.add-flow-head .review-btn-small {
+    min-width: 86px;
+}
 
 /* Screenshot wireframe-style top bar on index */
 .wireframe-topbar {
