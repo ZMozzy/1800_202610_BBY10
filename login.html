@@ -64,6 +64,9 @@
           </li>
         </ul>
 
+        <!-- Show erros here -->
+        <div id="authAlert" class="alert alert-danger d-none" role="alert"></div>
+
         <div class="tab-content">
           <!-- Login Tab -->
           <div
@@ -72,14 +75,14 @@
             role="tabpanel"
             aria-labelledby="tab-login"
           >
-            <form>
+            <form id="loginForm">
               <div class="mb-4">
-                <label class="form-label">Email or Username</label>
-                <input type="email" class="form-control add-input" />
+                <label class="form-label">Email</label>
+                <input id="loginEmail" type="email" class="form-control add-input" />
               </div>
               <div class="mb-4">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control add-input" />
+                <input id="loginPassword" type="password" class="form-control add-input" />
               </div>
               <div class="d-flex justify-content-between mb-4">
                 <div class="form-check">
@@ -109,10 +112,10 @@
             role="tabpanel"
             aria-labelledby="tab-register"
           >
-            <form>
+            <form id="signupForm">
               <div class="mb-3">
                 <label class="form-label">Name</label>
-                <input type="text" class="form-control add-input" />
+                <input id="signupName" type="text" class="form-control add-input" />
               </div>
               <div class="mb-3">
                 <label class="form-label">Username</label>
@@ -120,11 +123,11 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-control add-input" />
+                <input id="signupEmail" type="email" class="form-control add-input" />
               </div>
               <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" class="form-control add-input" />
+                <input id="signupPassword" type="password" class="form-control add-input" />
               </div>
               <div class="mb-3">
                 <label class="form-label">Repeat Password</label>
@@ -158,5 +161,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/src/loginSignup.js"></script>
   </body>
 </html>
