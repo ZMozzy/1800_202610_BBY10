@@ -35,6 +35,12 @@
     flex-shrink: 0;
 }
 
+.settings {
+    height: 20px;
+    width:auto;
+    margin-left:auto;
+}
+
 .restaurant-info {
     flex: 1;
     min-width: 15rem; /* Forces wrap on narrow mobile */
