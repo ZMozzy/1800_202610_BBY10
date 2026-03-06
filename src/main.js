@@ -3,6 +3,8 @@
 
 // If you have custom global styles, import them as well:
 // import '../styles/style.css';
+import {getAuth} from "firebase/auth";
+import {collection, query, where, getDocs} from "firebase/firestore";
 
 function sayHello() {
 
@@ -29,4 +31,45 @@ function updateWaitTime() {
         }
 }
 }
+// goes to add.html
+function goToAdd() {
+    window.location.href = "add.html";
+}
+
+const auth = getAuth();
+const user = auth.currentUser;
+
+//checks if they are a user and if user has an active post
+//for profile button
+async function goToProfile() {
+    try {
+        if (user) {
+             //change this one to be resturant post collection name!!!!!!!!!!!!!!
+            const restaurantRef = collection(db, "Restaurant");
+             const q = query(restaurantRef, where("userId", "==", user.uid));
+
+            const querySnapshot = await getDocs(q)
+            if (!querySnapshot.empty) {
+                window.location.href = "profile.html";
+            } else {
+                window.location.href = "user-profile.html";
+            }
+        } else {
+                window.location.href = "login.html";
+    } 
+    }catch (error) {
+        console.error("Error loading profile:", error);
+    }
+}
+
+//if login/sign up feature breaks it was probably this -zach was not here
+//for either login or sign up
+const btn = document.getElementById("loginForm") || document.getElementById("signinForm");
+//directs to profile page after login/sign up
+btn.addEventListener("submit", function(e) {
+    e.preventDefault(); // stops page refresh
+
+    // runs validation / login logic
+    goToProfile();
+});
 // document.addEventListener('DOMContentLoaded', sayHello);
