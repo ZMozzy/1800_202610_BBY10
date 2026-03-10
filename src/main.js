@@ -45,12 +45,6 @@ async function goToProfile() {
 
 
 
-document.getElementById("profile-link").addEventListener("click", function(e) {
-    console.log("Clicked");
-    e.preventDefault();
-    goToProfile();
-});
-
 
 // document.addEventListener('DOMContentLoaded', sayHello);
 
