@@ -140,14 +140,29 @@
     </div>
     <!-- end profile -->
 
-    <!-- fixed bottom footer -->
-    <nav class="navbar fixed-bottom custom-footer">
-      <div class="container-fluid d-flex justify-content-around text-center">
-        <!--- add restraint page --->
-        <a href="/add_restaurant/add.html" class="nav-link active">
-          <img src="/images/add.png" alt="Add" class="nav-icon" />
-        </a>
-        <!--- home page --->
+</div>
+<!-- end profile -->
+
+<!-- fixed bottom footer -->
+  <nav class="navbar fixed-bottom custom-footer">
+    <div class="container-fluid d-flex justify-content-around text-center">
+      <!--- add restraint page --->
+      <a href="#" class="nav-link active">
+        <img src="images/map.png" alt="Add" class="nav-icon">
+      </a>
+      <!--- home page --->
+
+      <a href="./landing.html" class="nav-link">
+        <img src="images/home.png" alt="Home" class="home-icon">
+      </a>
+      <!---user profile page-->
+
+      <a href="#" id="profile-link" class="nav-link">
+        <img src="images/user.png" aria-label="Profile" class="profile-icon">
+      </a>
+
+    </div>
+  </nav>
 
         <a href="/restaurant_list/landing.html" class="nav-link">
           <img src="/images/home.png" alt="Home" class="home-icon" />
@@ -211,5 +226,9 @@
           window.location.href = "add.html";
         });
     </script>
-  </body>
+
+    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/goToProfile.js"></script>
+</body>
+
 </html>
