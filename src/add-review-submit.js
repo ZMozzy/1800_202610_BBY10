@@ -1,8 +1,8 @@
 import { auth, db, storage } from "./firebaseConfig.js";
 import {
-  doc,
+  addDoc,
+  collection,
   serverTimestamp,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import {
@@ -132,6 +132,7 @@ function clearDraftFormData() {
     "ownerPhone",
     "businessLicenseFileName",
     "restaurantSignupCompleted",
+    "restaurantDocId",
   ];
 
   keys.forEach((key) => localStorage.removeItem(key));
@@ -140,30 +141,6 @@ function clearDraftFormData() {
 // Sanitizes file name for safe Firebase Storage paths.
 function sanitizeFileName(name) {
   return name.replace(/[^a-zA-Z0-9._-]/g, "_");
-}
-
-// Sanitizes Firestore doc-id fragments.
-function sanitizeIdPart(value, fallback = "unknown") {
-  const sanitized = String(value || "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9_-]/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-  return sanitized || fallback;
-}
-
-// Generates one stable restaurant doc ID so repeated submits update one document.
-function getStableRestaurantDocId(userId) {
-  const existingId = localStorage.getItem("restaurantDocId");
-  if (existingId) return existingId;
-
-  const restaurantName = localStorage.getItem("restaurantName") || "restaurant";
-  const namePart = sanitizeIdPart(restaurantName, "restaurant");
-  const userPart = sanitizeIdPart(userId || "guest");
-  const docId = `${namePart}_${userPart}`;
-  localStorage.setItem("restaurantDocId", docId);
-  return docId;
 }
 
 // Uploads a set of files to Storage and returns metadata + download URLs.
@@ -246,13 +223,11 @@ async function handleConfirmAndSubmit(event) {
       getDraftFiles(STEP3_BUSINESS_LICENSE_FILES_KEY),
     ]);
 
-    const restaurantDocId = getStableRestaurantDocId(userId);
-    const submissionRef = doc(db, "Restaurant", restaurantDocId);
-    await setDoc(submissionRef, {
+    const submissionRef = await addDoc(collection(db, "Restaurant"), {
       createdAt: serverTimestamp(),
       userId,
       state: ENABLE_STORAGE_UPLOADS ? "uploading_files" : "saving_metadata_only",
-    }, { merge: true });
+    });
 
     const submissionId = submissionRef.id;
     let photos = [];
