@@ -80,7 +80,18 @@
       <!-- Business License file (required) -->
       <div class="mb-4">
         <label class="form-label">Business License*</label>
-        <input type="file" id="businessLicenseInput" class="form-control add-input" required />
+        <input
+          type="file"
+          id="businessLicenseInput"
+          class="form-control add-input"
+          accept="image/*,.pdf,application/pdf"
+          multiple
+          required
+        />
+
+        <div id="businessLicensePreviewWrapper" class="mt-2" style="display: none;">
+          <div id="businessLicensePreviewList" class="d-flex flex-wrap gap-2"></div>
+        </div>
       </div>
 
       <!-- Review button -->
@@ -101,7 +112,7 @@
       <a href="./landing.html" class="nav-link">
         <img src="images/home.png" alt="Home" class="home-icon" />
       </a>
-      <a href="./profile.html" class="nav-link">
+      <a href="#" id="profile-link" class="nav-link">
         <img src="images/user.png" aria-label="Profile" class="profile-icon" />
       </a>
     </div>
@@ -110,107 +121,7 @@
   <!-- Bootstrap JS bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    // ================================
-    // Get references to Step 3 elements
-    // ================================
-    const emailInput = document.getElementById("emailInput");
-    const passwordInput = document.getElementById("passwordInput");
-    const confirmPasswordInput = document.getElementById("confirmPasswordInput");
-    const phoneInput = document.getElementById("phoneInput");
-    const businessLicenseInput = document.getElementById("businessLicenseInput");
-    const submitBtn = document.getElementById("submitBtn");
-    const step3ErrorMsg = document.getElementById("step3ErrorMsg");
-
-    // ============================================
-    // Load saved Step 3 data from localStorage
-    // (Note: file inputs cannot be restored for security reasons)
-    // ============================================
-    const savedEmail = localStorage.getItem("ownerEmail");
-    const savedPassword = localStorage.getItem("ownerPassword");
-    const savedPhone = localStorage.getItem("ownerPhone");
-
-    if (savedEmail) emailInput.value = savedEmail;
-    if (savedPassword) passwordInput.value = savedPassword;
-    if (savedPhone) phoneInput.value = savedPhone;
-
-    // ======================================================
-    // Password strength checker (common website-style rules)
-    // Rules:
-    // - At least 8 characters
-    // - At least 1 uppercase letter
-    // - At least 1 lowercase letter
-    // - At least 1 number
-    // - At least 1 special character
-    // ======================================================
-    function isStrongPassword(password) {
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]).{8,}$/;
-      return passwordRegex.test(password);
-    }
-
-    // ======================================================
-    // Validate required fields before final submit
-    // - If missing required fields: block navigation
-    // - If invalid password / mismatch: block navigation
-    // - If valid: save values to localStorage and continue
-    // ======================================================
-    submitBtn.addEventListener("click", function (event) {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
-      const confirmPassword = confirmPasswordInput.value;
-      const phone = phoneInput.value.trim();
-
-      // File input must be checked using .files.length
-      const hasBusinessLicense = businessLicenseInput.files.length > 0;
-
-      // 1) Basic required-field validation
-      if (!email || !password || !confirmPassword || !phone || !hasBusinessLicense) {
-        event.preventDefault();
-        step3ErrorMsg.textContent =
-          "Please fill out all required fields before submitting.";
-        step3ErrorMsg.style.display = "block";
-        return;
-      }
-
-      // 2) Password strength validation
-      if (!isStrongPassword(password)) {
-        event.preventDefault();
-        step3ErrorMsg.textContent =
-          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
-        step3ErrorMsg.style.display = "block";
-        return;
-      }
-
-      // 3) Confirm password must match password
-      if (password !== confirmPassword) {
-        event.preventDefault();
-        step3ErrorMsg.textContent =
-          "Confirm Password must match Password.";
-        step3ErrorMsg.style.display = "block";
-        return;
-      }
-
-      // Hide error message if validation passes
-      step3ErrorMsg.style.display = "none";
-      step3ErrorMsg.textContent =
-        "Please fill out all required fields before submitting.";
-
-      // Save Step 3 values (for testing/debugging/future Firebase use)
-      localStorage.setItem("ownerEmail", email);
-      localStorage.setItem("ownerPassword", password);
-      localStorage.setItem("ownerPhone", phone);
-
-      // Save file name only (not the file itself)
-      localStorage.setItem(
-        "businessLicenseFileName",
-        hasBusinessLicense ? businessLicenseInput.files[0].name : ""
-      );
-
-      // Optional: mark flow as complete
-      localStorage.setItem("restaurantSignupCompleted", "true");
-    });
-  </script>
+  <script src="./src/add-step3.js"></script>
 </body>
 
 </html>
