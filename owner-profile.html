@@ -161,7 +161,7 @@
       </a>
       <!---user profile page-->
 
-      <a href="./profile.html" class="nav-link">
+      <a href="#" id="profile-link" class="nav-link">
         <img src="images/user.png" aria-label="Profile" class="profile-icon">
       </a>
 
@@ -205,6 +205,23 @@
           searchToggleBtn.setAttribute("aria-expanded", "false");
         });
       }
+    </script>
+
+    <script>
+      function updateWaitTime() {
+    let newTime = prompt("Enter new wait time:");
+    //only update if they didnt hit cancel or enter nothing
+    if (newTime !== null && newTime.trim() !== "") {
+        let numericValue = Number(newTime);
+
+        // Check if it is a valid integer and not a negative number
+        if (Number.isInteger(numericValue) && numericValue >= 0) {
+            let finalWait = numericValue + " min";
+            
+            document.getElementById("wait-time-value").innerText = finalWait;
+        }
+}
+}
     </script>
 
     

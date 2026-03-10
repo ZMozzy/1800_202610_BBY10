@@ -103,13 +103,13 @@
         <div class="restaurant-avatar">B</div>
         
         <div class="restaurant-info">
-            <span><h1>The Burger Joint</h1></span>
+            <h1>The Burger Joint</h1>
             <a class="settings" href="profile-settings.html"><img class="settings" src="./images/settings.png"></a>
             <p style="margin: 0.75rem 0; color: #57606f;">Best charcoal-grilled burgers in the city. Real-time wait updates provided daily.</p>
             
             <div class="action-bar">
               Are you a resturant owner?
-                <button class="update-btn" onclick="goToAdd()">Create an Ad</button>
+                <button class="update-btn" id="create-Ad">Create an Ad</button>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
     <div class="posts-container">
         <div class="post-card">
             <div class="post-meta">
-                <span class="post-user">The Burger Joint</span>
+                <span class="user-name">The Burger Joint</span>
                 <span>12m ago</span>
             </div>
             <div class="post-body">
@@ -155,7 +155,7 @@
       </a>
       <!---user profile page-->
 
-      <a href="./profile.html" class="nav-link">
+      <a href="#" id="profile-link" class="nav-link">
         <img src="images/user.png" aria-label="Profile" class="profile-icon">
       </a>
 
@@ -176,7 +176,7 @@
     <!-- Your own JavaScript functions go here    -->
     <!---------------------------------------------->
 
-<script src="./src/main.js"></script>
+<script type="module" src="./src/main.js"></script>
     <script>
       const searchToggleBtn = document.getElementById("searchToggleBtn");
       const navbarSearch = document.getElementById("navbarSearch");
@@ -199,6 +199,13 @@
           searchToggleBtn.setAttribute("aria-expanded", "false");
         });
       }
+    </script>
+    <script>
+      // goes to add.html
+      document.getElementById("create-Ad").addEventListener("click", function() {
+      window.location.href = "add.html";
+      
+    })
     </script>
 
     
