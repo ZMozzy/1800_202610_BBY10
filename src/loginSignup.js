@@ -28,7 +28,7 @@ function initAuthUI() {
     const toLoginBtn = document.getElementById('toLogin');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
-    const redirectUrl = 'main.html';
+    const redirectUrl = 'user-profile.html';
 
     // --- Helper Functions ---
     // Toggle element visibility
@@ -124,3 +124,5 @@ function initAuthUI() {
 
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', initAuthUI);
+
+
