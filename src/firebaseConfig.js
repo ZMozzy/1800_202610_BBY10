@@ -12,6 +12,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // ---------------------------------------------------------
 // Read Firebase configuration from Vite environment variables.
@@ -20,14 +21,16 @@ import { getFirestore } from "firebase/firestore";
 // VITE_FIREBASE_API_KEY=your-api-key
 // VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
 // VITE_FIREBASE_PROJECT_ID=your-project-id
+// VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
 // VITE_FIREBASE_APP_ID=your-app-id
 //
-// ⚠️ Note: Vite only exposes environment variables that start with "VITE_"
+// Note: Vite only exposes environment variables that start with "VITE_"
 // ---------------------------------------------------------
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
@@ -38,9 +41,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // ---------------------------------------------------------
-// Create and export the Firebase Authentication service.
-// You can import "auth" anywhere to perform login, signup,
-// or signout operations (that's why we export it).
+// Create and export Firebase services.
 // ---------------------------------------------------------
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);

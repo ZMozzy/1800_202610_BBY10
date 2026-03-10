@@ -5,29 +5,36 @@ console.log("main.js loaded");
 
 // If you have custom global styles, import them as well:
 // import '../styles/style.css';
-import {auth} from "./firebaseConfig.js"
+// import {auth} from "./firebaseConfig.js"
 import {collection, query, where, getDocs} from "firebase/firestore";
+import { auth, db } from "./firebaseConfig.js";
+// import { db } from "./firebaseConfig.js";
 
-document.getElementById("getstarted").addEventListener("click", function() {
+import { checkAuthState } from "./authentication.js";
+checkAuthState();
+
+document.getElementById("getstarted")?.addEventListener("click", function() {
     window.location.href = "landing.html";
 });
 
-document.getElementById("loginbtn").addEventListener("click", function() {
+document.getElementById("loginbtn")?.addEventListener("click", function() {
     window.location.href = "login.html";
 });
 
 
 
-const user = auth.currentUser;
+//const auth = getAuth();
+
 
 //checks if they are a user and if user has an active post
 //for profile button
 async function goToProfile() {
+    const user = auth.currentUser;
     try {
         if (user) {
              
             const restaurantRef = collection(db, "Restaurant");
-             const q = query(restaurantRef, where("userId", "==", user.uid));
+             const q = query(restaurantRef, where("ownerUID", "==", user.uid));
 
             const querySnapshot = await getDocs(q)
             if (!querySnapshot.empty) {
@@ -44,6 +51,12 @@ async function goToProfile() {
 }
 
 
+
+document.getElementById("profile-link")?.addEventListener("click", function(e) {
+    console.log("Clicked");
+    e.preventDefault();
+    goToProfile();
+});
 
 
 // document.addEventListener('DOMContentLoaded', sayHello);
