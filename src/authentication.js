@@ -7,11 +7,14 @@
 // -------------------------------------------------------------
 
 // Import the initialized Firebase Authentication object
-import { auth } from "/src/firebaseConfig.js";
+//import { auth } from "/src/firebaseConfig.js";
+import { auth, db } from "/src/firebaseConfig.js";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+
 
 //This is the imports for firstore database !!!!!!!!!!!!!!!!!!!!!!!!!
-//import { db } from "/src/firebaseConfig.js";
-//import { doc, setDoc } from "firebase/firestore";
+// import { db } from "/src/firebaseConfig.js";
+// import { doc, setDoc } from "firebase/firestore";
 
 // Import specific functions from the Firebase Auth SDK
 import {
@@ -54,44 +57,37 @@ export async function loginUser(email, password) {
 // Usage:
 //   const user = await signupUser("Alice", "alice@email.com", "secret");
 // -------------------------------------------------------------
-export async function signupUser(name, email, password) {
-  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  await updateProfile(userCredential.user, { displayName: name });
-  return userCredential.user;
-}
+// export async function signupUser(name, email, password) {
+//   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+//   await updateProfile(userCredential.user, { displayName: name });
+//   return userCredential.user;
+// }
 
 //line 64-93 is updateded sign up to user database !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // export async function signupUser(name, email, password) {
 //   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-//   const user = userCredential.user; // Get the user object
-
-//   // Update the user's profile with the display name, NOTE: updateProfile is a built-in Firebase function
-//   await updateProfile(user, { displayName: name });
-
-//   // After creating the user, we can also create a Firestore document for them with default values for country and school.
-//   // This demonstrates how to link Auth users to Firestore data.
-//   // Use 'try' 'catch' to handle any errors that might occur during Firestore document creation.
-//   try {
-//     // Create a Firestore document for the new user with default values
-//     await setDoc(doc(db, "users", user.uid), {
-//       name: name,
-//       email: email,
-//       country: "Canada", // Default value
-//       school: "BCIT"     // Default value
-//     });
-//     console.log("Firestore user document created successfully!");
-// } catch (error) {
-//   // Information for debugging: show the error code  
-//   // In a real app, you might want to show a user-friendly message instead of the raw error.
-//   // console.error("Error creating user document in Firestore:", error);
-//   // console output may not be seen if redirection to main.html happens
-//   // Therefore, we can try "alert".  
-//   alert(`Error creating user document:\n${error.code || ""}\n${error.message || error}`);
-// }
-//   // Return the user object for further use (e.g., redirecting or showing a welcome message)
-//   return user;
+//   await updateProfile(userCredential.user, { displayName: name });
+//   return userCredential.user;
 // }
 
+
+//creates the user collection with the following fields
+export async function signupUser(name, email, password) {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+
+  await updateProfile(user, { displayName: name });
+
+  // create Firestore user document
+  await setDoc(doc(db, "users", user.uid), {
+    name: name,
+    email: email,
+    hasRestaurant: false,
+    restaurantId: null
+  });
+
+  return user;
+}
 // -------------------------------------------------------------
 // logoutUser()
 // -------------------------------------------------------------
@@ -121,18 +117,131 @@ export async function logoutUser() {
 // Usage:
 //   checkAuthState();
 // -------------------------------------------------------------
+
+//THE FOLLOW CODE WORKS, THIS FOLLOWING CHECKAUTHSTATE() IS THE OG
+// export function checkAuthState() {
+//   onAuthStateChanged(auth, (user) => {
+//     if (window.location.pathname.endsWith("main.html")) {
+//       if (user) {
+//         const displayName = user.displayName || user.email;
+//         $("#welcomeMessage").text(`Hello, ${displayName}!`);
+//       } else {
+//         window.location.href = "index.html";
+//       }
+//     }
+//   });
+// }
+
+//IF THERES A MERGE CONFLICT WITH YOU
+//PLEASE KEEP THIS VERSION ! ! ! ! 
+//THIS VERSION WORKS ! ! ! ! ! ! ! ! ! ! ! ! 
 export function checkAuthState() {
-  onAuthStateChanged(auth, (user) => {
-    if (window.location.pathname.endsWith("main.html")) {
-      if (user) {
-        const displayName = user.displayName || user.email;
-        $("#welcomeMessage").text(`Hello, ${displayName}!`);
-      } else {
-        window.location.href = "index.html";
+  onAuthStateChanged(auth, async (user) => {
+    const page = window.location.pathname.split("/").pop();
+
+    // only do this routing on main.html
+    if (page !== "main.html") {
+      return;
+    }
+
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    try {
+      const userSnap = await getDoc(doc(db, "users", user.uid));
+
+      if (!userSnap.exists()) {
+        console.log("No user document found.");
+        return;
       }
+
+      const userData = userSnap.data();
+
+      if (userData.hasRestaurant === true) {
+        window.location.href = "owner-profile.html";
+      } else {
+        window.location.href = "user-profile.html";
+      }
+    } catch (error) {
+      console.error("Error checking user data:", error);
     }
   });
 }
+
+// export function checkAuthState() {
+//   onAuthStateChanged(auth, async (user) => {
+//     const currentPage = window.location.pathname;
+
+//     // Only run this redirect logic on main.html
+//     if (!currentPage.endsWith("main.html")) {
+//       return;
+//     }
+
+//     if (!user) {
+//       window.location.href = "index.html";
+//       return;
+//     }
+
+//     try {
+//       const userRef = doc(db, "users", user.uid);
+//       const userSnap = await getDoc(userRef);
+
+//       if (!userSnap.exists()) {
+//         console.log("No user document found.");
+//         return;
+//       }
+
+//       const userData = userSnap.data();
+
+//       if (userData.hasRestaurant === true) {
+//         window.location.href = "profile.html";
+//       } else {
+//         window.location.href = "user-profile.html";
+//       }
+//     } catch (error) {
+//       console.error("Error checking user data:", error);
+//     }
+//   });
+// }
+
+// checks if the user is logged in.
+// if logged in and they have a restaurant take them to restaurant owner page
+// if logged in and they dont have a restaurant take them to normal user page
+// export function checkAuthState() {
+//   onAuthStateChanged(auth, async (user) => {
+
+//     // if not logged in
+//     if (!user) {
+//       window.location.href = "index.html";
+//       return;
+//     }
+
+//     try {
+//       const userRef = doc(db, "users", user.uid);
+//       const userSnap = await getDoc(userRef);
+
+//       if (!userSnap.exists()) {
+//         console.log("No user document found.");
+//         return;
+//       }
+
+//       const userData = userSnap.data();
+
+//       // redirect depending on restaurant ownership
+//       if (userData.hasRestaurant === true) {
+//         window.location.href = "profile.html"; // restaurant owner page
+//       } else {
+//         window.location.href = "user-profile.html"; // normal user page
+//       }
+
+//     } catch (error) {
+//       console.error("Error checking user data:", error);
+//     }
+
+//   });
+// }
 
 // -------------------------------------------------------------
 // onAuthReady(callback)

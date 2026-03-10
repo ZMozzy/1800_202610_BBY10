@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -41,23 +41,21 @@
         <a href="./add.html" class="btn review-btn-secondary review-btn-small">Back</a>
         <p class="step-label">Step 2/3</p>
 
-        <!-- Next button (link to Step 3)
-               JS validation runs first and blocks navigation if required fields are missing -->
+        <!-- Next button -->
         <a href="./add-step3.html" id="step2NextBtn" class="btn review-btn-primary review-btn-small">
           Next
         </a>
       </div>
 
-      <!-- Validation error message (hidden by default) -->
+      <!-- Validation error message -->
       <p id="step2ErrorMsg" class="text-danger small mb-2" style="display: none;">
         Please fill out all required (*) fields before continuing.
       </p>
 
-      <!-- Hours & Services (required section) -->
+      <!-- Hours & Services -->
       <div class="mb-3">
         <label class="form-label">Hours & Services*</label>
         <div class="add-row">
-          <!-- Start day (required) -->
           <select id="startDaySelect" class="form-select add-select" required>
             <option value="" selected disabled>Select start day</option>
             <option value="Mon">Mon</option>
@@ -69,7 +67,6 @@
             <option value="Sun">Sun</option>
           </select>
 
-          <!-- End day (required) -->
           <select id="endDaySelect" class="form-select add-select" required>
             <option value="" selected disabled>Select end day</option>
             <option value="Mon">Mon</option>
@@ -83,29 +80,39 @@
         </div>
       </div>
 
-      <!-- Opening / closing times (required) -->
+      <!-- Opening / closing times -->
       <div class="mb-3 add-row">
         <input type="time" id="openTimeInput" class="form-control add-input" required value="10:00" />
         <input type="time" id="closeTimeInput" class="form-control add-input" required value="21:00" />
       </div>
 
-      <!-- Holiday hours (optional) -->
+      <!-- Holiday hours -->
       <div class="mb-3">
         <label class="form-label">Holiday Hours (Optional)</label>
-        <textarea id="holidayHoursInput" class="form-control add-textarea" rows="3"></textarea>
+        <div class="add-row mb-2">
+          <input type="time" id="holidayOpenTimeInput" class="form-control add-input" value="10:00" />
+          <input type="time" id="holidayCloseTimeInput" class="form-control add-input" value="21:00" />
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="holidayClosedCheckbox" />
+          <label class="form-check-label" for="holidayClosedCheckbox">Holiday Closed</label>
+        </div>
       </div>
 
       <!-- Photos + Price Range -->
       <div class="mb-3 add-row">
         <div>
           <label class="form-label">Photos*</label>
-          <!-- File input (required) -->
-          <input type="file" id="photoInput" class="form-control add-input" required />
+          <input type="file" id="photoInput" class="form-control add-input" accept="image/*" multiple required />
+
+          <!-- Photo previews -->
+          <div id="photoPreviewWrapper" class="mt-2" style="display: none;">
+            <div id="photoPreviewList" class="d-flex flex-wrap gap-2"></div>
+          </div>
         </div>
 
         <div>
           <label class="form-label">Price Range*</label>
-          <!-- Price range (required) -->
           <select id="priceRangeSelect" class="form-select add-select" required>
             <option value="" selected disabled>Select price</option>
             <option value="$">$</option>
@@ -115,18 +122,23 @@
         </div>
       </div>
 
-      <!-- Menu + Seats -->
+      <!-- Menu -->
       <div class="mb-2 add-row">
         <div>
           <label class="form-label">Add Menu*</label>
-          <!-- File input (required) -->
-          <input type="file" id="menuInput" class="form-control add-input" required />
-        </div>
+          <input
+            type="file"
+            id="menuInput"
+            class="form-control add-input"
+            accept="image/*,.pdf,application/pdf"
+            multiple
+            required
+          />
 
-        <div>
-          <label class="form-label">Seats*</label>
-          <!-- Seats (required, minimum 1) -->
-          <input type="number" id="seatsInput" min="1" class="form-control add-input" required />
+          <!-- Menu previews -->
+          <div id="menuPreviewWrapper" class="mt-2" style="display: none;">
+            <div id="menuPreviewList" class="d-flex flex-wrap gap-2"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -135,17 +147,14 @@
   <!-- Bottom navigation bar -->
   <nav class="navbar fixed-bottom custom-footer">
     <div class="container-fluid d-flex justify-content-around text-center">
-      <!-- Add page icon -->
       <a href="./add.html" class="nav-link active">
         <img src="images/add.png" alt="Add" class="nav-icon" />
       </a>
 
-      <!-- Home page icon -->
-      <a href="./landing.html" class="nav-link">
+      <a href="./index.html" class="nav-link">
         <img src="images/home.png" alt="Home" class="home-icon" />
       </a>
 
-      <!-- Profile icon (placeholder link for now) -->
       <a href="./profile.html" class="nav-link">
         <img src="images/user.png" aria-label="Profile" class="profile-icon" />
       </a>
@@ -155,102 +164,8 @@
   <!-- Bootstrap JS bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    // ================================
-    // Get references to Step 2 elements
-    // ================================
-    const step2NextBtn = document.getElementById("step2NextBtn");
-    const step2ErrorMsg = document.getElementById("step2ErrorMsg");
-
-    const startDaySelect = document.getElementById("startDaySelect");
-    const endDaySelect = document.getElementById("endDaySelect");
-    const openTimeInput = document.getElementById("openTimeInput");
-    const closeTimeInput = document.getElementById("closeTimeInput");
-    const holidayHoursInput = document.getElementById("holidayHoursInput");
-    const photoInput = document.getElementById("photoInput");
-    const priceRangeSelect = document.getElementById("priceRangeSelect");
-    const menuInput = document.getElementById("menuInput");
-    const seatsInput = document.getElementById("seatsInput");
-
-    // ============================================
-    // Load saved Step 2 data from localStorage
-    // (Note: file inputs cannot be restored for security reasons)
-    // ============================================
-    const savedStartDay = localStorage.getItem("startDay");
-    const savedEndDay = localStorage.getItem("endDay");
-    const savedOpenTime = localStorage.getItem("openTime");
-    const savedCloseTime = localStorage.getItem("closeTime");
-    const savedHolidayHours = localStorage.getItem("holidayHours");
-    const savedPriceRange = localStorage.getItem("priceRange");
-    const savedSeats = localStorage.getItem("seats");
-
-    if (savedStartDay) startDaySelect.value = savedStartDay;
-    if (savedEndDay) endDaySelect.value = savedEndDay;
-    if (savedOpenTime) openTimeInput.value = savedOpenTime;
-    if (savedCloseTime) closeTimeInput.value = savedCloseTime;
-    if (savedHolidayHours) holidayHoursInput.value = savedHolidayHours;
-    if (savedPriceRange) priceRangeSelect.value = savedPriceRange;
-    if (savedSeats) seatsInput.value = savedSeats;
-
-    // ======================================================
-    // Validate required fields before going to Step 3
-    // - If missing required fields: block navigation
-    // - If valid: save values to localStorage and continue
-    // ======================================================
-    step2NextBtn.addEventListener("click", function (event) {
-      const startDay = startDaySelect.value.trim();
-      const endDay = endDaySelect.value.trim();
-      const openTime = openTimeInput.value.trim();
-      const closeTime = closeTimeInput.value.trim();
-      const priceRange = priceRangeSelect.value.trim();
-      const seats = seatsInput.value.trim();
-
-      // File inputs must be checked using .files.length
-      const hasPhoto = photoInput.files.length > 0;
-      const hasMenu = menuInput.files.length > 0;
-
-      // Validate required fields
-      if (
-        !startDay ||
-        !endDay ||
-        !openTime ||
-        !closeTime ||
-        !hasPhoto ||
-        !priceRange ||
-        !hasMenu ||
-        !seats
-      ) {
-        event.preventDefault(); // stop navigation to Step 3
-        step2ErrorMsg.style.display = "block";
-        return;
-      }
-
-      // Extra validation: seats must be at least 1
-      if (Number(seats) < 1) {
-        event.preventDefault();
-        step2ErrorMsg.textContent = "Seats must be at least 1.";
-        step2ErrorMsg.style.display = "block";
-        return;
-      }
-
-      // Hide error message if validation passes
-      step2ErrorMsg.style.display = "none";
-      step2ErrorMsg.textContent =
-        "Please fill out all required (*) fields before continuing.";
-
-      // Save Step 2 values for use in Step 3 / final submit
-      // Note: we save file names only (not actual files) for display/debugging
-      localStorage.setItem("startDay", startDay);
-      localStorage.setItem("endDay", endDay);
-      localStorage.setItem("openTime", openTime);
-      localStorage.setItem("closeTime", closeTime);
-      localStorage.setItem("holidayHours", holidayHoursInput.value.trim());
-      localStorage.setItem("photoFileName", hasPhoto ? photoInput.files[0].name : "");
-      localStorage.setItem("priceRange", priceRange);
-      localStorage.setItem("menuFileName", hasMenu ? menuInput.files[0].name : "");
-      localStorage.setItem("seats", seats);
-    });
-  </script>
+  <!-- Step 2 JS -->
+  <script src="./src/add-step2.js"></script>
 </body>
 
 </html>

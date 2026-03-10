@@ -124,3 +124,5 @@ function initAuthUI() {
 
 // --- Initialize UI on DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', initAuthUI);
+
+
