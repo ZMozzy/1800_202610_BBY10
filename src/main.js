@@ -5,6 +5,10 @@
 // import '../styles/style.css';
 import {getAuth} from "firebase/auth";
 import {collection, query, where, getDocs} from "firebase/firestore";
+import { db } from "./firebaseConfig.js";
+
+import { checkAuthState } from "./authentication.js";
+checkAuthState();
 
 function sayHello() {
 
@@ -37,11 +41,12 @@ function goToAdd() {
 }
 
 const auth = getAuth();
-const user = auth.currentUser;
+
 
 //checks if they are a user and if user has an active post
 //for profile button
 async function goToProfile() {
+    const user = auth.currentUser;
     try {
         if (user) {
              //change this one to be resturant post collection name!!!!!!!!!!!!!!
