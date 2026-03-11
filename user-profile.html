@@ -16,7 +16,6 @@
 
     <link rel="stylesheet" href="./styles/profile.css">
 
-    <script></script>
    
 
 </head>
@@ -105,7 +104,7 @@
         <div class="restaurant-avatar">B</div>
         
         <div class="restaurant-info">
-            <h1 id="user-name">The Burger Joint</h1>
+            <h1 id="user-name"></h1>
             <a class="settings" href="profile-settings.html"><img class="settings" src="./images/settings.png"></a>
             <p style="margin: 0.75rem 0; color: #57606f;">Best charcoal-grilled burgers in the city. Real-time wait updates provided daily.</p>
             
@@ -179,7 +178,8 @@
     <!---------------------------------------------->
 
 <script type="module" src="./src/main.js"></script>
-    <script>
+   <script type="module" src="./src/profileAuth.js"></script>
+   <script>
       
       const searchToggleBtn = document.getElementById("searchToggleBtn");
       const navbarSearch = document.getElementById("navbarSearch");
@@ -203,13 +203,7 @@
         });
       }
     </script>
-    <script>
-      // goes to add.html
-      document.getElementById("create-Ad").addEventListener("click", function() {
-      window.location.href = "add.html";
-      
-    })
-    </script>
+    
 
     
 </body>

@@ -99,7 +99,7 @@ export async function signupUser(name, email, password) {
 // -------------------------------------------------------------
 export async function logoutUser() {
   await signOut(auth);
-  window.location.href = "index.html";
+  window.location.href = "landing.html";
 }
 
 // -------------------------------------------------------------
@@ -163,7 +163,8 @@ export function checkAuthState() {
         window.location.href = "owner-profile.html";
       } else {
         window.location.href = "user-profile.html";
-      }
+        
+  }
     } catch (error) {
       console.error("Error checking user data:", error);
     }

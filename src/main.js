@@ -28,35 +28,35 @@ document.getElementById("loginbtn")?.addEventListener("click", function() {
 
 //checks if they are a user and if user has an active post
 //for profile button
-async function goToProfile() {
-    const user = auth.currentUser;
-    try {
-        if (user) {
+// async function goToProfile() {
+//     const user = auth.currentUser;
+//     try {
+//         if (user) {
              
-            const restaurantRef = collection(db, "Restaurant");
-             const q = query(restaurantRef, where("ownerUID", "==", user.uid));
+//             const restaurantRef = collection(db, "Restaurant");
+//              const q = query(restaurantRef, where("ownerUID", "==", user.uid));
 
-            const querySnapshot = await getDocs(q)
-            if (!querySnapshot.empty) {
-                window.location.href = "owner-profile.html";
-            } else {
-                window.location.href = "user-profile.html";
-            }
-        } else {
-                window.location.href = "login.html";
-    } 
-    }catch (error) {
-        console.error("Error loading profile:", error);
-    }
-}
+//             const querySnapshot = await getDocs(q)
+//             if (!querySnapshot.empty) {
+//                 window.location.href = "owner-profile.html";
+//             } else {
+//                 window.location.href = "user-profile.html";
+//             }
+//         } else {
+//                 window.location.href = "login.html";
+//     } 
+//     }catch (error) {
+//         console.error("Error loading profile:", error);
+//     }
+// }
 
 
 
-document.getElementById("profile-link")?.addEventListener("click", function(e) {
-    console.log("Clicked");
-    e.preventDefault();
-    goToProfile();
-});
+// document.getElementById("profile-link")?.addEventListener("click", function(e) {
+//     console.log("Clicked");
+//     e.preventDefault();
+//     goToProfile();
+// });
 
 
 // document.addEventListener('DOMContentLoaded', sayHello);
