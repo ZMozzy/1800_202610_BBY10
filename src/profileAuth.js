@@ -20,6 +20,7 @@
             //display name changes to user name
             document.getElementById("user-name").textContent = username;
             
+            //changes avatar to first letter of name
             const char = username.substring(0, 1).toUpperCase();
             document.getElementById("avatar").textContent = char;
 
@@ -30,7 +31,7 @@
             //display name Guest
             document.getElementById("user-name").textContent = "Guest";
 
-            //
+            //changes create ad to login
             document.getElementById("create-Ad").textContent = "Login"
         document.getElementById("create-Ad").addEventListener("click", function() {
         window.location.href = "login.html";})
