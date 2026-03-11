@@ -19,6 +19,9 @@
             const username = userSnap.data().name;
             //display name changes to user name
             document.getElementById("user-name").textContent = username;
+            
+            const char = username.substring(0, 1).toUpperCase();
+            document.getElementById("avatar").textContent = char;
 
         } 
         
