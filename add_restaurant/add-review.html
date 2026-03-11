@@ -285,9 +285,10 @@
       // (e.g., user opened review page directly)
       // ============================================
       const finalSubmitBtn = document.getElementById("finalSubmitBtn");
-      const finalSubmitBtnBottom = document.getElementById(
-        "finalSubmitBtnBottom",
-      );
+      const finalSubmitBtnBottom = document.getElementById("finalSubmitBtnBottom");
+      // const finalSubmitBtnBottom = document.getElementById(
+      //   "finalSubmitBtnBottom",
+      // );
 
       const hasMinimumRequiredData =
         restaurantName &&
@@ -302,12 +303,12 @@
         ownerEmail &&
         ownerPhone;
 
-      if (!hasMinimumRequiredData) {
-        finalSubmitBtn.classList.add("disabled");
-        finalSubmitBtnBottom.classList.add("disabled");
-        finalSubmitBtn.removeAttribute("href");
-        finalSubmitBtnBottom.removeAttribute("href");
-      }
+    if (!hasMinimumRequiredData && finalSubmitBtnBottom) {
+      finalSubmitBtnBottom.classList.add("disabled");
+      finalSubmitBtnBottom.removeAttribute("href");
+    }
     </script>
+
+    <script type="module" src="../src/add-review-submit.js"></script>
   </body>
 </html>
