@@ -6,8 +6,8 @@ console.log("main.js loaded");
 // If you have custom global styles, import them as well:
 // import '../styles/style.css';
 // import {auth} from "./firebaseConfig.js"
-import {collection, query, where, getDocs} from "firebase/firestore";
-import { auth, db } from "./firebaseConfig.js";
+// import {collection, query, where, getDocs} from "firebase/firestore";
+// import { auth, db } from "./firebaseConfig.js";
 // import { db } from "./firebaseConfig.js";
 
 import { checkAuthState } from "./authentication.js";

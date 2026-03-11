@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>FastPass Restaurant</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+
+  <body class="restaurant-page">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-light topbar-custom">
+      <div
+        class="container-fluid d-flex justify-content-between align-items-center"
+      >
+        <a class="navbar-brand mx-auto mb-0 topbar-brand" href="./landing.html">
+          FastPass
+        </a>
+      </div>
+    </nav>
+
+    <!-- RESTAURANT DETAILS -->
+    <main class="container my-5 d-flex flex-column align-items-center">
+      <div class="card mb-4" style="max-width: 480px; width: 100%">
+        <img
+          id="restaurantImage"
+          class="card-img-top"
+          src="..."
+          alt="Restaurant Image"
+        />
+        <div class="card-body">
+          <h2 id="restaurantName" class="card-title">Loading...</h2>
+          <p id="restaurantDescription" class="card-text"></p>
+          <span id="restaurantWait" class="badge bg-success mb-2"></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <nav class="navbar fixed-bottom custom-footer">
+      <div class="container-fluid d-flex justify-content-around text-center">
+        <a href="./add.html" class="nav-link">
+          <img src="images/add.png" alt="Add" class="nav-icon" />
+        </a>
+        <a href="./landing.html" class="nav-link">
+          <img src="images/home.png" alt="Home" class="home-icon" />
+        </a>
+        <a href="./profile.html" class="nav-link">
+          <img src="images/user.png" alt="Profile" class="profile-icon" />
+        </a>
+      </div>
+    </nav>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./eachRestaurant.js"></script>
+  </body>
+</html>
