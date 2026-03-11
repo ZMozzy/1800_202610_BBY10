@@ -12,7 +12,7 @@
         //makes button say create ad and goes to add.html
         document.getElementById("create-Ad").textContent = "Create an ad"
         document.getElementById("create-Ad").addEventListener("click", function() {
-        window.location.href = "add.html";})
+        window.location.href = "add_restaurant/add.html";})
 
         if (userSnap.exists()) {
 
