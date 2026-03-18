@@ -3,7 +3,8 @@ console.log("search loaded.")
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("restaurantSearch");
     if (!searchInput) return;
-
+    
+    //if using search bar from various page brings you to landing
     function goToSearchPage() {
         const query = searchInput.value.trim();
         if (!query) return;
@@ -19,9 +20,6 @@ console.log("typed:", searchInput.value);
         }
     });
 
-    // Also search when the input loses focus and you want manual testing
-    // comment this out later if you don't want it
-    // searchInput.addEventListener("change", goToSearchPage);
 
     // Only filter cards if this page actually has restaurant cards
     const cards = document.querySelectorAll(".restaurant-card");
