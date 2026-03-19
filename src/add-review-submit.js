@@ -181,6 +181,7 @@ function mapFilesWithoutUpload(files) {
 function buildSubmissionPayload(userId, uploadsByType) {
   return {
     userId: userId || null,
+    waitTime: 0,
     basicInfo: {
       restaurantName: localStorage.getItem("restaurantName") || "",
       address: localStorage.getItem("restaurantAddress") || "",
