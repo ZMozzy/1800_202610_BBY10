@@ -24,19 +24,19 @@
 * Store as variables for reuse and maintainability. 
 */
 :root {
-    /* 60% — background */
-    --light-text: #fefae0;
+  /* 60% — background */
+  --light-text: #fefae0;
 
-    /* 30% — primary actions and supporting surfaces) */
-    --primary: #283618;
-    --secondary: #606c38;
+  /* 30% — primary actions and supporting surfaces) */
+  --primary: #283618;
+  --secondary: #606c38;
 
-    /* 10% — accent for emphasis and interaction */
-    --accent: #dda15e;
+  /* 10% — accent for emphasis and interaction */
+  --accent: #dda15e;
 
-    /* Button border widths */
-    --btn-border-width: 3px;
-    --btn-border-width-hover: 5px;
+  /* Button border widths */
+  --btn-border-width: 3px;
+  --btn-border-width-hover: 5px;
 }
 
 /* --------------------------------------------------
@@ -46,8 +46,8 @@
 * The dominant (60%) colour establishes a clean canvas for the page.
 */
 body {
-    background-color: var(--light-text);
-    color: var(--primary);
+  background-color: var(--light-text);
+  color: var(--primary);
 }
 
 /* --------------------------------------------------
@@ -61,7 +61,7 @@ body {
 * are designed to take priority.
 */
 .bg-info {
-    background-color: var(--secondary) !important;
+  background-color: var(--secondary) !important;
 }
 
 /* --------------------------------------------------
@@ -72,8 +72,8 @@ body {
 */
 .navbar-light .navbar-brand,
 .navbar-light .navbar-nav .nav-link {
-    color: var(--primary);
-    font-weight: 700;
+  color: var(--primary);
+  font-weight: 700;
 }
 
 /*
@@ -82,7 +82,7 @@ body {
 */
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link:focus {
-    color: var(--accent);
+  color: var(--accent);
 }
 
 /* --------------------------------------------------
@@ -93,10 +93,10 @@ body {
 * with a border to add visual interest without overwhelming the design.
 */
 .btn-info {
-    color: var(--light-text);
-    background-color: var(--secondary);
-    border-color: var(--primary);
-    border-width: var(--btn-border-width);
+  color: var(--light-text);
+  background-color: var(--secondary);
+  border-color: var(--primary);
+  border-width: var(--btn-border-width);
 }
 
 /*
@@ -106,16 +106,15 @@ body {
 */
 .btn-info:hover,
 .btn-info:focus {
-    background-color: var(--secondary);
-    border-color: var(--accent);
-    border-width: var(--btn-border-width-hover);
+  background-color: var(--secondary);
+  border-color: var(--accent);
+  border-width: var(--btn-border-width-hover);
 }
 
-.navbar-brand{
-    font-family: 'Caveat', cursive; /*change the font name for what you have*/
-    font-size: 2.25rem;
+.navbar-brand {
+  font-family: "Caveat", cursive; /*change the font name for what you have*/
+  font-size: 2.25rem;
 }
-
 
 /*
 * footer
@@ -128,87 +127,86 @@ body {
   padding: 10px 0;
 }
 
-
 .nav-icon {
   width: 28px;
   height: 28px;
 }
 
-.home-icon{
-    width: 28px;
-    height: 28px;
+.home-icon {
+  width: 28px;
+  height: 28px;
 }
 
-.profile-icon{
-    width: 28px;
-    height: 28px;
+.profile-icon {
+  width: 28px;
+  height: 28px;
 }
 
 /* Add flow pages */
 .add-flow-page main {
-    padding-bottom: 96px;
+  padding-bottom: 96px;
 }
 
 .add-flow-card {
-    max-width: 480px;
-    margin: 24px auto;
-    background: #f4f4f4;
-    border: 1px solid #d8d8d8;
-    border-radius: 12px;
-    padding: 20px 14px;
+  max-width: 480px;
+  margin: 24px auto;
+  background: #f4f4f4;
+  border: 1px solid #d8d8d8;
+  border-radius: 12px;
+  padding: 20px 14px;
 }
 
 .add-flow-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
 }
 
 .step-label {
-    font-weight: 700;
-    font-size: 0.85rem;
-    margin: 0;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin: 0;
 }
 
 .add-input,
 .add-select,
 .add-textarea {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 
 .add-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .success-wrap {
-    max-width: 480px;
-    margin: 24px auto;
-    background: #f4f4f4;
-    border: 1px solid #14da6a;
-    border-radius: 12px;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 24px;
+  max-width: 480px;
+  margin: 24px auto;
+  background: #f4f4f4;
+  border: 1px solid #14da6a;
+  border-radius: 12px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
 }
 
 .success-check {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    border: 10px solid #1a9124;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 68px;
-    font-weight: 700;
-    margin: 16px 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 10px solid #1a9124;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 68px;
+  font-weight: 700;
+  margin: 16px 0;
 }
 /* --------------------------------------------------
 * Review page button styles (reuse project theme vars)
@@ -217,158 +215,161 @@ body {
 /* Base style for review page action buttons */
 .review-btn-primary,
 .review-btn-secondary {
-    border-radius: 999px;         /* same pill shape */
-    font-weight: 600;
-    transition: all 0.15s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.2;
-    text-decoration: none;
+  border-radius: 999px; /* same pill shape */
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  text-decoration: none;
 }
 
 /* Title centering helper */
 .review-title-center {
-    margin: 0;
-    text-align: center;
-    flex: 1;
+  margin: 0;
+  text-align: center;
+  flex: 1;
 }
 
 /* Placeholder width to balance header layout */
 .review-btn-placeholder {
-    display: inline-block;
-    min-width: 86px;
+  display: inline-block;
+  min-width: 86px;
 }
 
 /* Primary action button (Next / Review / Confirm) */
 .review-btn-primary {
-    color: var(--light-text);
-    background-color: var(--secondary);
-    border: 2px solid var(--primary);
+  color: var(--light-text);
+  background-color: var(--secondary);
+  border: 2px solid var(--primary);
 }
 
 .review-btn-primary:hover,
 .review-btn-primary:focus {
-    color: var(--light-text);
-    background-color: var(--secondary);
-    border-color: var(--accent);
-    box-shadow: none;
+  color: var(--light-text);
+  background-color: var(--secondary);
+  border-color: var(--accent);
+  box-shadow: none;
 }
 
 /* Secondary action button (Back) */
 .review-btn-secondary {
-    color: var(--primary);
-    background-color: transparent;
-    border: 2px solid var(--secondary);
+  color: var(--primary);
+  background-color: transparent;
+  border: 2px solid var(--secondary);
 }
 
 .review-btn-secondary:hover,
 .review-btn-secondary:focus {
-    color: var(--primary);
-    background-color: rgba(96, 108, 56, 0.08);
-    border-color: var(--accent);
-    box-shadow: none;
+  color: var(--primary);
+  background-color: rgba(96, 108, 56, 0.08);
+  border-color: var(--accent);
+  box-shadow: none;
 }
 
 /* Same size for top header buttons (Back / Next) */
 .review-btn-small {
-    min-width: 86px;
-    height: 40px;
-    padding: 0 14px;
-    font-size: 0.85rem;
-    text-align: center;
+  min-width: 86px;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 /* Bottom buttons (if needed) */
 .review-btn-large {
-    min-height: 44px;
-    padding: 0.65rem 1rem;
-    font-size: 0.95rem;
-    text-align: center;
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 /* Disabled state */
 .review-btn-primary.disabled,
 .review-btn-secondary.disabled {
-    opacity: 0.5;
-    pointer-events: none;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 /* Optional: keep header buttons visually balanced */
 .add-flow-head .review-btn-small {
-    min-width: 86px;
+  min-width: 86px;
 }
 
 /* Screenshot wireframe-style top bar on index */
 .wireframe-topbar {
-    background: #d6d6d6;
-    border-bottom: 1px solid #c7c7c7;
-    padding: 10px 0;
+  background: #d6d6d6;
+  border-bottom: 1px solid #c7c7c7;
+  padding: 10px 0;
 }
 
 .wireframe-topbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .wireframe-title-wrap {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
 .wireframe-title {
-    margin: 0;
-    font-size: 2rem;
-    line-height: 1;
-    font-family: "Arial", sans-serif;
-    font-weight: 500;
-    color: #1e1e1e;
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1;
+  font-family: "Arial", sans-serif;
+  font-weight: 500;
+  color: #1e1e1e;
 }
 
 .wireframe-subtitle {
-    font-size: 0.6rem;
-    color: #3a3a3a;
+  font-size: 0.6rem;
+  color: #3a3a3a;
 }
 
 .wireframe-icon {
-    width: 36px;
-    height: 36px;
-    border: 1px solid #7b7b7b;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    color: #2f2f2f;
-    background: #ececec;
-    user-select: none;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #7b7b7b;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #2f2f2f;
+  background: #ececec;
+  user-select: none;
 }
 
 /* Functional top bar for index page */
 .topbar-custom {
-    background-color: #606c38;
-    border-bottom: 1px solid #4f5a2e;
-    padding: 10px 0;
+  background-color: #606c38;
+  border-bottom: 1px solid #4f5a2e;
+  padding: 10px 0;
 }
 
 .topbar-brand {
-    font-family: "Arial", sans-serif;
-    font-size: 1.9rem;
-    line-height: 1;
-    font-weight: 500;
+  font-family: "Arial", sans-serif;
+  font-size: 1.9rem;
+  line-height: 1;
+  font-weight: 500;
 }
 
 .topbar-subtitle {
-    font-size: 0.58rem;
-    color: #3a3a3a;
-    font-weight: 500;
+  font-size: 0.58rem;
+  color: #3a3a3a;
+  font-weight: 500;
 }
 
 .topbar-search-wrap {
-    background-color: #e6e9ed;
-    border-bottom: 1px solid #d0d5db;
+  background-color: #e6e9ed;
+  border-bottom: 1px solid #d0d5db;
 }
 
-
+.bg-orange {
+  background-color: orange;
+  color: white;
+}

@@ -5,11 +5,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const DRAFT_DB_NAME = "restaurantSignupDraft";
 const DRAFT_DB_VERSION = 1;
@@ -21,7 +17,7 @@ const STEP3_BUSINESS_LICENSE_FILES_KEY = "step3BusinessLicenseFiles";
 
 // Temporary switch: keep upload logic in code, but disable actual Storage upload for now.
 // Set to true later when your Firebase Storage plan/rules are ready.
-const ENABLE_STORAGE_UPLOADS = false;
+const ENABLE_STORAGE_UPLOADS = true;
 
 const finalSubmitBtn = document.getElementById("finalSubmitBtnBottom");
 const reviewSubmitStatus = document.getElementById("reviewSubmitStatus");
@@ -47,7 +43,9 @@ function setSubmittingState(isSubmitting) {
   finalSubmitBtn.classList.toggle("disabled", isSubmitting);
   finalSubmitBtn.setAttribute("aria-disabled", String(isSubmitting));
   finalSubmitBtn.textContent = isSubmitting
-    ? (ENABLE_STORAGE_UPLOADS ? "Uploading..." : "Submitting...")
+    ? ENABLE_STORAGE_UPLOADS
+      ? "Uploading..."
+      : "Submitting..."
     : "Confirm and Submit";
 }
 
@@ -227,7 +225,9 @@ async function handleConfirmAndSubmit(event) {
     const submissionRef = await addDoc(collection(db, "Restaurant"), {
       createdAt: serverTimestamp(),
       userId,
-      state: ENABLE_STORAGE_UPLOADS ? "uploading_files" : "saving_metadata_only",
+      state: ENABLE_STORAGE_UPLOADS
+        ? "uploading_files"
+        : "saving_metadata_only",
     });
 
     const submissionId = submissionRef.id;
@@ -262,7 +262,8 @@ async function handleConfirmAndSubmit(event) {
     await clearDraftUploads();
     clearDraftFormData();
     setSubmitStatus("Submitted successfully.", false);
-    window.location.href = finalSubmitBtn.getAttribute("href") || "./add-success.html";
+    window.location.href =
+      finalSubmitBtn.getAttribute("href") || "./add-success.html";
   } catch (error) {
     console.error("Failed to submit restaurant draft:", error);
     setSubmitStatus("Upload failed. Please try again.");
