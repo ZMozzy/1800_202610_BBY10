@@ -45,7 +45,7 @@
         </button>
 
         <a class="navbar-brand mx-auto mb-0 topbar-brand" href="./index.html">
-          FastPass
+          <img src="./images/logoNoBG.png" alt="FastPass" class="topbar-logo" />
         </a>
 
         <div class="d-flex align-items-center">
@@ -81,6 +81,7 @@
       <div class="container-fluid py-2">
         <form class="d-flex" role="search">
           <input
+            id = "restaurantSearch"
             class="form-control"
             type="search"
             placeholder="Search"
@@ -100,7 +101,7 @@
         <div class="restaurant-info">
           <h1 id="restaurant-name">The Burger Joint</h1>
           <span class="role-badge">Restaurant Owner</span>
-          <p style="margin: 0.75rem 0; color: #57606f">
+          <p id="restaurant-description" style="margin: 0.75rem 0; color: #57606f">
             Best charcoal-grilled burgers in the city. Real-time wait updates
             provided daily.
           </p>
@@ -196,7 +197,9 @@
     <!-- Your own JavaScript functions go here    -->
     <!---------------------------------------------->
 
-    <script src="./src/main.js"></script>
+    <!-- <script src="./src/main.js"></script> -->
+    <script src="./src/search.js"></script>
+    <script type="module" src="./src/ownerProfile.js"></script>
     <script>
       const searchToggleBtn = document.getElementById("searchToggleBtn");
       const navbarSearch = document.getElementById("navbarSearch");

@@ -6,20 +6,38 @@ const restaurantsContainer = document.getElementById("restaurants-go-here");
 const filterDropdown = document.getElementById("filterDropdown");
 
 // Filters state
-const selectedFilters = { cuisine: [], wait: [], location: [] };
+const selectedFilters = { cuisine: [], price: [], wait: [], location: [] };
 
 // Store all unique filter values dynamically
-const allFilters = { cuisine: new Set(), wait: new Set(), location: new Set() };
+const allFilters = {
+  cuisine: new Set(),
+  price: new Set(),
+  wait: new Set(),
+  location: new Set(),
+};
+
+let allRestaurants = []; // Store all restaurants for filtering
 
 async function loadRestaurants() {
   try {
     const querySnapshot = await getDocs(collection(db, "Restaurant"));
+
+    //
+    querySnapshot.docs.forEach((doc) => {
+      const r = doc.data();
+      allFilters.cuisine.add(r.basicInfo?.businessType || "Unknown");
+      allFilters.price.add(r.hoursAndServices?.priceRange || "$");
+      allFilters.wait.add(r.hoursAndServices?.waitTime || "0");
+      allFilters.location.add(r.basicInfo?.state || "Unknown");
+    });
     const restaurants = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Restaurants fetched:", restaurants); // <--- ADD THIS
+    console.log("Restaurants fetched:", restaurants);
 
+    allRestaurants = restaurants;
+    createFilterButtons(); // Create filter buttons after fetching data
     // Display cards immediately
     displayRestaurants(restaurants);
   } catch (error) {
@@ -61,7 +79,7 @@ function createFilterButtons() {
     createFilterSection("Cuisine", "cuisine", Array.from(allFilters.cuisine)),
   );
   dropdownMenu.appendChild(
-    createFilterSection("Price", "wait", Array.from(allFilters.wait)),
+    createFilterSection("Price", "price", Array.from(allFilters.price)),
   );
   dropdownMenu.appendChild(
     createFilterSection(
@@ -69,6 +87,9 @@ function createFilterButtons() {
       "location",
       Array.from(allFilters.location),
     ),
+  );
+  dropdownMenu.appendChild(
+    createFilterSection("Wait Time", "wait", Array.from(allFilters.wait)),
   );
 
   // Clear Filters button
@@ -124,6 +145,17 @@ function bindFilterEvents() {
   });
 }
 
+function getWaitColor(waitTime) {
+  const time = parseInt(waitTime);
+
+  if (isNaN(time)) return "secondary"; // fallback (gray)
+
+  if (time <= 10) return "success"; // green
+  if (time <= 30) return "warning"; // yellow
+  if (time <= 60) return "orange"; // custom (we'll handle this)
+  return "danger"; // red
+}
+
 // Display restaurant cards
 function displayRestaurants(restaurants) {
   restaurantsContainer.innerHTML = "";
@@ -140,22 +172,34 @@ function displayRestaurants(restaurants) {
     const cuisine = r.basicInfo?.businessType || "";
     const location = r.basicInfo?.state || "";
 
+    const waitTime = r.hoursAndServices?.waitTime || "Unknown";
+    const waitColor = getWaitColor(waitTime);
+
     const photoURL =
       r.photos?.[0]?.downloadURL?.trim() || "./images/default.png";
 
     card.innerHTML = `
-      <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
-      <div class="card-body">
-        <h5 class="card-title">${name}</h5>
-        <p class="card-text">${description}</p>
-        <span class="badge bg-success mb-2 card-wait">Price: ${price}</span>
-        <a href="eachRestaurant.html?docID=${r.id}" class="btn btn-primary see-menu-btn">See Menu</a>
-      </div>
-    `;
+  <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
+  <div class="card-body">
+    <h5 class="card-title">${name}</h5>
+    <p class="card-text">${description}</p>
+
+    <span class="badge bg-success mb-2">Price: ${price}</span>
+
+    <span class="badge ${
+      waitColor === "orange" ? "bg-orange" : "bg-" + waitColor
+    } mb-2">
+      Wait: ${waitTime} min
+    </span>
+
+    <a href="eachRestaurant.html?docID=${r.id}" class="btn btn-primary see-menu-btn">See Menu</a>
+  </div>
+`;
 
     // Add data attributes for filtering
     card.dataset.cuisine = cuisine.toLowerCase();
-    card.dataset.wait = price;
+    card.dataset.price = price;
+    card.dataset.wait = waitTime;
     card.dataset.location = location.toLowerCase();
 
     restaurantsContainer.appendChild(card);
@@ -165,19 +209,31 @@ function displayRestaurants(restaurants) {
 // Filter logic
 function applyFilters() {
   const cards = document.querySelectorAll(".restaurant-card");
+
   cards.forEach((card) => {
+    const cuisine = (card.dataset.cuisine || "").toLowerCase();
+    const price = card.dataset.price || "";
+    const wait = card.dataset.wait || "";
+    const location = (card.dataset.location || "").toLowerCase();
+
     const cuisineMatch =
       selectedFilters.cuisine.length === 0 ||
-      selectedFilters.cuisine.includes(card.dataset.cuisine);
+      selectedFilters.cuisine.includes(cuisine);
+
+    const priceMatch =
+      selectedFilters.price.length === 0 ||
+      selectedFilters.price.includes(price);
+
     const waitMatch =
       selectedFilters.wait.length === 0 ||
-      selectedFilters.wait.includes(card.dataset.wait);
+      selectedFilters.wait.some((f) => parseInt(wait) <= parseInt(f));
+
     const locationMatch =
       selectedFilters.location.length === 0 ||
-      selectedFilters.location.includes(card.dataset.location);
+      selectedFilters.location.includes(location);
 
     card.style.display =
-      cuisineMatch && waitMatch && locationMatch ? "" : "none";
+      cuisineMatch && priceMatch && waitMatch && locationMatch ? "" : "none";
   });
 }
 

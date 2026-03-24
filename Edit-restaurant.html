@@ -44,7 +44,7 @@
         </button>
 
         <a class="navbar-brand mx-auto mb-0 topbar-brand" href="/index.html">
-          FastPass
+          <img src="./images/logoNoBG.png" alt="FastPass" class="topbar-logo" />
         </a>
 
         <button
@@ -106,45 +106,74 @@
         <form id="editRestaurantForm">
           <div class="mb-3">
             <label for="restaurantName" class="form-label"
-              >Restaurant Name*</label
+              >Restaurant Name</label
             >
             <input
               type="text"
               class="form-control"
               id="restaurantName"
-              required
+              
             />
           </div>
 
           <div class="mb-3">
-            <label for="restaurantPhone" class="form-label">Phone*</label>
+            <label for="restaurant-description" class="form-label">Description</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="restaurantDescription"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="restaurantPhone" class="form-label">Phone</label>
             <input
               type="tel"
               class="form-control"
               id="restaurantPhone"
-              required
+              
             />
           </div>
 
           <div class="mb-3">
-            <label for="restaurantEmail" class="form-label">E-mail*</label>
+            <label for="restaurantEmail" class="form-label">E-mail</label>
             <input
               type="email"
               class="form-control"
               id="restaurantEmail"
-              required
+              
             />
           </div>
 
           <div class="mb-3">
-            <label for="restaurantLicense" class="form-label"
-              >Business License*</label
+            <label for="restaurantaddress" class="form-label">Address</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="restaurantAddress"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="restaurantwebsite" class="form-label">website</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="restaurantWebsite"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="restaurant-menu" class="form-label">Menu</label
             >
             <input
               type="file"
               class="form-control"
-              id="restaurantLicense"
-              accept="image/*,.pdf"
+              id="restaurantMenu"
+              accept="image/*"
             />
           </div>
 
@@ -180,6 +209,9 @@
 
     <!-- Custom JS -->
     <script type="module" src="/src/main.js"></script>
+        <script type = "module" src="./src/search.js"></script>
+        <script type="module" src="./src/editRestaurant.js"></script>
+
 
     <script>
       const searchToggleBtn = document.getElementById("searchToggleBtn");
