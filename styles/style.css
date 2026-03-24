@@ -84,7 +84,10 @@ body {
 .navbar-light .navbar-nav .nav-link:focus {
   color: var(--accent);
 }
-
+.topbar-logo {
+  height: 200px;
+  width: auto;
+}
 /* --------------------------------------------------
 * Button: .btn-info
 * --------------------------------------------------
@@ -352,10 +355,19 @@ body {
 }
 
 .topbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: "Arial", sans-serif;
   font-size: 1.9rem;
   line-height: 1;
   font-weight: 500;
+}
+
+.topbar-logo {
+  height: 42px;
+  width: auto;
+  display: block;
 }
 
 .topbar-subtitle {
