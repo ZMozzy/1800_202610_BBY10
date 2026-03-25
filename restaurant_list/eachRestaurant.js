@@ -13,6 +13,14 @@ const restaurantWaitEl = document.getElementById("restaurantWait");
 const restaurantRatingEl = document.getElementById("restaurantRating");
 const writeReviewBtn = document.getElementById("writeReviewBtn");
 
+function getPhotoSrc(photo) {
+  if (!photo?.base64Data || !photo?.contentType) {
+    return "./images/default.png";
+  }
+
+  return `data:${photo.contentType};base64,${photo.base64Data}`;
+}
+
 // ---------------------------
 // Get restaurant ID from URL
 // ---------------------------
@@ -58,10 +66,9 @@ async function loadRestaurant() {
     // ---------------------------
     const name = restaurant.basicInfo?.restaurantName || "Unnamed";
     const description = restaurant.basicInfo?.description || "No description";
-    const waitTime = restaurant.hoursAndServices?.waitTime || 0;
+    const waitTime = restaurant.waitTime || 0;
     const rating = restaurant.rating || 0;
-    const photoURL =
-      restaurant.photos?.[0]?.downloadURL?.trim() || "./images/default.png";
+    const photoURL = getPhotoSrc(restaurant.uploads?.photos?.[0]);
 
     restaurantNameEl.textContent = name;
     restaurantDescriptionEl.textContent = description;
