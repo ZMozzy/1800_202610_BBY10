@@ -20,7 +20,6 @@ console.log("typed:", searchInput.value);
         }
     });
 
-
     // Only filter cards if this page actually has restaurant cards
     const cards = document.querySelectorAll(".restaurant-card");
 
