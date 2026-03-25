@@ -28,7 +28,7 @@ function getWaitColor(waitTime) {
   const time = Number(waitTime);
   if (time <= 10) return "success"; // green
   if (time <= 30) return "warning"; // yellow
-  if (time <= 60) return "orange"; // orange (custom CSS class)
+  if (time <= 60) return "orange"; // orange
   return "danger"; // red
 }
 
