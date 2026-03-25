@@ -175,7 +175,6 @@ function displayRestaurants(restaurants) {
 
     const waitTime = r.hoursAndServices?.waitTime || "0";
     const waitColor = getWaitColor(waitTime);
-
     const photoURL =
       r.photos?.[0]?.base64Data?.trim() ||
       r.photos?.[0]?.downloadURL?.trim() ||
