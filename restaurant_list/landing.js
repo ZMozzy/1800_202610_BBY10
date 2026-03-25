@@ -1,5 +1,5 @@
 import { db } from "../src/firebaseConfig.js";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
 // DOM references
 const restaurantsContainer = document.getElementById("restaurants-go-here");
@@ -20,8 +20,9 @@ let allRestaurants = []; // Store all restaurants for filtering
 
 async function loadRestaurants() {
   try {
-    const querySnapshot = await getDocs(collection(db, "Restaurant"));
+    const q = query(collection(db, "Restaurant"), orderBy("createdAt", "desc"));
 
+    const querySnapshot = await getDocs(q);
     //
     querySnapshot.docs.forEach((doc) => {
       const r = doc.data();
@@ -152,7 +153,7 @@ function getWaitColor(waitTime) {
 
   if (time <= 10) return "success"; // green
   if (time <= 30) return "warning"; // yellow
-  if (time <= 60) return "orange"; // custom (we'll handle this)
+  if (time <= 60) return "orange"; //orange
   return "danger"; // red
 }
 
@@ -172,11 +173,13 @@ function displayRestaurants(restaurants) {
     const cuisine = r.basicInfo?.businessType || "";
     const location = r.basicInfo?.state || "";
 
-    const waitTime = r.hoursAndServices?.waitTime || "Unknown";
+    const waitTime = r.hoursAndServices?.waitTime || "0";
     const waitColor = getWaitColor(waitTime);
 
     const photoURL =
-      r.photos?.[0]?.downloadURL?.trim() || "./images/default.png";
+      r.photos?.[0]?.base64Data?.trim() ||
+      r.photos?.[0]?.downloadURL?.trim() ||
+      "./images/default.png";
 
     card.innerHTML = `
   <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
