@@ -17,7 +17,7 @@ const STEP3_BUSINESS_LICENSE_FILES_KEY = "step3BusinessLicenseFiles";
 
 // Temporary switch: keep upload logic in code, but disable actual Storage upload for now.
 // Set to true later when your Firebase Storage plan/rules are ready.
-const ENABLE_STORAGE_UPLOADS = true;
+const ENABLE_STORAGE_UPLOADS = false;
 
 const finalSubmitBtn = document.getElementById("finalSubmitBtnBottom");
 const reviewSubmitStatus = document.getElementById("reviewSubmitStatus");
