@@ -52,14 +52,14 @@ function populateRestaurantPage(restaurant) {
     }
 
     if (emailEl) {
-        emailEl.textContent = restaurant.ownerAccount?.email || "No email set";
+        emailEl.textContent = restaurant.email || "No email set";
     }
 
-    if (photoEl) {
-        const firstPhoto = restaurant.uploads?.photos?.[0];
+    if (photoEl && restaurant.photos && restaurant.photos.length > 0) {
+        const firstPhoto = restaurant.photos[0];
 
-        if (firstPhoto?.base64Data && firstPhoto?.contentType) {
-            photoEl.src = `data:${firstPhoto.contentType};base64,${firstPhoto.base64Data}`;
+        if (firstPhoto.downloadURL) {
+            photoEl.src = firstPhoto.downloadURL;
         }
     }
 }

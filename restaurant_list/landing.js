@@ -18,14 +18,6 @@ const allFilters = {
 
 let allRestaurants = []; // Store all restaurants for filtering
 
-function getPhotoSrc(photo) {
-  if (!photo?.base64Data || !photo?.contentType) {
-    return "./images/default.png";
-  }
-
-  return `data:${photo.contentType};base64,${photo.base64Data}`;
-}
-
 async function loadRestaurants() {
   try {
     const querySnapshot = await getDocs(collection(db, "Restaurant"));
@@ -35,7 +27,7 @@ async function loadRestaurants() {
       const r = doc.data();
       allFilters.cuisine.add(r.basicInfo?.businessType || "Unknown");
       allFilters.price.add(r.hoursAndServices?.priceRange || "$");
-      allFilters.wait.add(String(r.waitTime ?? 0));
+      allFilters.wait.add(r.hoursAndServices?.waitTime || "0");
       allFilters.location.add(r.basicInfo?.state || "Unknown");
     });
     const restaurants = querySnapshot.docs.map((doc) => ({
@@ -180,9 +172,10 @@ function displayRestaurants(restaurants) {
     const cuisine = r.basicInfo?.businessType || "";
     const location = r.basicInfo?.state || "";
 
-    const waitTime = String(r.waitTime ?? 0);
+    const waitTime = r.hoursAndServices?.waitTime || "Unknown";
     const waitColor = getWaitColor(waitTime);
-    const photoURL = getPhotoSrc(r.uploads?.photos?.[0]);
+    const photoURL =
+      r.photos?.[0]?.downloadURL?.trim() || "./images/default.png";
 
     card.innerHTML = `
   <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
