@@ -175,6 +175,64 @@ function mapFilesWithoutUpload(files) {
   }));
 }
 
+// Converts an image file into a compressed data URL for Firestore storage.
+function fileToCompressedDataUrl(file, maxWidth = 400, quality = 0.6) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      const image = new Image();
+
+      image.onload = function () {
+        const scale = Math.min(1, maxWidth / image.width);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+
+        const context = canvas.getContext("2d");
+        if (!context) {
+          reject(new Error("Canvas context not available"));
+          return;
+        }
+
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+
+      image.onerror = function () {
+        reject(new Error("Failed to load image"));
+      };
+
+      image.src = reader.result;
+    };
+
+    reader.onerror = function () {
+      reject(new Error("Failed to read file"));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// Maps image files into Firestore-friendly metadata with embedded data URLs.
+async function mapFilesAsDataUrls(files) {
+  return Promise.all(
+    files.map(async (file) => {
+      const dataUrl = await fileToCompressedDataUrl(file);
+
+      return {
+        fileName: file.name,
+        contentType: file.type || "",
+        size: file.size || 0,
+        dataUrl,
+        storagePath: "",
+        downloadURL: "",
+        uploadSkipped: true,
+      };
+    }),
+  );
+}
+
 // Builds the final Firestore payload from localStorage + upload metadata.
 function buildSubmissionPayload(userId, uploadsByType) {
   return {
@@ -242,9 +300,11 @@ async function handleConfirmAndSubmit(event) {
         uploadFiles("business-licenses", businessLicenseFiles, submissionId),
       ]);
     } else {
-      photos = mapFilesWithoutUpload(photoFiles);
-      menus = mapFilesWithoutUpload(menuFiles);
-      businessLicenses = mapFilesWithoutUpload(businessLicenseFiles);
+      [photos, menus, businessLicenses] = await Promise.all([
+        mapFilesAsDataUrls(photoFiles),
+        mapFilesAsDataUrls(menuFiles),
+        mapFilesAsDataUrls(businessLicenseFiles),
+      ]);
     }
 
     const payload = buildSubmissionPayload(userId, {
