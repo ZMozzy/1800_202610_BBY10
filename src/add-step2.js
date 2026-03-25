@@ -40,7 +40,11 @@ function isImageFile(file) {
 
 // Checks whether a file is a PDF (menu supports PDF uploads).
 function isPdfFile(file) {
-  return Boolean(file && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")));
+  return Boolean(
+    file &&
+    (file.type === "application/pdf" ||
+      file.name.toLowerCase().endsWith(".pdf")),
+  );
 }
 
 // Step 2 menu accepts image or PDF files.
@@ -131,7 +135,7 @@ function updateStoredFileNames() {
   if (photoFiles.length > 0) {
     localStorage.setItem(
       "photoFileName",
-      photoFiles.map((file) => file.name).join(", ")
+      photoFiles.map((file) => file.name).join(", "),
     );
   } else {
     localStorage.removeItem("photoFileName");
@@ -140,7 +144,7 @@ function updateStoredFileNames() {
   if (menuFiles.length > 0) {
     localStorage.setItem(
       "menuFileName",
-      menuFiles.map((file) => file.name).join(", ")
+      menuFiles.map((file) => file.name).join(", "),
     );
   } else {
     localStorage.removeItem("menuFileName");
@@ -348,7 +352,8 @@ photoInput.addEventListener("change", async function () {
     await persistAndRender("photo");
     step2ErrorMsg.style.display = "none";
   } catch (error) {
-    step2ErrorMsg.textContent = "Could not save selected photos. Please try again.";
+    step2ErrorMsg.textContent =
+      "Could not save selected photos. Please try again.";
     step2ErrorMsg.style.display = "block";
     console.error("Failed to save photo files:", error);
   } finally {
@@ -373,7 +378,8 @@ menuInput.addEventListener("change", async function () {
     await persistAndRender("menu");
     step2ErrorMsg.style.display = "none";
   } catch (error) {
-    step2ErrorMsg.textContent = "Could not save selected menu files. Please try again.";
+    step2ErrorMsg.textContent =
+      "Could not save selected menu files. Please try again.";
     step2ErrorMsg.style.display = "block";
     console.error("Failed to save menu files:", error);
   } finally {
@@ -399,8 +405,17 @@ step2NextBtn.addEventListener("click", async function (event) {
   const hasPhoto = photoFiles.length > 0;
   const hasMenu = menuFiles.length > 0;
 
-  if (!startDay || !endDay || !openTime || !closeTime || !hasPhoto || !priceRange || !hasMenu) {
-    step2ErrorMsg.textContent = "Please fill out all required (*) fields before continuing.";
+  if (
+    !startDay ||
+    !endDay ||
+    !openTime ||
+    !closeTime ||
+    !hasPhoto ||
+    !priceRange ||
+    !hasMenu
+  ) {
+    step2ErrorMsg.textContent =
+      "Please fill out all required (*) fields before continuing.";
     step2ErrorMsg.style.display = "block";
     return;
   }
@@ -411,7 +426,8 @@ step2NextBtn.addEventListener("click", async function (event) {
       saveDraftFiles(MENU_FILES_KEY, menuFiles),
     ]);
   } catch (error) {
-    step2ErrorMsg.textContent = "Could not save uploaded files. Please try again.";
+    step2ErrorMsg.textContent =
+      "Could not save uploaded files. Please try again.";
     step2ErrorMsg.style.display = "block";
     console.error("Failed to save draft files before Step 3:", error);
     return;
