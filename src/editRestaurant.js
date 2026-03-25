@@ -12,6 +12,24 @@ import {
 
 let restaurantDocId = null;
 
+function fileToBase64String(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function () {
+            const dataUrl = String(reader.result || "");
+            const base64String = dataUrl.split(",")[1] || "";
+            resolve(base64String);
+        };
+
+        reader.onerror = function () {
+            reject(new Error("Failed to read file"));
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     loadRestaurantIntoForm();
 
@@ -126,14 +144,13 @@ async function saveRestaurantChanges(e) {
         // If a new menu image is selected, update the menus array metadata
         // This does NOT upload the file anywhere yet — it only stores file info in Firestore.
         if (menuFile) {
-            updates.menus = [
+            const base64Data = await fileToBase64String(menuFile);
+            updates["uploads.menus"] = [
                 {
                     contentType: menuFile.type || "",
-                    downloadURL: "",
                     fileName: menuFile.name || "",
                     size: menuFile.size || 0,
-                    storagePath: "",
-                    uploadSkipped: true
+                    base64Data
                 }
             ];
         }
