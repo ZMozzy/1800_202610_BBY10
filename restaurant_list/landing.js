@@ -1,5 +1,6 @@
 import { db } from "../src/firebaseConfig.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 // DOM references
 const restaurantsContainer = document.getElementById("restaurants-go-here");
@@ -17,13 +18,15 @@ const allFilters = {
 };
 
 let allRestaurants = []; // Store all restaurants for filtering
+const storage = getStorage(); // Firebase Storage instance
 
+// ------------------- LOAD RESTAURANTS -------------------
 async function loadRestaurants() {
   try {
     const q = query(collection(db, "Restaurant"), orderBy("createdAt", "desc"));
-
     const querySnapshot = await getDocs(q);
-    //
+
+    // Collect filters
     querySnapshot.docs.forEach((doc) => {
       const r = doc.data();
       allFilters.cuisine.add(r.basicInfo?.businessType || "Unknown");
@@ -31,27 +34,26 @@ async function loadRestaurants() {
       allFilters.wait.add(r.hoursAndServices?.waitTime || "0");
       allFilters.location.add(r.basicInfo?.state || "Unknown");
     });
+
+    // Build restaurant objects
     const restaurants = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Restaurants fetched:", restaurants);
 
     allRestaurants = restaurants;
-    createFilterButtons(); // Create filter buttons after fetching data
-    // Display cards immediately
-    displayRestaurants(restaurants);
+    createFilterButtons();
+    await displayRestaurants(restaurants); // await because we fetch Storage URLs
   } catch (error) {
     console.error("Error fetching restaurants:", error);
   }
 }
 
-// Create filter buttons dynamically
+// ------------------- CREATE FILTER BUTTONS -------------------
 function createFilterButtons() {
   const dropdownMenu = document.createElement("div");
   dropdownMenu.className = "p-3";
 
-  // Helper to create filter section
   function createFilterSection(title, filterType, values) {
     const section = document.createElement("div");
     section.className = "mb-2";
@@ -93,23 +95,20 @@ function createFilterButtons() {
     createFilterSection("Wait Time", "wait", Array.from(allFilters.wait)),
   );
 
-  // Clear Filters button
   const clearBtn = document.createElement("button");
   clearBtn.id = "clearFilterBtn";
   clearBtn.className = "btn btn-outline-secondary btn-sm w-100 mt-3";
   clearBtn.textContent = "Clear Filters";
   dropdownMenu.appendChild(clearBtn);
 
-  // Replace existing dropdown content
   const dropdownMenuEl = document.querySelector(".dropdown-menu");
   dropdownMenuEl.innerHTML = "";
   dropdownMenuEl.appendChild(dropdownMenu);
 
-  // Re-bind DOM references after dynamic creation
   bindFilterEvents();
 }
 
-// Bind filter button and clear button events
+// ------------------- BIND FILTER EVENTS -------------------
 function bindFilterEvents() {
   const filterButtons = document.querySelectorAll(".filter-btn");
   const clearBtn = document.getElementById("clearFilterBtn");
@@ -146,72 +145,70 @@ function bindFilterEvents() {
   });
 }
 
+// ------------------- HELPER -------------------
 function getWaitColor(waitTime) {
   const time = parseInt(waitTime);
-
-  if (isNaN(time)) return "secondary"; // fallback (gray)
-
-  if (time <= 10) return "success"; // green
-  if (time <= 30) return "warning"; // yellow
-  if (time <= 60) return "orange"; //orange
-  return "danger"; // red
+  if (isNaN(time)) return "secondary";
+  if (time <= 10) return "success";
+  if (time <= 30) return "warning";
+  if (time <= 60) return "orange";
+  return "danger";
 }
 
-// Display restaurant cards
-function displayRestaurants(restaurants) {
+// ------------------- DISPLAY RESTAURANTS -------------------
+async function displayRestaurants(restaurants) {
   restaurantsContainer.innerHTML = "";
 
-  restaurants.forEach((r) => {
+  for (const r of restaurants) {
     const card = document.createElement("div");
     card.className = "card restaurant-card mb-4";
     card.style.maxWidth = "480px";
 
-    // Pull values from basicInfo for name/description
     const name = r.basicInfo?.restaurantName || "Unnamed";
     const description = r.basicInfo?.description || "No description";
     const price = r.hoursAndServices?.priceRange || "$";
     const cuisine = r.basicInfo?.businessType || "";
     const location = r.basicInfo?.state || "";
-
     const waitTime = r.hoursAndServices?.waitTime || "0";
     const waitColor = getWaitColor(waitTime);
-    const photoURL =
-      r.photos?.[0]?.base64Data?.trim() ||
-      r.photos?.[0]?.downloadURL?.trim() ||
-      "./images/default.png";
+
+    // ------------------- GET IMAGE URL -------------------
+    let photoURL = "./images/default.png";
+
+    const photo = r.uploads?.photos?.[0];
+
+    if (photo?.base64Data) {
+      const mimeType = photo.contentType || "image/png";
+      const base64 = photo.base64Data.trim();
+      photoURL = `data:${mimeType};base64,${base64}`;
+    }
 
     card.innerHTML = `
-  <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
-  <div class="card-body">
-    <h5 class="card-title">${name}</h5>
-    <p class="card-text">${description}</p>
+      <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
+      <div class="card-body">
+        <h5 class="card-title">${name}</h5>
+        <p class="card-text">${description}</p>
+        <span class="badge bg-success mb-2">Price: ${price}</span>
+        <span class="badge ${waitColor === "orange" ? "bg-orange" : "bg-" + waitColor} mb-2">
+          Wait: ${waitTime} min
+        </span>
+        <a href="eachRestaurant.html?docID=${r.id}" class="btn btn-primary see-menu-btn">See Menu</a>
+      </div>
+    `;
 
-    <span class="badge bg-success mb-2">Price: ${price}</span>
-
-    <span class="badge ${
-      waitColor === "orange" ? "bg-orange" : "bg-" + waitColor
-    } mb-2">
-      Wait: ${waitTime} min
-    </span>
-
-    <a href="eachRestaurant.html?docID=${r.id}" class="btn btn-primary see-menu-btn">See Menu</a>
-  </div>
-`;
-
-    // Add data attributes for filtering
+    // Filter data
     card.dataset.cuisine = cuisine.toLowerCase();
     card.dataset.price = price;
     card.dataset.wait = waitTime;
     card.dataset.location = location.toLowerCase();
 
     restaurantsContainer.appendChild(card);
-  });
+  }
 }
 
-// Filter logic
+// ------------------- APPLY FILTERS -------------------
 function applyFilters() {
   const cards = document.querySelectorAll(".restaurant-card");
-
   cards.forEach((card) => {
     const cuisine = (card.dataset.cuisine || "").toLowerCase();
     const price = card.dataset.price || "";
@@ -221,15 +218,12 @@ function applyFilters() {
     const cuisineMatch =
       selectedFilters.cuisine.length === 0 ||
       selectedFilters.cuisine.includes(cuisine);
-
     const priceMatch =
       selectedFilters.price.length === 0 ||
       selectedFilters.price.includes(price);
-
     const waitMatch =
       selectedFilters.wait.length === 0 ||
       selectedFilters.wait.some((f) => parseInt(wait) <= parseInt(f));
-
     const locationMatch =
       selectedFilters.location.length === 0 ||
       selectedFilters.location.includes(location);
@@ -239,5 +233,5 @@ function applyFilters() {
   });
 }
 
-// Initialize
+// ------------------- INITIALIZE -------------------
 document.addEventListener("DOMContentLoaded", loadRestaurants);
