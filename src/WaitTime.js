@@ -38,7 +38,7 @@ document.getElementById("waitTime").addEventListener("click", async () => {
         const restaurantRef = doc(db, "Restaurant", restaurantId);
         
         await updateDoc(restaurantRef, {
-            "hoursAndServices.waitTime": newWait
+            "waitTime": newWait
         });
 
         // Update the UI

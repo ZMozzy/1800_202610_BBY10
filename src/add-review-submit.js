@@ -217,6 +217,28 @@ async function handleConfirmAndSubmit(event) {
       state: "submitted",
       updatedAt: serverTimestamp(),
     });
+    //new add start
+
+    //Get the current user
+    const user = auth.currentUser;
+
+    if (user) {
+      try {
+        //Reference the user's document using their Auth UID
+        const userRef = doc(db, "users", user.uid);
+
+        //Update the fields
+        await updateDoc(userRef, {
+            restaurantId: submissionRef.id, 
+            hasRestaurant: true      
+        });
+
+        console.log("User successfully linked to restaurant:", docRef.id);
+      } catch (error) {
+        console.error("Error linking user to restaurant:", error);
+    }
+}
+//new add end
 
     await clearDraftUploads();
     clearDraftFormData();
@@ -233,3 +255,4 @@ async function handleConfirmAndSubmit(event) {
 if (finalSubmitBtn) {
   finalSubmitBtn.addEventListener("click", handleConfirmAndSubmit);
 }
+
