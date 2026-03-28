@@ -17,11 +17,9 @@ const allFilters = {
   location: new Set(),
 };
 
-let allRestaurants = []; // Store all restaurants for filtering
-const storage = getStorage(); // Firebase Storage instance
+export let allRestaurants = []; // Store all restaurants for filtering
 
-// ------------------- LOAD RESTAURANTS -------------------
-async function loadRestaurants() {
+export async function loadRestaurants() {
   try {
     const q = query(collection(db, "Restaurant"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
@@ -155,8 +153,8 @@ function getWaitColor(waitTime) {
   return "danger";
 }
 
-// ------------------- DISPLAY RESTAURANTS -------------------
-async function displayRestaurants(restaurants) {
+// Display restaurant cards
+export function displayRestaurants(restaurants) {
   restaurantsContainer.innerHTML = "";
 
   for (const r of restaurants) {
