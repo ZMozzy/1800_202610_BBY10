@@ -4,6 +4,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadRestaurantProfile();
+    waitpill();
 });
 
 function loadRestaurantProfile() {
@@ -16,7 +17,11 @@ function loadRestaurantProfile() {
 
         try {
             const restaurantRef = collection(db, "Restaurant");
-            const q = query(restaurantRef, where("userId", "==", user.uid));
+            const q = query(
+    restaurantRef, 
+    where("userId", "==", user.uid),
+    where("state", "==", "submitted") // This ignores the 'encoding' drafts
+);
             const querySnapshot = await getDocs(q);
 
             if (querySnapshot.empty) {
@@ -25,7 +30,16 @@ function loadRestaurantProfile() {
             }
 
             const restaurantDoc = querySnapshot.docs[0];
-            const restaurantData = restaurantDoc.data();
+            //const restaurantData = restaurantDoc.data();
+            //const restaurantDoc = querySnapshot.docs[0];
+
+            // INSTEAD OF: const restaurantData = restaurantDoc.data();
+            // DO THIS to pick your fields:
+            const data = restaurantDoc.data();
+            const restaurantData = {
+                basicInfo: data.basicInfo,
+                waitTime: data.waitTime
+            };
 
             console.log("Restaurant data:", restaurantData);
 
@@ -37,29 +51,25 @@ function loadRestaurantProfile() {
     });
 }
 
+
 function populateRestaurantPage(restaurant) {
+    const info = restaurant.basicInfo || {}; 
+
     const nameEl = document.getElementById("restaurant-name");
     const descEl = document.getElementById("restaurant-description");
-    const emailEl = document.getElementById("restaurant-email");
-    const photoEl = document.getElementById("restaurant-photo");
 
     if (nameEl) {
-        nameEl.textContent = restaurant.basicInfo.restaurantName || "No name set";
+        nameEl.textContent = info.restaurantName || "No name set";
     }
 
     if (descEl) {
-        descEl.textContent = restaurant.basicInfo.description || "No description set";
+        descEl.textContent = info.description || "No description set";  
     }
-
-    if (emailEl) {
-        emailEl.textContent = restaurant.email || "No email set";
-    }
-
-    if (photoEl && restaurant.photos && restaurant.photos.length > 0) {
-        const firstPhoto = restaurant.photos[0];
-
-        if (firstPhoto.downloadURL) {
-            photoEl.src = firstPhoto.downloadURL;
-        }
+    
+    const waitEl = document.getElementById("wait-time-value");
+    if (waitEl) {
+        waitEl.innerText = restaurant.waitTime;
+        console.log("Wait pill updated to:", restaurant.waitTime);
     }
 }
+
