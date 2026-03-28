@@ -19,18 +19,13 @@ const BUSINESS_LICENSE_FILES_KEY = "step3BusinessLicenseFiles";
 let businessLicenseFiles = [];
 let businessLicensePreviewUrls = [];
 
-// Business license supports image previews and PDF file cards.
+// Business license supports image uploads only.
 function isImageFile(file) {
   return Boolean(file && file.type && file.type.startsWith("image/"));
 }
 
-function isPdfFile(file) {
-  return Boolean(file && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")));
-}
-
-// Step 3 accepts either image or PDF for license files.
 function isAllowedBusinessLicenseFile(file) {
-  return isImageFile(file) || isPdfFile(file);
+  return isImageFile(file);
 }
 
 function toFileSignature(file) {
@@ -155,11 +150,6 @@ function createBusinessLicensePreviewItem(file, index) {
     image.style.height = "100%";
     image.style.objectFit = "cover";
     previewArea.appendChild(image);
-  } else {
-    const pdfLabel = document.createElement("span");
-    pdfLabel.className = "small fw-semibold text-secondary";
-    pdfLabel.textContent = "PDF";
-    previewArea.appendChild(pdfLabel);
   }
 
   const fileName = document.createElement("div");
@@ -246,7 +236,7 @@ businessLicenseInput.addEventListener("change", async function () {
 
   const hasInvalidFile = newFiles.some((file) => !isAllowedBusinessLicenseFile(file));
   if (hasInvalidFile) {
-    step3ErrorMsg.textContent = "Business license files must be image or PDF files.";
+    step3ErrorMsg.textContent = "Business license files must be image files.";
     step3ErrorMsg.style.display = "block";
     businessLicenseInput.value = "";
     return;

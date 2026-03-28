@@ -38,18 +38,9 @@ function isImageFile(file) {
   return Boolean(file && file.type && file.type.startsWith("image/"));
 }
 
-// Checks whether a file is a PDF (menu supports PDF uploads).
-function isPdfFile(file) {
-  return Boolean(
-    file &&
-    (file.type === "application/pdf" ||
-      file.name.toLowerCase().endsWith(".pdf")),
-  );
-}
-
-// Step 2 menu accepts image or PDF files.
+// Step 2 menu accepts image files only.
 function isAllowedMenuFile(file) {
-  return isImageFile(file) || isPdfFile(file);
+  return isImageFile(file);
 }
 
 // ================================
@@ -157,7 +148,7 @@ function clearPreviewUrls(type) {
   previewUrls[type] = [];
 }
 
-// Builds a single preview card (image or PDF) with Open/Remove controls.
+// Builds a single preview card with Open/Remove controls.
 function createPreviewItem(type, file, index) {
   const container = document.createElement("div");
   container.className = "border rounded p-2";
@@ -184,11 +175,6 @@ function createPreviewItem(type, file, index) {
     image.style.height = "100%";
     image.style.objectFit = "cover";
     previewArea.appendChild(image);
-  } else if (isPdfFile(file)) {
-    const pdfLabel = document.createElement("span");
-    pdfLabel.className = "small fw-semibold text-secondary";
-    pdfLabel.textContent = "PDF";
-    previewArea.appendChild(pdfLabel);
   }
 
   const fileName = document.createElement("div");
@@ -330,7 +316,7 @@ function validatePhotoFiles(files) {
   return files.every((file) => isImageFile(file));
 }
 
-// Menu accepts mixed image/PDF uploads.
+// Menu accepts image uploads only.
 function validateMenuFiles(files) {
   return files.every((file) => isAllowedMenuFile(file));
 }
@@ -367,7 +353,7 @@ menuInput.addEventListener("change", async function () {
   if (newFiles.length === 0) return;
 
   if (!validateMenuFiles(newFiles)) {
-    step2ErrorMsg.textContent = "Menu files must be image or PDF files.";
+    step2ErrorMsg.textContent = "Menu files must be image files.";
     step2ErrorMsg.style.display = "block";
     menuInput.value = "";
     return;
