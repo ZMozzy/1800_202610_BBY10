@@ -16,9 +16,9 @@ const allFilters = {
   location: new Set(),
 };
 
-let allRestaurants = []; // Store all restaurants for filtering
+export let allRestaurants = []; // Store all restaurants for filtering
 
-async function loadRestaurants() {
+export async function loadRestaurants() {
   try {
     const querySnapshot = await getDocs(collection(db, "Restaurant"));
 
@@ -157,7 +157,7 @@ function getWaitColor(waitTime) {
 }
 
 // Display restaurant cards
-function displayRestaurants(restaurants) {
+export function displayRestaurants(restaurants) {
   restaurantsContainer.innerHTML = "";
 
   restaurants.forEach((r) => {

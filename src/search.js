@@ -1,51 +1,61 @@
+import { allRestaurants, displayRestaurants } from '../restaurant_list/landing.js';
 
-console.log("search loaded.")
-document.addEventListener("DOMContentLoaded", () => {
-    const searchInput = document.getElementById("restaurantSearch");
-    if (!searchInput) return;
-    
-    //if using search bar from various page brings you to landing
-    function goToSearchPage() {
-        const query = searchInput.value.trim();
-        if (!query) return;
-console.log("typed:", searchInput.value);
-        window.location.href = `landing.html?search=${encodeURIComponent(query)}`;
+export function runLocalSearch(term) {
+    const query = term.toLowerCase().trim();
+
+    if (query === "") {
+        displayRestaurants(allRestaurants);
+        return;
     }
 
-    // Search from any page when Enter is pressed
-    searchInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            goToSearchPage();
-        }
+    const filtered = allRestaurants.filter(r => {
+        const name = r.basicInfo?.restaurantName?.toLowerCase() || "";
+        return name.includes(query);
     });
 
+    displayRestaurants(filtered);
+}
 
-    // Only filter cards if this page actually has restaurant cards
-    const cards = document.querySelectorAll(".restaurant-card");
+console.log("search loaded.")
 
-    if (cards.length > 0) {
-        const params = new URLSearchParams(window.location.search);
-        const queryFromUrl = params.get("search") || "";
+// --- Search Logic Integration ---
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("restaurantSearch");
 
-        if (queryFromUrl) {
-            searchInput.value = queryFromUrl;
-            filterCards(queryFromUrl);
+    if (!searchInput) return;
+
+    // 1. Check if we arrived with a search term in the URL
+    const params = new URLSearchParams(window.location.search);
+    const queryFromUrl = params.get("search") || "";
+
+    if (queryFromUrl) {
+        searchInput.value = queryFromUrl;
+        // We wait a tiny bit for loadRestaurants to finish fetching
+        setTimeout(() => runLocalSearch(queryFromUrl), 800);
+    }
+
+    // 2. Listen for typing
+    searchInput.addEventListener("input", (e) => {
+        runLocalSearch(e.target.value);
+    });
+
+    // 3. The Actual Filter Logic
+    function runLocalSearch(term) {
+        const query = term.toLowerCase().trim();
+
+        // If search is empty, show everything again
+        if (query === "") {
+            displayRestaurants(allRestaurants);
+            return;
         }
 
-        searchInput.addEventListener("input", function () {
-            filterCards(searchInput.value);
+        // Filter your 'allRestaurants' array based on the name
+        const filtered = allRestaurants.filter(r => {
+            const name = r.basicInfo?.restaurantName?.toLowerCase() || "";
+            return name.includes(query);
         });
 
-        function filterCards(searchValue) {
-            const value = searchValue.toLowerCase();
-
-            cards.forEach(function (card) {
-                const titleEl = card.querySelector(".card-title");
-                const title = titleEl ? titleEl.textContent.toLowerCase() : "";
-
-                card.style.display = title.includes(value) ? "" : "none";
-            });
-        }
+        // Use your EXISTING function to redraw the cards with the filtered list
+        displayRestaurants(filtered);
     }
 });

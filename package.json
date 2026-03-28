@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "firebase": "^12.10.0",
-    "maplibre-gl": "^5.21.0"
+    "maplibre-gl": "^5.21.1"
   }
 }
