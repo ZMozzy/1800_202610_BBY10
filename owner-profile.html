@@ -107,7 +107,7 @@
           </p>
 
           <div class="action-bar">
-            <button class="update-btn" onclick="updateWaitTime()">
+            <button id="waitTime" class="update-btn">
               Update Wait Time
             </button>
             <div class="wait-pill">
@@ -198,7 +198,7 @@
     <!---------------------------------------------->
 
     <!-- <script src="./src/main.js"></script> -->
-    <script src="./src/search.js"></script>
+    <script type="module" src="./src/WaitTime.js"></script>
     <script type="module" src="./src/ownerProfile.js"></script>
     <script>
       const searchToggleBtn = document.getElementById("searchToggleBtn");
@@ -227,22 +227,6 @@
       }
     </script>
 
-    <script>
-      function updateWaitTime() {
-        let newTime = prompt("Enter new wait time:");
-        //only update if they didnt hit cancel or enter nothing
-        if (newTime !== null && newTime.trim() !== "") {
-          let numericValue = Number(newTime);
-
-          // Check if it is a valid integer and not a negative number
-          if (Number.isInteger(numericValue) && numericValue >= 0) {
-            let finalWait = numericValue + " min";
-
-            document.getElementById("wait-time-value").innerText = finalWait;
-          }
-        }
-      }
-    </script>
 
     <script type="module" src="./src/main.js"></script>
     <script type="module" src="./src/goToProfile.js"></script>
