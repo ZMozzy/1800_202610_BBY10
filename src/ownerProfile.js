@@ -4,7 +4,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 document.addEventListener("DOMContentLoaded", () => {
     loadRestaurantProfile();
-    waitpill();
 });
 
 function loadRestaurantProfile() {
