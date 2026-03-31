@@ -1,5 +1,5 @@
 import { auth, db } from "./firebaseConfig.js";
-import { addDoc, collection, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, updateDoc, GeoPoint, doc } from "firebase/firestore";
 
 const DRAFT_DB_NAME = "restaurantSignupDraft";
 const DRAFT_DB_VERSION = 1;
@@ -188,6 +188,35 @@ async function handleConfirmAndSubmit(event) {
 
   try {
     const userId = auth.currentUser?.uid || null;
+    const address = localStorage.getItem("restaurantAddress") || "";
+
+    if (!address) {
+      throw new Error("Missing restaurant address.");
+    }
+
+    // ===== ADD THIS BLOCK HERE =====
+    const GEOAPIFY_API_KEY = "809ab605cd0c4207a5fcd30eb93f1218".trim();
+
+    const fullAddress = `${address}, Canada`;
+
+    const url =
+      `https://api.geoapify.com/v1/geocode/search` +
+      `?text=${encodeURIComponent(fullAddress)}` +
+      `&filter=countrycode:ca` +
+      `&apiKey=${encodeURIComponent(GEOAPIFY_API_KEY)}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data.features || !data.features.length) {
+      throw new Error("Could not find location for this address.");
+    }
+
+    const result = data.features[0];
+    const lat = result.properties.lat;
+    const lng = result.properties.lon;
+
+// ===== END BLOCK =====
     const [photoFiles, menuFiles, businessLicenseFiles] = await Promise.all([
       getDraftFiles(STEP2_PHOTO_FILES_KEY),
       getDraftFiles(STEP2_MENU_FILES_KEY),
@@ -212,6 +241,10 @@ async function handleConfirmAndSubmit(event) {
       businessLicenses,
     });
 
+    payload.location = new GeoPoint(lat, lng);
+    payload.lat = lat;
+    payload.lng = lng;
+
     await updateDoc(submissionRef, {
       ...payload,
       state: "submitted",
@@ -233,7 +266,7 @@ async function handleConfirmAndSubmit(event) {
             hasRestaurant: true      
         });
 
-        console.log("User successfully linked to restaurant:", docRef.id);
+        console.log("User successfully linked to restaurant:", submissionRef.id);
       } catch (error) {
         console.error("Error linking user to restaurant:", error);
     }
