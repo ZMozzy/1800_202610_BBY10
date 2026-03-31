@@ -61,8 +61,13 @@ function createGallery(container, images) {
 
     // Click to expand as main image
     img.addEventListener("click", () => {
-      restaurantImageEl.src = img.src;
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const modal = document.getElementById("imageModal");
+      const modalImg = document.getElementById("modalImage");
+
+      modal.style.display = "block";
+      modalImg.src = img.src;
+
+      modalImg.src = img.src;
     });
 
     container.appendChild(img);
@@ -364,4 +369,46 @@ document.addEventListener("DOMContentLoaded", () => {
   loadRestaurant();
   setupStars();
   setupWriteReviewButton();
+
+  const modal = document.getElementById("imageModal");
+  const closeBtn = document.getElementById("closeModal");
+
+  // CLOSE BUTTON
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modal.style.display = "none";
+  });
+
+  // CLICK OUTSIDE IMAGE
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+  const modalImg = document.getElementById("modalImage");
+
+  modalImg.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents closing modal
+    modalImg.classList.toggle("zoomed");
+  });
+
+  modalImg.addEventListener("dblclick", (e) => {
+    e.stopPropagation();
+
+    if (!document.fullscreenElement) {
+      modalImg.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+});
+
+document.getElementById("backButton").addEventListener("click", () => {
+  // Go back to the previous page
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    // fallback to landing page
+    window.location.href = "./landing.html";
+  }
 });
