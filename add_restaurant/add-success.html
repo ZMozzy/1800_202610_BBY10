@@ -57,28 +57,7 @@
     </main>
 
     <!-- 底部导航栏 -->
-    <nav class="navbar fixed-bottom custom-footer">
-      <div class="container-fluid d-flex justify-content-around text-center">
-        <!-- 地图或当前功能入口 -->
-        <a href="#" class="nav-link active">
-          <img src="images/map.png" alt="Add" class="nav-icon" />
-        </a>
-
-        <!-- 首页入口 -->
-        <a href="/restaurant_list/landing.html" class="nav-link">
-          <img src="/images/home.png" alt="Home" class="home-icon" />
-        </a>
-
-        <!-- 个人资料入口 -->
-        <a href="/user-profile.html" id="profile-link" class="nav-link">
-          <img
-            src="/images/user.png"
-            aria-label="Profile"
-            class="profile-icon"
-          />
-        </a>
-      </div>
-    </nav>
+    <div id="footer"></div>
 
     <!-- Bootstrap 交互脚本 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -104,5 +83,8 @@
 
     <!-- 跳转到个人资料页的脚本 -->
     <script type="module" src="../src/goToProfile.js"></script>
+  
+    <script src="/footer.js"></script>
+  
   </body>
 </html>
