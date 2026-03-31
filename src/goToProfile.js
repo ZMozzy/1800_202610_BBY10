@@ -7,10 +7,11 @@ import { doc, getDoc } from "firebase/firestore";
 
 const profileLink = document.getElementById("profile-link");
 
-if(profileLink) {
+
+    if (profileLink) {
     onAuthStateChanged(auth, async (user) => {
         if(!user){
-            profileLink.href = "login.html";
+            profileLink.href = "../user-profile.html";
             return;
         }
 
@@ -22,10 +23,10 @@ if(profileLink) {
                 const data = userSnap.data();
 
                 if(data.hasRestaurant === true){
-                    profileLink.href = "owner-profile.html";
+                    profileLink.href = "../owner-profile.html";
                 } 
                 else {
-                    profileLink.href = "user-profile.html";
+                    profileLink.href = "../user-profile.html";
                 }
 
                 console.log("hasRestaurant:", data.hasRestaurant);

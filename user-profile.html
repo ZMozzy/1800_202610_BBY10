@@ -95,16 +95,16 @@
 
     <!-- start profile -->
     <div class="app-profile-wrapper">
-      <div class="restaurant-card">
+      <div class="restaurant-card-profile">
         <div id="avatar" class="restaurant-avatar">B</div>
 
         <div class="restaurant-info">
             <h1 id="user-name"></h1>
-            <a class="settings" href="profile-settings.html"><img class="settings" src="./images/settings.png"></a>
-            <p style="margin: 0.75rem 0; color: #57606f;">Best charcoal-grilled burgers in the city. Real-time wait updates provided daily.</p>
+            <a id="userSet" class="settings" href="profile-settings.html"><img class="settings" src="./images/settings.png"></a>
+            <p id="description" style="margin: 0.75rem 0; color: #57606f;">Best charcoal-grilled burgers in the city. Real-time wait updates provided daily.</p>
             
             <div class="action-bar">
-              Are you a resturant owner?
+              <p id="isOwner">Are you a restaurant owner?</p>
               <a href="add_restaurant/add.html" class="nav-link">
                   <button class="update-btn" id="create-Ad">Create an Ad</button>
               </a>
@@ -112,9 +112,9 @@
         </div>
     </div>
 
-      <h3 style="margin-bottom: 1rem">Recent Activity</h3>
+      <h3 id="activity" style="margin-bottom: 1rem">Recent Activity</h3>
 
-      <div class="posts-container">
+      <div id="post" class="posts-container">
         <div class="post-card">
           <div class="post-meta">
             <span class="user-name">The Burger Joint</span>
@@ -162,20 +162,6 @@
     </div>
   </nav>
 
-        <a href="/restaurant_list/landing.html" class="nav-link">
-          <img src="/images/home.png" alt="Home" class="home-icon" />
-        </a>
-        <!---user profile page-->
-
-        <a href="/user-profile.html" id="profile-link" class="nav-link">
-          <img
-            src="/images/user.png"
-            aria-label="Profile"
-            class="profile-icon"
-          />
-        </a>
-      </div>
-    </nav>
 
     <!-- Bootstrap JS bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

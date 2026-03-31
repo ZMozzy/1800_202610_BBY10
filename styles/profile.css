@@ -9,7 +9,7 @@
 }
 
 /* Header Card */
-.restaurant-card {
+.restaurant-card-profile {
     background: #ffffff;
     border-radius: 1rem;
     padding: 1.5rem;
@@ -154,7 +154,7 @@
 
 /* Mobile Adjustments */
 @media (max-width: 35rem) {
-    .restaurant-card {
+    .restaurant-card-profile {
         flex-direction: column;
         text-align: center;
     }
