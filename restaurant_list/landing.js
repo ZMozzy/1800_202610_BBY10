@@ -1,15 +1,13 @@
 import { db } from "../src/firebaseConfig.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-// DOM references
+// ------------DOM references------------------
 const restaurantsContainer = document.getElementById("restaurants-go-here");
 const filterDropdown = document.getElementById("filterDropdown");
 
-// Filters state
+// ------------Filters variables------------------
 const selectedFilters = { cuisine: [], price: [], wait: [], location: [] };
 
-// Store all unique filter values dynamically
 const allFilters = {
   cuisine: new Set(),
   price: new Set(),
@@ -17,23 +15,24 @@ const allFilters = {
   location: new Set(),
 };
 
-export let allRestaurants = []; // Store all restaurants for filtering
+export let allRestaurants = [];
 
+// ------------------- LOAD RESTAURANTS -------------------
 export async function loadRestaurants() {
   try {
     const q = query(collection(db, "Restaurant"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
 
-    // Collect filters
     querySnapshot.docs.forEach((doc) => {
       const r = doc.data();
       allFilters.cuisine.add(r.basicInfo?.businessType || "Unknown");
       allFilters.price.add(r.hoursAndServices?.priceRange || "$");
-      allFilters.wait.add(r.hoursAndServices?.waitTime || "0");
+
+      const wt = r.waitTime ?? r.hoursAndServices?.waitTime ?? 0;
+      allFilters.wait.add(String(wt));
       allFilters.location.add(r.basicInfo?.state || "Unknown");
     });
 
-    // Build restaurant objects
     const restaurants = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -41,13 +40,13 @@ export async function loadRestaurants() {
 
     allRestaurants = restaurants;
     createFilterButtons();
-    await displayRestaurants(restaurants); // await because we fetch Storage URLs
+    displayRestaurants(restaurants);
   } catch (error) {
     console.error("Error fetching restaurants:", error);
   }
 }
 
-// ------------------- CREATE FILTER BUTTONS -------------------
+// ------------------- FILTER BUTTONS -------------------
 function createFilterButtons() {
   const dropdownMenu = document.createElement("div");
   dropdownMenu.className = "p-3";
@@ -90,7 +89,12 @@ function createFilterButtons() {
     ),
   );
   dropdownMenu.appendChild(
-    createFilterSection("Wait Time", "wait", Array.from(allFilters.wait)),
+    createFilterSection("Wait Time", "wait", [
+      "0-10 min",
+      "10-30 min",
+      "30-60 min",
+      "60+ min",
+    ]),
   );
 
   const clearBtn = document.createElement("button");
@@ -106,7 +110,7 @@ function createFilterButtons() {
   bindFilterEvents();
 }
 
-// ------------------- BIND FILTER EVENTS -------------------
+// ------------------- FILTER EVENTS -------------------
 function bindFilterEvents() {
   const filterButtons = document.querySelectorAll(".filter-btn");
   const clearBtn = document.getElementById("clearFilterBtn");
@@ -114,7 +118,7 @@ function bindFilterEvents() {
   filterButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const group = btn.dataset.filter;
-      const value = btn.dataset.value.toLowerCase();
+      const value = btn.dataset.value;
 
       btn.classList.toggle("active");
       btn.classList.toggle("btn-dark");
@@ -143,62 +147,96 @@ function bindFilterEvents() {
   });
 }
 
-// ------------------- HELPER -------------------
+// ------------------- WAIT TIME COLORS -------------------
 function getWaitColor(waitTime) {
   const time = parseInt(waitTime);
-  if (isNaN(time)) return "secondary";
-  if (time <= 10) return "success";
-  if (time <= 30) return "warning";
-  if (time <= 60) return "orange";
-  return "danger";
+  if (isNaN(time)) return { bg: "#9ca3af", label: "gray" };
+  if (time <= 10) return { bg: "#16a34a", label: "green" };
+  if (time <= 30) return { bg: "#FCD12A", label: "yellow" };
+  if (time <= 60) return { bg: "#ea580c", label: "orange" };
+  return { bg: "#dc2626", label: "red" };
 }
 
-// Display restaurant cards
+function getWaitEmoji(waitTime) {
+  const time = parseInt(waitTime);
+  if (isNaN(time)) return "N/A";
+  if (time <= 10) return "🟢";
+  if (time <= 30) return "🟡";
+  if (time <= 60) return "🟠";
+  return "🔴";
+}
+
+// ------------------- DISPLAY CARDS -------------------
 export function displayRestaurants(restaurants) {
   restaurantsContainer.innerHTML = "";
 
+  if (restaurants.length === 0) {
+    restaurantsContainer.innerHTML = `
+      <div class="text-center py-5 text-muted">
+        <p style="font-size:1.1rem">No restaurants found.</p>
+      </div>`;
+    return;
+  }
+
   for (const r of restaurants) {
-    const card = document.createElement("div");
-    card.className = "card restaurant-card mb-4";
-    card.style.maxWidth = "480px";
+    const waitTime = r.waitTime ?? r.hoursAndServices?.waitTime ?? 0;
+    const { bg: waitBg } = getWaitColor(waitTime);
+    const waitEmoji = getWaitEmoji(waitTime);
 
     const name = r.basicInfo?.restaurantName || "Unnamed";
     const description = r.basicInfo?.description || "No description";
     const price = r.hoursAndServices?.priceRange || "$";
     const cuisine = r.basicInfo?.businessType || "";
     const location = r.basicInfo?.state || "";
-    const waitTime = r.hoursAndServices?.waitTime || "0";
-    const waitColor = getWaitColor(waitTime);
+    const rating = r.rating || 0;
+    const stars = "★".repeat(rating) + "☆".repeat(5 - rating);
 
-    // ------------------- GET IMAGE URL -------------------
+    // Hours of operation - get this info from Yilong
+    const openTime = r.hoursAndServices?.openTime || "";
+    const closeTime = r.hoursAndServices?.closeTime || "";
+    const hoursText = openTime && closeTime ? `${openTime} – ${closeTime}` : "";
+
+    // Photo
     let photoURL = "./images/default.png";
-
     const photo = r.uploads?.photos?.[0];
-
     if (photo?.base64Data) {
-      const mimeType = photo.contentType || "image/png";
-      const base64 = photo.base64Data.trim();
-      photoURL = `data:${mimeType};base64,${base64}`;
+      photoURL = `data:${photo.contentType || "image/png"};base64,${photo.base64Data.trim()}`;
     }
 
-    card.innerHTML = `
-      <img class="card-img-top card-image" src="${photoURL}" alt="Restaurant Image" />
-      <div class="card-body">
-        <h5 class="card-title">${name}</h5>
-        <p class="card-text">${description}</p>
-        <span class="badge bg-success mb-2">Price: ${price}</span>
-        <span class="badge ${waitColor === "orange" ? "bg-orange" : "bg-" + waitColor} mb-2">
-          Wait: ${waitTime} min
-        </span>
-        <a href="eachRestaurant.html?docID=${r.id}" class="btn btn-primary see-menu-btn">See Menu</a>
-      </div>
-    `;
-
-    // Filter data
+    const card = document.createElement("div");
+    card.className = "restaurant-card";
     card.dataset.cuisine = cuisine.toLowerCase();
     card.dataset.price = price;
-    card.dataset.wait = waitTime;
+    card.dataset.wait = String(waitTime);
     card.dataset.location = location.toLowerCase();
+
+    card.innerHTML = `
+      <a href="eachRestaurant.html?docID=${r.id}" class="card-link">
+        <div class="rc-image-wrap">
+          <img src="${photoURL}" alt="${name}" class="rc-image" />
+          <div class="rc-wait-badge" style="background:${waitBg}">
+            ${waitEmoji} ${waitTime} min
+          </div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-top">
+            <div>
+              <h5 class="rc-name">${name}</h5>
+              ${cuisine ? `<span class="rc-cuisine">${cuisine}</span>` : ""}
+            </div>
+            <span class="rc-price">${price}</span>
+          </div>
+          <p class="rc-desc">${description}</p>
+          <div class="rc-footer">
+            <div class="rc-meta">
+              ${rating > 0 ? `<span class="rc-stars">${stars}</span>` : ""}
+              ${hoursText ? `<span class="rc-hours">Hours of Operation: ${hoursText}</span>` : ""}
+            </div>
+            <span class="rc-cta">See More →</span>
+          </div>
+        </div>
+      </a>
+    `;
 
     restaurantsContainer.appendChild(card);
   }
@@ -221,7 +259,14 @@ function applyFilters() {
       selectedFilters.price.includes(price);
     const waitMatch =
       selectedFilters.wait.length === 0 ||
-      selectedFilters.wait.some((f) => parseInt(wait) <= parseInt(f));
+      selectedFilters.wait.some((f) => {
+        const waitNum = parseInt(wait);
+        if (f === "0-10 min") return waitNum >= 0 && waitNum <= 10;
+        if (f === "10-30 min") return waitNum > 10 && waitNum <= 30;
+        if (f === "30-60 min") return waitNum > 30 && waitNum <= 60;
+        if (f === "60+ min") return waitNum > 60;
+        return false;
+      });
     const locationMatch =
       selectedFilters.location.length === 0 ||
       selectedFilters.location.includes(location);
@@ -231,5 +276,5 @@ function applyFilters() {
   });
 }
 
-// ------------------- INITIALIZE -------------------
+// ------------------- INIT -------------------
 document.addEventListener("DOMContentLoaded", loadRestaurants);
