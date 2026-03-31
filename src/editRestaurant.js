@@ -9,7 +9,7 @@ import {
     getDoc,
     updateDoc
 } from "firebase/firestore";
-
+console.log("edit loaded");
 let restaurantDocId = null;
 
 document.addEventListener("DOMContentLoaded", () => {

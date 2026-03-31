@@ -107,14 +107,14 @@
           </p>
 
           <div class="action-bar">
-            <button class="update-btn" onclick="updateWaitTime()">
+            <button class="update-btn" id="waitTime">
               Update Wait Time
             </button>
             <div class="wait-pill">
               <span class="live-dot"></span>
-              <span id="wait-time-value">5</span>
+              <span id="wait-time-value">...</span>
             </div>
-            <button class="edit-btn">Edit Restaurant</button>
+            <button class="edit-btn" onclick="window.location.href='Edit-restaurant.html'">Edit Restaurant</button>
             <img class="settings" src="./images/settings.png" />
           </div>
         </div>
@@ -168,6 +168,7 @@
     <!-- <script src="./src/main.js"></script> -->
     <script src="./src/search.js"></script>
     <script type="module" src="./src/ownerProfile.js"></script>
+    <script type="module" src="./src/WaitTime.js"></script>
     <script>
       const searchToggleBtn = document.getElementById("searchToggleBtn");
       const navbarSearch = document.getElementById("navbarSearch");
