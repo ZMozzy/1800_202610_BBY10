@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
 import { db } from "./firebaseConfig.js";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-
+console.log("waitime loaded")
 const auth = getAuth();
 
 document.getElementById("waitTime").addEventListener("click", async () => {
