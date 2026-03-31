@@ -23,7 +23,9 @@
             //changes avatar to first letter of name
             const char = username.substring(0, 1).toUpperCase();
             document.getElementById("avatar").textContent = char;
-
+            document.getElementById("create-Ad").addEventListener("click", function() {
+                window.location.href = "add_restaurant/add.html";
+            })
         } 
         
 
