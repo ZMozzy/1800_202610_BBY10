@@ -28,11 +28,16 @@
         
 
     }else {
-            //display name Guest
+            //display name Guest and hides description and settings
             document.getElementById("user-name").textContent = "Guest";
-
+            document.getElementById("description").textContent = "Enjoy FastPass as much as you like as a guest!"
+            document.getElementById("isOwner").textContent = "";
+            document.getElementById("avatar").textContent = "G";
+            document.getElementById("userSet").style.display = "none";
+            document.getElementById("activity").style.display = "none";
+            document.getElementById("post").style.display = "none";
             //changes create ad to login
-            document.getElementById("create-Ad").textContent = "Login"
+            document.getElementById("create-Ad").textContent = "Sign Up"
         document.getElementById("create-Ad").addEventListener("click", function() {
         window.location.href = "login.html";})
 

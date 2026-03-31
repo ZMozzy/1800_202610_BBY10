@@ -14,6 +14,10 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/styles/style.css" />
@@ -36,62 +40,171 @@
     </nav>
 
     <!-- MAIN CONTENT -->
-    <main class="container my-5" style="max-width: 600px">
-      <!-- MAIN IMAGE -->
-      <img
-        id="restaurantImage"
-        class="img-fluid rounded mb-3"
-        src="./images/default.png"
-        alt="Restaurant Image"
-      />
+    <main class="container py-3" style="max-width: 620px">
+      <!-- HERO IMAGE -->
+      <div class="hero-wrap mb-3">
+        <img id="restaurantImage" src="./images/default.png" alt="Restaurant" />
+        <div class="hero-overlay"></div>
+        <div class="hero-badge">
+          <span class="dot" id="waitDot" style="background: #ccc"></span>
+          <span id="restaurantWaitHero">Loading...</span>
+        </div>
+      </div>
 
-      <!-- BASIC INFO -->
-      <div class="text-center mb-4">
-        <h2 id="restaurantName">Loading...</h2>
-        <p id="restaurantDescription"></p>
-        <span id="restaurantWait" class="badge mb-2"></span>
+      <!-- RESTAURANT HEADER CARD -->
+      <div class="restaurant-header mb-3">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h2 id="restaurantName">Loading...</h2>
+            <div class="meta-row">
+              <span class="meta-chip">
+                <span class="material-icons">storefront</span>
+                <span id="businessType">—</span>
+              </span>
+              <span class="meta-chip">
+                <span class="material-icons">place</span>
+                <span id="restaurantAddress">—</span>
+              </span>
+            </div>
+            <div class="meta-row mt-1">
+              <span class="price-tag" id="priceRange">—</span>
+              <span class="meta-chip" id="websiteWrap" style="display: none">
+                <span class="material-icons">language</span>
+                <a
+                  id="restaurantWebsite"
+                  class="website-link"
+                  href="#"
+                  target="_blank"
+                  >Visit website</a
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="soft-divider my-3" />
+
+        <p id="restaurantDescription" class="mb-0"></p>
+      </div>
+
+      <!-- HOURS CARD -->
+      <div class="info-card mb-3">
+        <div class="section-label">Hours</div>
+        <div class="hours-row">
+          <span class="day-label">Regular Hours</span>
+          <span class="time-val" id="regularHours">—</span>
+        </div>
+        <div class="hours-row">
+          <span class="day-label">Days Open</span>
+          <span class="time-val" id="daysOpen">—</span>
+        </div>
+        <div class="hours-row">
+          <span class="day-label">Holiday Hours</span>
+          <span class="time-val" id="holidayHours">—</span>
+        </div>
       </div>
 
       <!-- PHOTO GALLERY -->
-      <h5>Photos</h5>
-      <div
-        id="photoGallery"
-        class="d-flex gap-2 flex-wrap mb-4 justify-content-center"
-      ></div>
+      <div class="info-card mb-3">
+        <div class="section-label">Photos</div>
+        <div class="gallery-scroll" id="photoGallery"></div>
+      </div>
 
-      <!-- MENU SECTION -->
-      <h5>Menu</h5>
-      <div
-        id="menuGallery"
-        class="d-flex gap-2 flex-wrap mb-4 justify-content-center"
-      ></div>
+      <!-- MENU -->
+      <div class="info-card mb-3">
+        <div class="section-label">Menu</div>
+        <div class="gallery-scroll" id="menuGallery">
+          <p class="text-muted small mb-0">No menu photos uploaded.</p>
+        </div>
+      </div>
 
       <!-- BUSINESS LICENSE -->
-      <h5>Business License</h5>
-      <div
-        id="licenseGallery"
-        class="d-flex gap-2 flex-wrap mb-4 justify-content-center"
-      ></div>
+      <div class="info-card mb-3">
+        <div class="section-label">Business License</div>
+        <div class="gallery-scroll" id="licenseGallery">
+          <p class="text-muted small mb-0">No license uploaded.</p>
+        </div>
+      </div>
 
       <!-- RATINGS -->
-      <div id="restaurantRating" class="text-center fs-5 mt-3">
-        <p>Rate this restaurant:</p>
-        <span class="material-icons star">star_outline</span>
-        <span class="material-icons star">star_outline</span>
-        <span class="material-icons star">star_outline</span>
-        <span class="material-icons star">star_outline</span>
-        <span class="material-icons star">star_outline</span>
+      <div class="info-card mb-3 text-center">
+        <div class="section-label">Rate This Restaurant</div>
+        <div class="star-row" id="restaurantRating">
+          <span class="material-icons star">star_outline</span>
+          <span class="material-icons star">star_outline</span>
+          <span class="material-icons star">star_outline</span>
+          <span class="material-icons star">star_outline</span>
+          <span class="material-icons star">star_outline</span>
+        </div>
       </div>
 
       <!-- WRITE REVIEW BUTTON -->
-      <div class="text-center mt-3">
+      <div class="text-center mb-3">
         <button id="writeReviewBtn" class="btn btn-primary">
-          Write Review
+          ✏️ Write a Review
         </button>
       </div>
 
-      <!-- REVIEWS -->
-      <div id="reviewsContainer" class="mt-4"></div>
+      <!-- REVIEW FORM -->
+      <div id="reviewForm" class="card p-3 mb-3" style="display: none">
+        <h6
+          class="mb-3"
+          style="font-family: &quot;DM Serif Display&quot;, serif"
+        >
+          Your Review
+        </h6>
+
+        <div class="mb-3 text-center review-star-row" id="reviewFormStars">
+          <span class="material-icons review-star" data-index="0"
+            >star_outline</span
+          >
+          <span class="material-icons review-star" data-index="1"
+            >star_outline</span
+          >
+          <span class="material-icons review-star" data-index="2"
+            >star_outline</span
+          >
+          <span class="material-icons review-star" data-index="3"
+            >star_outline</span
+          >
+          <span class="material-icons review-star" data-index="4"
+            >star_outline</span
+          >
+        </div>
+
+        <input
+          id="reviewAuthor"
+          type="text"
+          class="form-control mb-2"
+          placeholder="Your name (optional)"
+        />
+        <textarea
+          id="reviewText"
+          class="form-control mb-3"
+          rows="3"
+          placeholder="Share your experience..."
+        ></textarea>
+
+        <div class="d-flex gap-2 justify-content-end">
+          <button id="cancelReviewBtn" class="btn btn-outline-secondary btn-sm">
+            Cancel
+          </button>
+          <button id="submitReviewBtn" class="btn btn-primary btn-sm">
+            Submit
+          </button>
+        </div>
+
+        <p
+          id="reviewFeedback"
+          class="text-success mt-2 mb-0 small"
+          style="display: none"
+        >
+          ✅ Review submitted! Thank you.
+        </p>
+      </div>
+
+      <!-- REVIEWS LIST -->
+      <div id="reviewsContainer" class="mt-2"></div>
     </main>
 
     <!-- FOOTER -->
@@ -109,12 +222,8 @@
       </div>
     </nav>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JS -->
     <script type="module" src="./eachRestaurant.js"></script>
-        <script type=" module" src="../src/search.js"></script>
-
+    <script type="module" src="../src/search.js"></script>
   </body>
 </html>

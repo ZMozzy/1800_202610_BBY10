@@ -9,7 +9,7 @@
 *    A small number of targeted changes (colours on key
 *    components like buttons, navbar, and backgrounds)
 *    create most of the visual impact without rewriting
-*    Bootstrap’s core styles.
+*    Bootstrap's core styles.
 *
 * 2) 60 / 30 / 10 Colour Rule
 *    - 60% dominant: lighter for backgrounds and large surfaces
@@ -25,18 +25,28 @@
 */
 :root {
   /* 60% — background */
-  --light-text: #fefae0;
+  --light-text: #faf7f2;
 
   /* 30% — primary actions and supporting surfaces) */
-  --primary: #283618;
-  --secondary: #606c38;
+  --primary: #1f2933;
+  --secondary: #3f4e4f;
 
   /* 10% — accent for emphasis and interaction */
-  --accent: #dda15e;
+  --accent: #e76f51;
+
+  --accent-light: #fdf0ea;
+  --border: #e8e6e3;
 
   /* Button border widths */
   --btn-border-width: 3px;
   --btn-border-width-hover: 5px;
+
+  /* Restaurant page tokens — mapped to app palette */
+  --cream: #faf7f2;
+  --charcoal: #1f2933;
+  --warm-gray: #5a6472;
+  --card-bg: #ffffff;
+  --success-green: #2a9d8f;
 }
 
 /* --------------------------------------------------
@@ -85,7 +95,7 @@ body {
   color: var(--accent);
 }
 /*------------------------------------------------
-* topnar logo 
+* topbar logo 
 * ---------------------------------------------
 */
 .topbar-logo {
@@ -107,11 +117,6 @@ body {
   border-width: var(--btn-border-width);
 }
 
-/*
-* OPTIONAL: Hover/focus for desktop users - progressive enhancement
-* A thicker accent-colored border adds visual feedback without 
-* changing the button's core color scheme.
-*/
 .btn-info:hover,
 .btn-info:focus {
   background-color: var(--secondary);
@@ -120,7 +125,7 @@ body {
 }
 
 .navbar-brand {
-  font-family: "Caveat", cursive; /*change the font name for what you have*/
+  font-family: "Caveat", cursive;
   font-size: 2.25rem;
 }
 
@@ -128,7 +133,7 @@ body {
 * footer
 */
 .custom-footer {
-  background-color: #606c38;
+  background-color: #ffffff;
 }
 
 .custom-footer .nav-link {
@@ -216,14 +221,13 @@ body {
   font-weight: 700;
   margin: 16px 0;
 }
-/* --------------------------------------------------
-* Review page button styles (reuse project theme vars)
-* -------------------------------------------------- */
 
-/* Base style for review page action buttons */
+/* --------------------------------------------------
+* Review page button styles 
+* -------------------------------------------------- */
 .review-btn-primary,
 .review-btn-secondary {
-  border-radius: 999px; /* same pill shape */
+  border-radius: 999px;
   font-weight: 600;
   transition: all 0.15s ease-in-out;
   display: inline-flex;
@@ -233,20 +237,17 @@ body {
   text-decoration: none;
 }
 
-/* Title centering helper */
 .review-title-center {
   margin: 0;
   text-align: center;
   flex: 1;
 }
 
-/* Placeholder width to balance header layout */
 .review-btn-placeholder {
   display: inline-block;
   min-width: 86px;
 }
 
-/* Primary action button (Next / Review / Confirm) */
 .review-btn-primary {
   color: var(--light-text);
   background-color: var(--secondary);
@@ -261,7 +262,6 @@ body {
   box-shadow: none;
 }
 
-/* Secondary action button (Back) */
 .review-btn-secondary {
   color: var(--primary);
   background-color: transparent;
@@ -276,7 +276,6 @@ body {
   box-shadow: none;
 }
 
-/* Same size for top header buttons (Back / Next) */
 .review-btn-small {
   min-width: 86px;
   height: 40px;
@@ -285,7 +284,6 @@ body {
   text-align: center;
 }
 
-/* Bottom buttons (if needed) */
 .review-btn-large {
   min-height: 44px;
   padding: 0.65rem 1rem;
@@ -293,19 +291,16 @@ body {
   text-align: center;
 }
 
-/* Disabled state */
 .review-btn-primary.disabled,
 .review-btn-secondary.disabled {
   opacity: 0.5;
   pointer-events: none;
 }
 
-/* Optional: keep header buttons visually balanced */
 .add-flow-head .review-btn-small {
   min-width: 86px;
 }
 
-/* Screenshot wireframe-style top bar on index */
 .wireframe-topbar {
   background: #d6d6d6;
   border-bottom: 1px solid #c7c7c7;
@@ -352,10 +347,9 @@ body {
   user-select: none;
 }
 
-/* Functional top bar for index page */
 .topbar-custom {
-  background-color: #606c38;
-  border-bottom: 1px solid #4f5a2e;
+  background-color: var(--secondary);
+  border-bottom: 1px solid var(--primary);
   padding: 10px 0;
 }
 
@@ -368,7 +362,6 @@ body {
   line-height: 1;
   font-weight: 500;
 }
-
 
 .topbar-subtitle {
   font-size: 0.58rem;
@@ -384,4 +377,497 @@ body {
 .bg-orange {
   background-color: orange;
   color: white;
+}
+
+/* ==================================================
+   RESTAURANT PAGE 
+   ================================================== */
+
+body.restaurant-page {
+  background: var(--cream);
+  font-family: "DM Sans", sans-serif;
+  color: var(--charcoal);
+  padding-top: 70px;
+  padding-bottom: 90px;
+  overflow-y: auto;
+}
+
+/* ── NAVBAR override for restaurant page ── */
+body.restaurant-page .topbar-custom {
+  background: var(--secondary); /* matches app navbar */
+  border-bottom: 1px solid var(--primary);
+  height: 64px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+body.restaurant-page .topbar-logo {
+  height: 36px;
+}
+
+/* ── HERO IMAGE ── */
+.hero-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(31, 41, 51, 0.18);
+}
+.hero-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(31, 41, 51, 0.65) 0%,
+    transparent 55%
+  );
+}
+.hero-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: white;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: var(--charcoal);
+}
+.hero-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ── RESTAURANT HEADER CARD ── */
+.restaurant-header {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 20px 22px 16px;
+  margin-top: -24px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 2px 16px rgba(31, 41, 51, 0.08);
+  border: 1px solid var(--border);
+}
+.restaurant-header h2 {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.7rem;
+  margin-bottom: 4px;
+  color: var(--charcoal);
+}
+.restaurant-header .meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--warm-gray);
+  font-weight: 500;
+}
+.meta-chip .material-icons {
+  font-size: 15px;
+  color: var(--accent);
+}
+.price-tag {
+  font-weight: 700;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  background: #eef2f0;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* ── SECTION CARDS ── */
+.info-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 12px rgba(31, 41, 51, 0.06);
+  border: 1px solid var(--border);
+}
+.section-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 10px;
+}
+
+/* ── HOURS ── */
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.hours-row:last-child {
+  border-bottom: none;
+}
+.hours-row .day-label {
+  color: var(--warm-gray);
+  font-weight: 500;
+}
+.hours-row .time-val {
+  font-weight: 600;
+  color: var(--charcoal);
+}
+
+/* ── GALLERY ── */
+.gallery-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+.gallery-thumb {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+}
+.gallery-thumb:hover {
+  border-color: var(--accent);
+  transform: scale(1.04);
+}
+
+/* ── STARS (display + rate) ── */
+.star-row {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+.star-row .material-icons {
+  font-size: 28px;
+  color: #d1d5db;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    transform 0.15s;
+}
+.star-row .material-icons.filled {
+  color: #f5a623;
+}
+.star-row .material-icons:hover {
+  transform: scale(1.2);
+}
+
+.review-star-row .material-icons {
+  font-size: 24px;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.review-star-row .material-icons.filled {
+  color: #f5a623;
+}
+
+/* ── REVIEW FORM ── */
+#reviewForm {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(31, 41, 51, 0.08);
+}
+#reviewForm textarea,
+#reviewForm input {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+}
+#reviewForm textarea:focus,
+#reviewForm input:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(63, 78, 79, 0.12);
+  outline: none;
+}
+#submitReviewBtn {
+  background: var(--secondary);
+  border: 2px solid var(--primary);
+  border-radius: 10px;
+  font-weight: 600;
+  padding: 8px 20px;
+  color: var(--light-text);
+}
+#submitReviewBtn:hover {
+  background: var(--primary);
+  border-color: var(--accent);
+}
+#cancelReviewBtn {
+  border-radius: 10px;
+  font-weight: 500;
+  border: 2px solid var(--border);
+  color: var(--warm-gray);
+}
+#cancelReviewBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── REVIEW CARDS ── */
+.review-card {
+  background: var(--card-bg);
+  border-radius: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.review-card .reviewer-name {
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--charcoal);
+}
+.review-card .review-date {
+  font-size: 0.78rem;
+  color: var(--warm-gray);
+}
+.review-card .review-stars {
+  color: #f5a623;
+  font-size: 0.95rem;
+}
+.review-card .review-text {
+  font-size: 0.88rem;
+  color: var(--warm-gray);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── WRITE REVIEW BUTTON ── */
+#writeReviewBtn {
+  background: var(--secondary);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 10px 28px;
+  font-weight: 600;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.95rem;
+  color: var(--light-text);
+  letter-spacing: 0.02em;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+}
+#writeReviewBtn:hover {
+  background: var(--primary);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ── FOOTER ── */
+body.restaurant-page .custom-footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  height: 64px;
+}
+
+/* ── DESCRIPTION ── */
+#restaurantDescription {
+  font-size: 0.9rem;
+  color: var(--warm-gray);
+  line-height: 1.6;
+}
+
+/* ── WEBSITE LINK ── */
+.website-link {
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+.website-link:hover {
+  text-decoration: underline;
+}
+
+/* ── DIVIDER ── */
+.soft-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* ==================================================
+   RESTAURANT CARDS — landing page
+   ================================================== */
+
+.restaurant-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(31, 41, 51, 0.07);
+  margin-bottom: 20px;
+  max-width: 480px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(31, 41, 51, 0.13);
+}
+
+/* Make entire card clickable */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* ── Image area ── */
+.rc-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.rc-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.restaurant-card:hover .rc-image {
+  transform: scale(1.04);
+}
+
+/* Wait time badge */
+.rc-wait-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 11px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Card body ── */
+.rc-body {
+  padding: 16px 18px 14px;
+}
+
+.rc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.rc-name {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin: 0 0 2px;
+  line-height: 1.2;
+}
+
+.rc-cuisine {
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  background: #eef2f0;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.rc-price {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--secondary);
+  background: #eef2f0;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.rc-desc {
+  font-size: 0.85rem;
+  color: var(--warm-gray);
+  margin: 0 0 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Footer row ── */
+.rc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 2px;
+}
+
+.rc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rc-stars {
+  color: #f5a623;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.rc-hours {
+  font-size: 0.75rem;
+  color: var(--warm-gray);
+}
+
+.rc-cta {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  transition: letter-spacing 0.2s;
+}
+
+.restaurant-card:hover .rc-cta {
+  letter-spacing: 0.07em;
 }
