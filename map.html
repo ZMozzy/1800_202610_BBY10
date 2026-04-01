@@ -19,6 +19,7 @@
       
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/styles/style.css" /> 
+    <link rel="stylesheet" href="/styles/map.css"/>
 </head>
 
 
@@ -28,19 +29,17 @@
     <!-- Your HTML Layout go here -->
     <!------------------------------>
 
-    <main class="container mt-4 mb-4">
-        <h2>Map</h2>
-        <div id="map" style="width: 100%; height: 400px;"></div>
-
-        <div>
-            <div class="card"></div>
-            <div class="card-body">
-                <h5 class="card-title">Need Suggestion?</h5>
-                <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit...
-                </p>
-            </div>
+    <main class="map-body">
+        <div class="search-container">
+            <input
+                type="text"
+                id="restaurantSearch"
+                class="form-control"
+                placeholder="Search restaurants..."
+            >
         </div>
+
+        <div id="map"></div>
     </main>
 
     <!-- our own navbar goes here -->
