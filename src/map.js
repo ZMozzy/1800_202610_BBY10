@@ -1,8 +1,7 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import {getWaitColor} from "../restaurant_list/landing.js";
 
-
-import MaplibreGeocoder from "@maplibre/maplibre-gl-geocoder";
 import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
 // Add this to the top of your JS file
@@ -21,7 +20,7 @@ const appState = {
   userLngLat: null
 };
 
-
+const markers = [];
 const downtownVancouver = [-123.1207, 49.2827];
 
 async function getRestaurant(){
@@ -40,16 +39,20 @@ async function showRestaurants(map){
 
         appState.restaurants.push(doc);
 
+        const restaurantName = doc.basicInfo?.restaurantName || "Restaurant";
+        const address = doc.basicInfo?.address || "Address not available";
+        const waitTime = doc.waitTime != null ? `${doc.waitTime} min` : "N/A";
+        const waitColor = getWaitColor(waitTime);
+
         const el = document.createElement("div");
         el.style.width = "16px";
         el.style.height = "16px";
         el.style.borderRadius = "50%";
-        el.style.backgroundColor = "green";
+        el.style.backgroundColor = waitColor.bg;
         el.style.border = "2px solid white";
 
-        const restaurantName = doc.basicInfo?.restaurantName || "Restaurant";
-        const address = doc.basicInfo?.address || "Address not available";
-        const waitTime = doc.waitTime != null ? `${doc.waitTime} min` : "N/A";
+        
+        
 
         //change the bootstrap here to make the pop html prettier
         const popupHtml = `
@@ -58,16 +61,23 @@ async function showRestaurants(map){
                     <h6 class="card-title mb-1">${restaurantName}</h6>
                     <p class="card-text small mb-2">${address}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-success fs-6">Wait: ${waitTime} min</span>
+                        <span class="badge fs-6" style="background-color: ${waitColor.bg}; color: white">
+                            Wait: ${waitTime}
+                        </span>
                     </div>
                 </div>
             </div>
         `;
 
-        new maplibregl.Marker({ element: el})
+        const marker = new maplibregl.Marker({ element: el})
             .setLngLat([doc.lng, doc.lat])
             .setPopup(new maplibregl.Popup({ offset: 25}).setHTML(popupHtml))
             .addTo(map);
+
+        markers.push({
+            name: restaurantName.toLowerCase(),
+            marker: marker
+        })
     });
 }
 
@@ -87,7 +97,6 @@ function showMap() {
 
     // Add controls (zoom, rotation, etc.) shown in top-right corner of map
     addControls(map);
-    addSearchControl(map);
 
     // Once the map loads, we can add the user location and hike markers, etc. 
     // We wait for the "load" event to ensure the map is fully initialized before we try to add sources/layers.
@@ -104,86 +113,45 @@ function showMap() {
 
         await showRestaurants(map);
         await addUserPin(map);
-	      console.log("map loaded, placed user pin and restaurant pins!");
+
+        search(map);
+
+	    console.log("map loaded, placed user pin and restaurant pins!");
     });
 
     function addControls(map) {
         // Zoom and rotation
-        map.addControl(new maplibregl.NavigationControl(), "top-right");
+        map.addControl(new maplibregl.NavigationControl(), "bottom-right");
     }
 }
 
-//------------------------------------------------------------
-// This function adds a search control to the map using the MaplibreGeocoder plugin.
-// It uses the Nominatim API for geocoding (forward geocoding only).
-// When a search result is selected, it calls routeToPoint() to get and 
-// display the route from user location to the searched location.
-//------------------------------------------------------------- 
-function addSearchControl(map) {
-    const geocoderApi = {
-        // This configuaration is used by the MaplibreGeocoder plugin when the user types a search query.
-        forwardGeocode: async (config) => {
-            console.log("Geocoder query:", config.query); // For debugging: check the search query is being received correctly
-            const features = [];
-
-            // Use the Nominatim API to perform forward geocoding based on the user's search query.
-            const url =
-                `https://nominatim.openstreetmap.org/search` +
-                `?q=${encodeURIComponent(config.query)}` +
-                `&format=geojson&limit=5`;
-
-            // Make the API call to Nominatim and parse the response as JSON
-            const response = await fetch(url);
-            const geojson = await response.json();
-
-            // For each feature in the Nominatim response, we extract the bounding box and calculate the center point.
-            for (const feature of geojson.features) {
-                const [minX, minY, maxX, maxY] = feature.bbox;
-                const center = [
-                    minX + (maxX - minX) / 2,
-                    minY + (maxY - minY) / 2
-                ];
-
-                features.push({
-                    type: "Feature",
-                    geometry: {
-                        type: "Point",
-                        coordinates: center
-                    },
-                    place_name: feature.properties.display_name,
-                    text: feature.properties.display_name,
-                    place_type: ["place"],
-                    properties: feature.properties,
-                    center
-                });
-            }
-
-            return { features };
-        }
-    };
-
-    // Initialize the MaplibreGeocoder control with our custom geocoder API and add it to the map.
-    const geocoder = new MaplibreGeocoder(geocoderApi, {
-        maplibregl,
-        placeholder: "Search for a place",  // Placeholder text in the search box
-        minLength: 2,                       // Minimum number of characters before search starts
-        showResultsWhileTyping: true,       // Show results as the user types
-        debounceSearch: 300                 // Wait 300ms after the user stops typing before performing the search (to reduce API calls)
-    });
-
-    // Add the geocoder control to the top-left corner of the map
-    map.addControl(geocoder, "top-left");
-
-    // Listen for the "result" event, which is triggered when the user selects a search result.
-    // After the user selects a search result, we extract the coordinates of the selected location 
-    // and call routeToPoint() to display the route from the user's current location to the selected location.
-    geocoder.on("result", (e) => {
-        const [lng, lat] = e.result.center;
-        routeToPoint(lng, lat);
-    });
-}
-
 showMap();
+
+function search(map) {
+    const input = document.getElementById("restaurantSearch");
+    if (!input) return;
+
+    input.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        if (query == "") return
+        
+        const match = markers.find(m => m.name.includes(query));
+
+        if (match) {
+            const lngLat = match.marker.getLngLat();
+
+            map.flyTo({
+                center: [lngLat.lng, lngLat.lat],
+                zoom: 14,
+                speed: 0.8,
+                curve: 1.4
+            });
+
+            match.marker.togglePopup();
+        }
+    })
+}
 
 async function addUserPin(map) {
     if (!("geolocation" in navigator)) {

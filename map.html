@@ -29,14 +29,17 @@
     <!-- Your HTML Layout go here -->
     <!------------------------------>
 
-    <main class="container mt-0 mb-4 map-body">
-        <div id="map"></div>
-
-        <div>
-            <div class="card"></div>
-            <div class="card-body">
-            </div>
+    <main class="map-body">
+        <div class="search-container">
+            <input
+                type="text"
+                id="restaurantSearch"
+                class="form-control"
+                placeholder="Search restaurants..."
+            >
         </div>
+
+        <div id="map"></div>
     </main>
 
     <!-- our own navbar goes here -->
