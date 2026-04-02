@@ -179,6 +179,7 @@ export function displayRestaurants(restaurants) {
   }
 
   for (const r of restaurants) {
+    console.log("restaurant ID:", r.id, "Name:", r.basicInfo?.restaurantName);
     const waitTime = r.waitTime ?? r.hoursAndServices?.waitTime ?? 0;
     const { bg: waitBg } = getWaitColor(waitTime);
     const waitEmoji = getWaitEmoji(waitTime);
@@ -196,11 +197,18 @@ export function displayRestaurants(restaurants) {
     const closeTime = r.hoursAndServices?.closeTime || "";
     const hoursText = openTime && closeTime ? `${openTime} – ${closeTime}` : "";
 
-    // Photo
+    // Photo handling
     let photoURL = "./images/default.png";
-    const photo = r.uploads?.photos?.[0];
-    if (photo?.base64Data) {
-      photoURL = `data:${photo.contentType || "image/png"};base64,${photo.base64Data.trim()}`;
+    const photo = Array.isArray(r.uploads?.photos) ? r.uploads.photos[0] : null;
+
+    if (photo) {
+      if (photo.url) {
+        // Use URL if available
+        photoURL = photo.url;
+      } else if (photo.base64Data) {
+        // Fallback to Base64
+        photoURL = `data:${photo.contentType || "image/png"};base64,${photo.base64Data.trim()}`;
+      }
     }
 
     const card = document.createElement("div");
