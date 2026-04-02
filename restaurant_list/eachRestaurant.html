@@ -25,10 +25,18 @@
 
   <body class="restaurant-page">
     <!-- NAVBAR -->
+    <!-- NAVBAR -->
     <nav class="navbar navbar-light topbar-custom">
       <div
         class="container-fluid d-flex justify-content-between align-items-center"
       >
+        <!-- BACK BUTTON -->
+        <button id="backButton" class="btn btn-light d-flex align-items-center">
+          <span class="material-icons me-1">arrow_back</span>
+          Back
+        </button>
+
+        <!-- LOGO -->
         <a class="navbar-brand mx-auto mb-0 topbar-brand" href="./landing.html">
           <img
             src="../images/logoNoBG.png"
@@ -36,20 +44,46 @@
             class="topbar-logo"
           />
         </a>
+
+        <div style="width: 75px"></div>
       </div>
     </nav>
 
     <!-- MAIN CONTENT -->
     <main class="container py-3" style="max-width: 620px">
-      <!-- HERO IMAGE -->
+      <!-- HERO SLIDESHOW -->
       <div class="hero-wrap mb-3">
         <img id="restaurantImage" src="./images/default.png" alt="Restaurant" />
         <div class="hero-overlay"></div>
+
+        <!--- WAIT TIME BADGE -->
         <div class="hero-badge">
           <span class="dot" id="waitDot" style="background: #ccc"></span>
           <span id="restaurantWaitHero">Loading...</span>
         </div>
       </div>
+
+      <!--ARROWS-->
+      <button
+        class="slide-arrow slide-arrow-left"
+        id="slidePrev"
+        style="display: none"
+      >
+        <span class="material-icons">chevron_left</span>
+      </button>
+      <button
+        class="slide-arrow slide-arrow-right"
+        id="slideNext"
+        style="display: none"
+      >
+        <span class="material-icons">chevron_right</span>
+      </button>
+
+      <!---DOT INDICATORS-->
+      <div class="slide-dots" id="slideDots"></div>
+
+      <!---COUNTER-->
+      <div class="slide-counter" id="slideCounter" style="display: none"></div>
 
       <!-- RESTAURANT HEADER CARD -->
       <div class="restaurant-header mb-3">
@@ -209,12 +243,14 @@
 
     <!-- FOOTER -->
     <div id="footer"></div>
+    <div id="imageModal" class="image-modal">
+      <span id="closeModal">&times;</span>
+      <img id="modalImage" />
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./eachRestaurant.js"></script>
     <script type="module" src="../src/search.js"></script>
     <script src="/src/footer.js"></script>
-    <script type="module" src="/src/goToProfile.js"></script>
-  
   </body>
 </html>

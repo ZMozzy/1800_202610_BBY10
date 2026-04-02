@@ -549,10 +549,12 @@ body.restaurant-page .topbar-logo {
 }
 .gallery-thumb {
   flex-shrink: 0;
-  width: 90px;
-  height: 90px;
-  border-radius: 10px;
-  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: contain;
+  object-position: center;
+  background: #000;
   cursor: pointer;
   border: 2px solid transparent;
   transition:
@@ -871,4 +873,66 @@ body.restaurant-page .custom-footer {
 
 .restaurant-card:hover .rc-cta {
   letter-spacing: 0.07em;
+}
+
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+#modalImage {
+  display: block;
+  margin: auto;
+  max-width: 90%;
+  max-height: 85%;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+}
+
+#modalImage.zoomed {
+  transform: scale(1.8);
+  cursor: zoom-out;
+}
+
+#closeModal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+/* Unified button style for navbar icons */
+.custom-btn {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  color: var(--charcoal);
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.15s;
+}
+
+.custom-btn:hover {
+  background-color: var(--light-text);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.custom-btn .material-icons {
+  font-size: 20px;
 }

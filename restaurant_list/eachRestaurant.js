@@ -11,7 +11,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-// ----------DOM references-----------
+// ---------- DOM references ----------
 const restaurantNameEl = document.getElementById("restaurantName");
 const restaurantDescriptionEl = document.getElementById(
   "restaurantDescription",
@@ -26,12 +26,12 @@ const photoGallery = document.getElementById("photoGallery");
 const menuGallery = document.getElementById("menuGallery");
 const licenseGallery = document.getElementById("licenseGallery");
 
+// ---------- Helpers ----------
+
 function getDocIdFromUrl() {
   const params = new URL(window.location.href).searchParams;
   return params.get("docID");
 }
-
-// ------- WAIT TIME COLORS-------------
 
 function getWaitColor(waitTime) {
   const time = Number(waitTime);
@@ -40,36 +40,6 @@ function getWaitColor(waitTime) {
   if (time <= 60) return { dot: "#f97316", label: "orange" };
   return { dot: "#ef4444", label: "danger" };
 }
-
-// --------------- PHOTO GALLERY ----------------------------
-
-function createGallery(container, images) {
-  container.innerHTML = "";
-  if (!images || !images.length) {
-    container.innerHTML =
-      "<p class='text-muted small mb-0'>No images uploaded.</p>";
-    return;
-  }
-
-  images.forEach((imgData) => {
-    if (!imgData.base64Data) return;
-    const img = document.createElement("img");
-    const mimeType = imgData.contentType || "image/png";
-    img.src = `data:${mimeType};base64,${imgData.base64Data.trim()}`;
-    img.className = "gallery-thumb";
-    img.alt = "Image";
-
-    // Click to expand as main image
-    img.addEventListener("click", () => {
-      restaurantImageEl.src = img.src;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
-    container.appendChild(img);
-  });
-}
-
-// ------------------ FORMAT TIME/HOURS OF OPERATION -----------------------------
 
 function formatTime(time) {
   if (!time) return "—";
@@ -80,7 +50,48 @@ function formatTime(time) {
   return `${displayHour}:${m} ${ampm}`;
 }
 
-// ─----------------- REVIEWS------------------
+function getSrc(imgData) {
+  if (!imgData) return null;
+  if (imgData.url) return imgData.url;
+  if (imgData.base64Data) {
+    const mimeType = imgData.contentType || "image/png";
+    return `data:${mimeType};base64,${imgData.base64Data.trim()}`;
+  }
+  return null;
+}
+
+// ---------- Gallery ----------
+
+function createGallery(container, images) {
+  container.innerHTML = "";
+
+  if (!images || !images.length) {
+    container.innerHTML =
+      "<p class='text-muted small mb-0'>No images uploaded.</p>";
+    return;
+  }
+
+  images.forEach((imgData) => {
+    const src = getSrc(imgData);
+    if (!src) return;
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "gallery-thumb";
+    img.alt = "Image";
+
+    img.addEventListener("click", () => {
+      const modal = document.getElementById("imageModal");
+      const modalImg = document.getElementById("modalImage");
+      modal.style.display = "block";
+      modalImg.src = img.src;
+    });
+
+    container.appendChild(img);
+  });
+}
+
+// ---------- Reviews ----------
 
 async function loadReviews(restaurantId) {
   reviewsContainer.innerHTML =
@@ -98,6 +109,7 @@ async function loadReviews(restaurantId) {
     }
 
     reviewsContainer.innerHTML = `<div class="section-label mb-2">Reviews</div>`;
+
     snapshot.forEach((docSnap) => {
       const r = docSnap.data();
       const stars = "★".repeat(r.rating || 0) + "☆".repeat(5 - (r.rating || 0));
@@ -122,7 +134,7 @@ async function loadReviews(restaurantId) {
   }
 }
 
-// ----------------- MAIN CONTENT --------------------
+// ---------- Main load ----------
 
 async function loadRestaurant() {
   const id = getDocIdFromUrl();
@@ -145,7 +157,7 @@ async function loadRestaurant() {
     const hours = restaurant.hoursAndServices || {};
     const uploads = restaurant.uploads || {};
 
-    // ── Basic Info
+    // Basic Info
     restaurantNameEl.textContent = basic.restaurantName || "Unnamed";
     restaurantDescriptionEl.textContent =
       basic.description || "No description available.";
@@ -154,7 +166,7 @@ async function loadRestaurant() {
     document.getElementById("restaurantAddress").textContent =
       basic.address || "—";
 
-    // ── Website
+    // Website
     if (basic.website) {
       const websiteWrap = document.getElementById("websiteWrap");
       const websiteLink = document.getElementById("restaurantWebsite");
@@ -164,10 +176,10 @@ async function loadRestaurant() {
         : `https://${basic.website}`;
     }
 
-    // ── Price Range
+    // Price Range
     document.getElementById("priceRange").textContent = hours.priceRange || "—";
 
-    // ── Hours
+    // Hours
     const open = formatTime(hours.openTime);
     const close = formatTime(hours.closeTime);
     document.getElementById("regularHours").textContent = `${open} – ${close}`;
@@ -187,25 +199,23 @@ async function loadRestaurant() {
       document.getElementById("holidayHours").textContent = "—";
     }
 
-    // ── Wait Time
+    // Wait Time
     const waitTime = hours.waitTime ?? restaurant.waitTime ?? 0;
-    const { dot, label } = getWaitColor(waitTime);
+    const { dot } = getWaitColor(waitTime);
     restaurantWaitEl.textContent = `${waitTime} min wait`;
     waitDot.style.background = dot;
 
-    // ── Main Photo
-    const mainPhoto = uploads.photos?.[0];
-    if (mainPhoto?.base64Data) {
-      const mimeType = mainPhoto.contentType || "image/png";
-      restaurantImageEl.src = `data:${mimeType};base64,${mainPhoto.base64Data.trim()}`;
-    }
+    // Main Photo
+    const mainPhoto = Array.isArray(uploads.photos) ? uploads.photos[0] : null;
+    const mainSrc = getSrc(mainPhoto);
+    restaurantImageEl.src = mainSrc || "../images/default.png";
 
-    // ── Galleries
+    // Galleries
     createGallery(photoGallery, uploads.photos);
     createGallery(menuGallery, uploads.menus);
     createGallery(licenseGallery, uploads.businessLicenses);
 
-    // ── Rating Stars (display)
+    // Rating Stars
     const rating = restaurant.rating || 0;
     const stars = document.querySelectorAll("#restaurantRating .star");
     stars.forEach((star, index) => {
@@ -213,7 +223,7 @@ async function loadRestaurant() {
       if (index < rating) star.classList.add("filled");
     });
 
-    // ── Load Reviews
+    // Reviews
     await loadReviews(id);
   } catch (error) {
     console.error("Error loading restaurant:", error);
@@ -221,7 +231,7 @@ async function loadRestaurant() {
   }
 }
 
-// --------------- STARS (rate) --------------------
+// ---------- Star rating ----------
 
 let userRating = 0;
 
@@ -267,7 +277,7 @@ async function submitQuickRating(restaurantId, rating) {
   }
 }
 
-// -------------------- WRITE REVIEW FORM ---------------------------
+// ---------- Write review form ----------
 
 let formRating = 0;
 
@@ -358,10 +368,45 @@ function resetForm() {
   });
 }
 
-// -------------------- INIT ------------------------------
+// ---------- Init ----------
 
 document.addEventListener("DOMContentLoaded", () => {
   loadRestaurant();
   setupStars();
   setupWriteReviewButton();
+
+  const modal = document.getElementById("imageModal");
+  const closeBtn = document.getElementById("closeModal");
+  const modalImg = document.getElementById("modalImage");
+
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modal.style.display = "none";
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
+  modalImg.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modalImg.classList.toggle("zoomed");
+  });
+
+  modalImg.addEventListener("dblclick", (e) => {
+    e.stopPropagation();
+    if (!document.fullscreenElement) {
+      modalImg.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+});
+
+document.getElementById("backButton").addEventListener("click", () => {
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    window.location.href = "./landing.html";
+  }
 });
