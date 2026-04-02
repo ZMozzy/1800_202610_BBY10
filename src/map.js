@@ -77,7 +77,7 @@ async function showRestaurants(map) {
         `;
 
     const marker = new maplibregl.Marker({ element: el })
-      .setLngLat([doc.lng, doc.lat])
+      .setLngLat([lng, lat])
       .setPopup(new maplibregl.Popup({ offset: 25 }).setHTML(popupHtml))
       .addTo(map);
 
