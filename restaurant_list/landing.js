@@ -148,7 +148,7 @@ function bindFilterEvents() {
 }
 
 // ------------------- WAIT TIME COLORS -------------------
-function getWaitColor(waitTime) {
+export function getWaitColor(waitTime) {
   const time = parseInt(waitTime);
   if (isNaN(time)) return { bg: "#9ca3af", label: "gray" };
   if (time <= 10) return { bg: "#16a34a", label: "green" };

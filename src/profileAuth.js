@@ -26,7 +26,6 @@
             document.getElementById("create-Ad").addEventListener("click", function() {
                 window.location.href = "add_restaurant/add.html";
             })
-
         } 
         
 

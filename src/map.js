@@ -1,5 +1,8 @@
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { getWaitColor } from "../restaurant_list/landing.js";
+
+import "@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css";
 
 // Add this to the top of your JS file
 // Database initialized
@@ -15,6 +18,7 @@ const appState = {
   userLngLat: null,
 };
 
+const markers = [];
 const downtownVancouver = [-123.1207, 49.2827];
 
 async function getRestaurant() {
@@ -45,36 +49,42 @@ async function showRestaurants(map) {
     console.log("resolved lat:", lat, "resolved lng:", lng);
     if (lat == null || lng == null) return;
 
-    appState.restaurants.push(doc);
+    const restaurantName = doc.basicInfo?.restaurantName || "Restaurant";
+    const address = doc.basicInfo?.address || "Address not available";
+    const waitTime = doc.waitTime != null ? `${doc.waitTime} min` : "N/A";
+    const waitColor = getWaitColor(waitTime);
 
     const el = document.createElement("div");
     el.style.width = "16px";
     el.style.height = "16px";
     el.style.borderRadius = "50%";
-    el.style.backgroundColor = "green";
+    el.style.backgroundColor = waitColor.bg;
     el.style.border = "2px solid white";
-
-    const restaurantName = doc.basicInfo?.restaurantName || "Restaurant";
-    const address = doc.basicInfo?.address || "Address not available";
-    const waitTime = doc.waitTime != null ? `${doc.waitTime} min` : "N/A";
 
     //change the bootstrap here to make the pop html prettier
     const popupHtml = `
              <div class="card shadow-sm" style="width: 220px;">
                 <div class="card-body p-2">
-                    <h6 class="card-title mb-1 text-primary">${restaurantName}</h6>
+                    <h6 class="card-title mb-1">${restaurantName}</h6>
                     <p class="card-text small mb-2">${address}</p>
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-success">Wait: ${waitTime} min</span>
+                        <span class="badge fs-6" style="background-color: ${waitColor.bg}; color: white">
+                            Wait: ${waitTime}
+                        </span>
                     </div>
                 </div>
             </div>
         `;
 
-    new maplibregl.Marker({ element: el })
-      .setLngLat([lng, lat])
+    const marker = new maplibregl.Marker({ element: el })
+      .setLngLat([doc.lng, doc.lat])
       .setPopup(new maplibregl.Popup({ offset: 25 }).setHTML(popupHtml))
       .addTo(map);
+
+    markers.push({
+      name: restaurantName.toLowerCase(),
+      marker: marker,
+    });
   });
 }
 
@@ -113,13 +123,60 @@ function showMap() {
     console.log("map loaded, placed user pin and restaurant pins!");
   });
 
+  // Once the map loads, we can add the user location and hike markers, etc.
+  // We wait for the "load" event to ensure the map is fully initialized before we try to add sources/layers.
+  map.once("load", async () => {
+    // Choose either the built-in geolocate control or the manual pin method
+    // addGeolocationControl(map);
+    map.flyTo({
+      center: downtownVancouver,
+      zoom: 13,
+      speed: 0.8,
+      curve: 1.4,
+      essential: true,
+    });
+
+    await showRestaurants(map);
+    await addUserPin(map);
+
+    search(map);
+
+    console.log("map loaded, placed user pin and restaurant pins!");
+  });
+
   function addControls(map) {
     // Zoom and rotation
-    map.addControl(new maplibregl.NavigationControl(), "top-right");
+    map.addControl(new maplibregl.NavigationControl(), "bottom-right");
   }
 }
 
 showMap();
+
+function search(map) {
+  const input = document.getElementById("restaurantSearch");
+  if (!input) return;
+
+  input.addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase().trim();
+
+    if (query == "") return;
+
+    const match = markers.find((m) => m.name.includes(query));
+
+    if (match) {
+      const lngLat = match.marker.getLngLat();
+
+      map.flyTo({
+        center: [lngLat.lng, lngLat.lat],
+        zoom: 14,
+        speed: 0.8,
+        curve: 1.4,
+      });
+
+      match.marker.togglePopup();
+    }
+  });
+}
 
 async function addUserPin(map) {
   if (!("geolocation" in navigator)) {
