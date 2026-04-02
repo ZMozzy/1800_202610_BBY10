@@ -30,14 +30,19 @@
     <!------------------------------>
 
     <main class="map-body">
-        <div class="search-container">
+        <div class="search-container postition-relative">
             <input
-                type="text"
+                type="search"
                 id="restaurantSearch"
                 class="form-control"
                 placeholder="Search restaurants..."
+                autocomplete="off"
             >
+
+            <div id="searchResults" class="list-group position-absolute w-100"></div>
         </div>
+
+        
 
         <div id="map"></div>
     </main>

@@ -23,6 +23,15 @@
 
 }
 
+#searchResults {
+    top: 100%;
+    left: 0;
+    z-index: 2000;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+}
+
 .maplibregl-ctrl-bottom-right {
     bottom: 20px !important;
     right: 10px !important;
