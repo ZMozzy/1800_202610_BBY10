@@ -13,7 +13,7 @@ document.getElementById("waitTime").addEventListener("click", async () => {
     }
 
     try {
-        // STEP 1: Get the restaurantId from the User's document
+        // Get the restaurantId from the User's document
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
@@ -30,11 +30,11 @@ document.getElementById("waitTime").addEventListener("click", async () => {
             return;
         }
 
-        // STEP 2: Ask for the new wait time
+        // Ask for the new wait time
         const newWait = prompt("Enter new wait time (minutes):", "5");
         if (newWait === null) return; // User cancelled
 
-        // STEP 3: Update the Restaurant collection
+        // Update the Restaurant collection
         const restaurantRef = doc(db, "Restaurant", restaurantId);
         
         await updateDoc(restaurantRef, {

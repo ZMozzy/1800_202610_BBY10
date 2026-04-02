@@ -1,4 +1,4 @@
-import { logoutUser } from "./authentication.js";
+
 import { auth, db } from "./firebaseConfig.js";
 import { onAuthStateChanged } from "firebase/auth";
 import {
@@ -94,4 +94,3 @@ async function saveUserInfo(e) {
     }
 }
 
-document.getElementById("logout").addEventListener( "click", logoutUser);
