@@ -58,6 +58,7 @@
 body {
   background-color: var(--light-text);
   color: var(--primary);
+  padding-bottom: 4rem;
 }
 
 /* --------------------------------------------------
