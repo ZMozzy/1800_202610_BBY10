@@ -76,6 +76,7 @@ async function showRestaurants(map){
 
         markers.push({
             name: restaurantName.toLowerCase(),
+            displayName: restaurantName,
             marker: marker
         })
     });
@@ -127,31 +128,80 @@ function showMap() {
 
 showMap();
 
+function goToRestaurant(map, match, resultsBox) {
+    const lngLat = match.marker.getLngLat();
+
+    map.flyTo({
+        center: [lngLat.lng, lngLat.lat],
+        zoom: 14,
+        speed: 0.8,
+        curve: 1.4
+    });
+
+
+    // match.marker.getPopup().addTo(map);
+    match.marker.togglePopup();
+    resultsBox.innerHTML = "";
+}
+
 function search(map) {
     const input = document.getElementById("restaurantSearch");
-    if (!input) return;
+    const resultsBox = document.getElementById("searchResults");
+
+    if (!input || !resultsBox) return;
+
+    let selectedMatch = null;
 
     input.addEventListener("input", (e) => {
         const query = e.target.value.toLowerCase().trim();
+        resultsBox.innerHTML = "";
+        selectedMatch = null;
 
         if (query == "") return
         
-        const match = markers.find(m => m.name.includes(query));
+        const matches = markers.filter(m => m.name.includes(query));
 
-        if (match) {
-            const lngLat = match.marker.getLngLat();
+        matches.slice(0, 5).forEach(match => {
+            const item = document.createElement("button");
+            item.type = "button";
+            item.className = "list-group-item list-group-item-action";
+            item.textContent = match.name;
 
-            map.flyTo({
-                center: [lngLat.lng, lngLat.lat],
-                zoom: 14,
-                speed: 0.8,
-                curve: 1.4
+            item.addEventListener("click", () => {
+                input.value = match.displayName;
+                selectedMatch = match;
+
+                goToRestaurant(map, match, resultsBox);
             });
 
-            match.marker.togglePopup();
+            resultsBox.appendChild(item);
+        });
+
+        if (matches.length > 0) {
+            selectedMatch = matches[0];
         }
-    })
+    });
+
+
+    //only fly when enter is pressed
+    input.addEventListener("keydown", (e) => {
+        if(e.key !== "Enter") return;
+        e.preventDefault();
+
+        const query = input.value.toLowerCase().trim();
+        if (query === "") return;
+        let match = selectedMatch;
+
+        if (!match) {
+            match = markers.find(m => m.name.includes(query));
+        }
+
+        if (match) {
+            goToRestaurant(map, match, resultsBox)
+        }
+    });
 }
+
 
 async function addUserPin(map) {
     if (!("geolocation" in navigator)) {
