@@ -1,6 +1,10 @@
  import { auth, db } from "./firebaseConfig.js";
       import { onAuthStateChanged } from "firebase/auth";
       import { doc, getDoc } from "firebase/firestore";
+      import { logoutUser } from "./authentication.js";
+      
+      
+      document.getElementById("logout").addEventListener( "click", logoutUser);
  
  onAuthStateChanged(auth, async (user) => {
 
