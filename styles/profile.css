@@ -54,6 +54,10 @@
 .logoutbtn:hover {
 background: #014bbb;
 }
+.set {
+    display: flex;
+    justify-content: flex-end;
+}
 
 .settings {
     height: 20px;
@@ -105,6 +109,7 @@ background: #014bbb;
 .update-btn:hover {
     background: #014bbb;
 }
+
 
 .wait-pill {
     display: flex;
