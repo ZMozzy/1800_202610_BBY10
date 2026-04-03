@@ -40,8 +40,7 @@
             document.getElementById("isOwner").textContent = "";
             document.getElementById("avatar").textContent = "G";
             document.getElementById("userSet").style.display = "none";
-            document.getElementById("activity").style.display = "none";
-            document.getElementById("post").style.display = "none";
+            document.getElementById("logout").style.display = "none";
             //changes create ad to login
             document.getElementById("create-Ad").textContent = "Sign Up"
         document.getElementById("create-Ad").addEventListener("click", function() {
