@@ -19,6 +19,20 @@
       rel="stylesheet"
     />
 
+     <script>
+      function initialize() {
+        var autocomplete = new google.maps.places.Autocomplete(
+          document.getElementById("addressInput"),
+          { types: ["geocode"] },
+        );
+        autocomplete.addListener("place_changed", function () {
+          var place = autocomplete.getPlace();
+          console.log("Place selected:", place.formatted_address);
+        });
+      }
+    </script> 
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_l0-h8TGJ_D_3I-oBcc1OvQz3-vbPL_4&libraries=places&callback=initialize&loading=async"></script>
+
     <!-- Custom project stylesheet -->
     <link rel="stylesheet" href="../styles/style.css" />
   </head>
