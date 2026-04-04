@@ -1,6 +1,6 @@
 import { auth, db } from "./firebaseConfig.js";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { logoutUser } from "./authentication.js";
 
 
@@ -8,7 +8,6 @@ document.getElementById("logout").addEventListener( "click", logoutUser);
 
 document.addEventListener("DOMContentLoaded", () => {
     loadRestaurantProfile();
-    renderPosts(postsData);
 
 });
 
@@ -49,6 +48,7 @@ function loadRestaurantProfile() {
             console.log("Restaurant data:", restaurantData);
 
             populateRestaurantPage(restaurantData, restaurantDoc.id);
+            displayReviews(restaurantDoc.id)
 
         } catch (error) {
             console.error("Error loading restaurant profile:", error);
@@ -78,68 +78,59 @@ function populateRestaurantPage(restaurant) {
     }
 }
 
-/**
- * Renders post cards into the container.
- * @param {Array} posts - Array of post objects from your database
- */
-function renderReviews(posts) {
+
+async function displayReviews(restaurantId) {
     const postsContainer = document.querySelector('.posts-container');
+    const template = document.getElementById('post-template');
+
+    // 1. Reference the subcollection
+    const reviewsRef = collection(db, "Restaurant", restaurantId, "reviews");
     
-    // Clear existing content to prevent duplicates if refreshing
-    postsContainer.innerHTML = '';
+    // 2. Query the reviews (ordering by newest first)
+    const q = query(reviewsRef, orderBy("timestamp", "desc"));
 
-    posts.forEach(reviews => {
-        // --- DATABASE FIELD MAPPING ---
-        // Replace 'post.restaurantName', 'post.time', etc., 
-        // with the exact keys used in your DB/Firestore document.
-        const name = reviews.authorName || "Anonymous";
-        const postContent = reviews.reviewText || "";
+    try {
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            
+            // 3. Clone the template
+            const clone = template.content.cloneNode(true);
+
+            // 4. Map Firestore fields to HTML elements
+            clone.querySelector('.post-user').textContent = data.authorName;
+            clone.querySelector('.post-body').textContent = data.reviewText;
+           // clone.querySelector(".post-rating").textContent = data.rating;
+// Target your new template span for the stars
+    const ratingSpan = clone.querySelector('.post-rating');
+    const rating = data.rating || 0;
+
+    // Generate 5 stars
+    for (let i = 1; i <= 5; i++) {
+        const starIcon = document.createElement('span');
+        starIcon.className = 'material-icons';
+        starIcon.style.fontSize = '1.25rem'; // Consistent sizing
         
-        // If using Firestore, remember to convert the timestamp: 
-        // const timeDisplay = post.timestamp?.toDate().toLocaleTimeString();
-        const timeDisplay = reviews.timestamp?.toDate().toLocaleTimeString() || "Just now";
+        // Ternary to decide filled vs outlined
+        starIcon.textContent = (i <= rating) ? 'star' : 'star_border';
+        
+        ratingSpan.appendChild(starIcon);
+    }
+            // Format the Firestore Timestamp
+            if (data.timestamp) {
+                const date = data.timestamp.toDate();
+                clone.querySelector('.post-time').textContent = date.toLocaleDateString();
+            }
 
-        // Create the HTML template
-        const postHTML = `
-            <div class="post-card">
-              <div class="post-meta">
-                <span class="post-user">${name}</span>
-                <span class="post-time">${timeDisplay}</span>
-              </div>
-              <div class="post-body">
-                ${postContent}
-              </div>
-            </div>
-        `;
 
-        // Inject the card into the container
-        postsContainer.insertAdjacentHTML('beforeend', postHTML);
-    });
+            postsContainer.appendChild(clone);
+        });
+    } catch (error) {
+        console.error("Error fetching reviews: ", error);
+    }
 }
 
-// --- DATABASE LISTENER / FETCH ---
-// This is where you call your database (Firestore, MariaDB/AJAX, etc.)
-
-const restaurantId = restaurantDoc.id; 
-
-
-db.collection("Restaurant")
-  .doc(restaurantId)
-  .collection("reviews")
-  .onSnapshot((querySnapshot) => {
-      const reviewsList = [];
-      
-      querySnapshot.forEach((doc) => {
-          reviewsList.push({
-              id: doc.id,
-              ...doc.data()
-          });
-      });
-      
-      renderReviews(reviewsList);
-  }, (error) => {
-      console.error("Error fetching reviews: ", error);
-  });
 
 
 
