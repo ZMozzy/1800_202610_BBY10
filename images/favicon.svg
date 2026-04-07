@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="FastPass clock icon">
+  <defs>
+    <linearGradient id="clockRing" x1="10" y1="10" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb11b" />
+      <stop offset="0.55" stop-color="#ff6b1a" />
+      <stop offset="1" stop-color="#ef2f1c" />
+    </linearGradient>
+    <linearGradient id="clockFace" x1="20" y1="18" x2="44" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#fff3ea" />
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="16" fill="#173a8f" />
+  <circle cx="32" cy="34" r="21" fill="url(#clockRing)" />
+  <circle cx="32" cy="34" r="16" fill="url(#clockFace)" stroke="#ffd4c0" stroke-width="1.5" />
+
+  <rect x="26.5" y="5" width="11" height="7" rx="3.5" fill="#ff6b1a" />
+  <rect x="29" y="10" width="6" height="7" rx="2" fill="#ff7c26" />
+  <rect x="44" y="13" width="9" height="6" rx="2" transform="rotate(45 48.5 16)" fill="#ff5a22" />
+
+  <path d="M24 33.5l5.3 5.3L41.5 26.5" fill="none" stroke="#ff8a00" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.2" />
+
+  <g fill="#ff5a22">
+    <rect x="31" y="15" width="2" height="4" rx="1" />
+    <rect x="31" y="49" width="2" height="4" rx="1" />
+    <rect x="47" y="33" width="4" height="2" rx="1" />
+    <rect x="13" y="33" width="4" height="2" rx="1" />
+    <rect x="42.7" y="20.5" width="2" height="4" rx="1" transform="rotate(45 43.7 22.5)" />
+    <rect x="18.3" y="44.8" width="2" height="4" rx="1" transform="rotate(45 19.3 46.8)" />
+    <rect x="43.5" y="43.9" width="2" height="4" rx="1" transform="rotate(135 44.5 45.9)" />
+    <rect x="19.2" y="19.5" width="2" height="4" rx="1" transform="rotate(135 20.2 21.5)" />
+  </g>
+</svg>
