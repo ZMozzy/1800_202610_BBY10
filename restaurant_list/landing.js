@@ -82,13 +82,6 @@ function createFilterButtons() {
     createFilterSection("Price", "price", Array.from(allFilters.price)),
   );
   dropdownMenu.appendChild(
-    createFilterSection(
-      "Location",
-      "location",
-      Array.from(allFilters.location),
-    ),
-  );
-  dropdownMenu.appendChild(
     createFilterSection("Wait Time", "wait", [
       "0-10 min",
       "10-30 min",
