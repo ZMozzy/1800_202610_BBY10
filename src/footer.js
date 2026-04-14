@@ -12,23 +12,21 @@ function getFooterPaths() {
 }
 
 async function loadFooter() {
-  const footerTarget = document.getElementById("footer");
+    console.log("footer js is loaded");
 
-  if (!footerTarget) return;
+    const response = await fetch("/footer.html");
+    const data = await response.text();
 
-  for (const path of getFooterPaths()) {
-    try {
-      const response = await fetch(path);
-      if (!response.ok) continue;
-
-      footerTarget.innerHTML = await response.text();
-      return;
-    } catch (error) {
-      console.warn(`Failed to load footer from ${path}`, error);
+    const footer = document.getElementById("footer");
+    if (footer) {
+        footer.innerHTML = data;
     }
-  }
-
-  console.error("Footer failed to load from all known paths.");
 }
 
 loadFooter();
+
+
+
+
+
+

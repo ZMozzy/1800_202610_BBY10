@@ -216,12 +216,15 @@ async function handleConfirmAndSubmit(event) {
     const lat = result.properties.lat;
     const lng = result.properties.lon;
 
-// ===== END BLOCK =====
     const [photoFiles, menuFiles, businessLicenseFiles] = await Promise.all([
       getDraftFiles(STEP2_PHOTO_FILES_KEY),
       getDraftFiles(STEP2_MENU_FILES_KEY),
       getDraftFiles(STEP3_BUSINESS_LICENSE_FILES_KEY),
     ]);
+
+    console.log("photoFiles raw:", photoFiles);
+    console.log("menuFiles raw:", menuFiles);
+    console.log("businessLicenseFiles raw:", businessLicenseFiles);
 
     const submissionRef = await addDoc(collection(db, "Restaurant"), {
       createdAt: serverTimestamp(),
@@ -244,6 +247,11 @@ async function handleConfirmAndSubmit(event) {
     payload.location = new GeoPoint(lat, lng);
     payload.lat = lat;
     payload.lng = lng;
+    
+
+    //FIXING BUG
+    console.log("PAYLOAD BEFORE FIRESTORE:", payload);
+    console.log("UPLOADS:", payload.uploads);
 
     await updateDoc(submissionRef, {
       ...payload,
