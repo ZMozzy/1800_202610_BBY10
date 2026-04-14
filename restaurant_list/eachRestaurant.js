@@ -407,6 +407,6 @@ document.getElementById("backButton").addEventListener("click", () => {
   if (document.referrer) {
     window.history.back();
   } else {
-    window.location.href = "./landing.html";
+    window.location.href = "/restaurant_list/landing.html";
   }
 });

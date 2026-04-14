@@ -14,7 +14,7 @@ import { checkAuthState } from "./authentication.js";
 checkAuthState();
 
 document.getElementById("getstarted")?.addEventListener("click", function() {
-    window.location.href = "landing.html";
+    window.location.href = "/restaurant_list/landing.html";
 });
 
 document.getElementById("loginbtn")?.addEventListener("click", function() {

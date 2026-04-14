@@ -97,11 +97,11 @@ export async function signupUser(name, email, password) {
 // Usage:
 //   await logoutUser();
 // -------------------------------------------------------------
+
 export async function logoutUser() {
   await signOut(auth);
-  window.location.href = "landing.html";
+  window.location.href = "/restaurant_list/landing.html";
 }
-
 // -------------------------------------------------------------
 // checkAuthState()
 // -------------------------------------------------------------
@@ -140,12 +140,12 @@ export function checkAuthState() {
     const page = window.location.pathname.split("/").pop();
 
     // only do this routing on main.html
-    if (page !== "main.html") {
+    if (page !== "login.html") {
       return;
     }
 
     if (!user) {
-      window.location.href = "index.html";
+      // window.location.href = "index.html";
       return;
     }
 
