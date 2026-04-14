@@ -202,53 +202,52 @@
     </div>
   </div>
 
-  <!-- fixed bottom footer -->
-  <div id="footer"></div>
+    <!-- fixed bottom footer -->
+    <div id="footer"></div>
 
-  <!-- Bootstrap JS bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!---------------------------------------------->
-  <!-- Your own JavaScript functions go here    -->
-  <!---------------------------------------------->
-  <!-- Bootstrap JS bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!---------------------------------------------->
-  <!-- Your own JavaScript functions go here    -->
-  <!---------------------------------------------->
+    <!---------------------------------------------->
+    <!-- Your own JavaScript functions go here    -->
+    <!---------------------------------------------->
 
-  <script type="module" src="./src/main.js"></script>
-  <script type="module" src="./src/profileSettings.js"></script>
-  <script src="./src/search.js"></script>
-  <script type="module" src="./src/goToProfile.js"></script>
+    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/profileSettings.js"></script>
+    <script type="module" src="./src/search.js"></script>
+    <script type="module" src="./src/goToProfile.js"></script>
 
-  <script>
-    const searchToggleBtn = document.getElementById("searchToggleBtn");
-    const navbarSearch = document.getElementById("navbarSearch");
+    <script>
+      const searchToggleBtn = document.getElementById("searchToggleBtn");
+      const navbarSearch = document.getElementById("navbarSearch");
 
-    if (searchToggleBtn && navbarSearch && window.bootstrap) {
-      const searchCollapse = bootstrap.Collapse.getOrCreateInstance(
-        navbarSearch,
-        {
-          toggle: false,
-        },
-      );
+      if (searchToggleBtn && navbarSearch && window.bootstrap) {
+        const searchCollapse = bootstrap.Collapse.getOrCreateInstance(
+          navbarSearch,
+          {
+            toggle: false,
+          },
+        );
 
-      searchToggleBtn.addEventListener("click", function (event) {
-        event.preventDefault();
-        searchCollapse.toggle();
-      });
+        searchToggleBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          searchCollapse.toggle();
+        });
 
-      navbarSearch.addEventListener("shown.bs.collapse", function () {
-        searchToggleBtn.setAttribute("aria-expanded", "true");
-      });
+        navbarSearch.addEventListener("shown.bs.collapse", function () {
+          searchToggleBtn.setAttribute("aria-expanded", "true");
+        });
 
-      navbarSearch.addEventListener("hidden.bs.collapse", function () {
-        searchToggleBtn.setAttribute("aria-expanded", "false");
-      });
-    }
-  </script>
-  <script src="/src/footer.js"></script>
-</body>
-
+        navbarSearch.addEventListener("hidden.bs.collapse", function () {
+          searchToggleBtn.setAttribute("aria-expanded", "false");
+        });
+      }
+    </script>
+    <script type="module" src="/src/footer.js"></script>
+  </body>
 </html>
