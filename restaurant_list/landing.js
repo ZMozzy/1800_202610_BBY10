@@ -1,6 +1,11 @@
 import { db } from "../src/firebaseConfig.js";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 
+//testing
+// import "../src/footer.js";
+// import "../src/goToProfile.js";
+// import "../src/search.js";
+
 // ------------DOM references------------------
 const restaurantsContainer = document.getElementById("restaurants-go-here");
 const filterDropdown = document.getElementById("filterDropdown");
@@ -80,13 +85,6 @@ function createFilterButtons() {
   );
   dropdownMenu.appendChild(
     createFilterSection("Price", "price", Array.from(allFilters.price)),
-  );
-  dropdownMenu.appendChild(
-    createFilterSection(
-      "Location",
-      "location",
-      Array.from(allFilters.location),
-    ),
   );
   dropdownMenu.appendChild(
     createFilterSection("Wait Time", "wait", [

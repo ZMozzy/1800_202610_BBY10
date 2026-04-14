@@ -88,7 +88,7 @@ async function saveUserInfo(e) {
             }
         }
         alert("Profile updated successfully!");
-        window.location.href = "./restaurant_list/landing.html";
+        window.location.href = "/restaurant_list/landing.html";
     } catch (error) {
         console.error("Error updating profile:", error);
     }
