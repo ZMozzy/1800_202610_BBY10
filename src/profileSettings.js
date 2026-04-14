@@ -94,3 +94,11 @@ async function saveUserInfo(e) {
     }
 }
 
+document.getElementById("backButton").addEventListener("click", () => {
+  if (document.referrer) {
+    window.history.back();
+  } else {
+    window.location.href = "./landing.html";
+  }
+});
+
