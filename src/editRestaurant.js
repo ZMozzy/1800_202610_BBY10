@@ -108,7 +108,6 @@ async function saveRestaurantChanges(e) {
         const restaurantEmail = document.getElementById("restaurantEmail")?.value.trim() || "";
         const restaurantAddress = document.getElementById("restaurantAddress")?.value.trim() || "";
         const restaurantWebsite = document.getElementById("restaurantWebsite")?.value.trim() || "";
-        const menuFile = document.getElementById("restaurantMenu")?.files[0];
 
         const restaurantRef = doc(db, "Restaurant", restaurantDocId);
 
@@ -123,20 +122,6 @@ async function saveRestaurantChanges(e) {
             updatedAt: new Date()
         };
 
-        // If a new menu image is selected, update the menus array metadata
-        // This does NOT upload the file anywhere yet — it only stores file info in Firestore.
-        if (menuFile) {
-            updates.menus = [
-                {
-                    contentType: menuFile.type || "",
-                    downloadURL: "",
-                    fileName: menuFile.name || "",
-                    size: menuFile.size || 0,
-                    storagePath: "",
-                    uploadSkipped: true
-                }
-            ];
-        }
 
         //updates db with changes
         await updateDoc(restaurantRef, updates);
