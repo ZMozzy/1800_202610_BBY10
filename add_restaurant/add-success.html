@@ -1,33 +1,33 @@
 ﻿<!doctype html>
 <html lang="en">
   <head>
-    <!-- 浏览器分页标签显示的标题 -->
+    <!-- Browser tab title -->
     <title>My BCIT Project</title>
     <link rel="icon" type="image/svg+xml" href="../images/favicon.svg" />
 
-    <!-- 项目模板说明信息 -->
+    <!-- Project template information -->
     <meta name="comp1800 template" content="My 1800 App" />
 
-    <!-- 页面字符编码 -->
+    <!-- Page character encoding -->
     <meta charset="utf-8" />
 
-    <!-- 移动端响应式布局设置 -->
+    <!-- Mobile responsive layout -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap 样式库 -->
+    <!-- Bootstrap stylesheet -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
 
-    <!-- 项目自定义样式 -->
+    <!-- Project custom stylesheet -->
     <link rel="stylesheet" href="../styles/style.css" />
   </head>
   <body class="add-flow-page">
-    <!-- 顶部导航栏 -->
+    <!-- Top navigation bar -->
     <nav class="navbar navbar-light topbar-custom">
       <div class="container-fluid justify-content-center">
-        <!-- 品牌名称，点击后返回首页 -->
+        <!-- Brand name, click to return to home -->
         <a class="navbar-brand mb-0 topbar-brand" href="./index.html">
           <img src="../images/logoNoBG.png" alt="FastPass" class="topbar-logo" />
           <small class="topbar-subtitle">Business</small>
@@ -35,20 +35,20 @@
       </div>
     </nav>
 
-    <!-- 页面主要内容区域 -->
+    <!-- Main content area -->
     <main class="container">
-      <!-- 提交成功后的结果卡片 -->
+      <!-- Success result card -->
       <section class="success-wrap">
-        <!-- 动态显示刚刚提交的餐厅名称 -->
+        <!-- Dynamically display the restaurant name just submitted -->
         <h3 class="mb-3" id="successRestaurantName">(Restaurant Name)</h3>
 
-        <!-- 成功状态图标 -->
+        <!-- Success status icon -->
         <div class="success-check">✓</div>
 
-        <!-- 提交成功提示文字 -->
+        <!-- Success submission notification text -->
         <h4 class="mb-4">Submitted Successfully!</h4>
 
-        <!-- 返回首页 -->
+        <!-- Return to home -->
         <a
           href="/restaurant_list/landing.html"
           class="btn review-btn-primary review-btn-large"
@@ -57,21 +57,21 @@
       </section>
     </main>
 
-    <!-- 底部导航栏 -->
+    <!-- Bottom navigation bar -->
     <div id="footer"></div>
 
-    <!-- Bootstrap 交互脚本 -->
+    <!-- Bootstrap interactive script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // 取得成功页上用于显示餐厅名称的元素
+      // Get the element for displaying restaurant name on success page
       const successRestaurantName = document.getElementById(
         "successRestaurantName",
       );
 
-      // 从 localStorage 读取上一页保存的餐厅名称
+      // Read the restaurant name saved by previous page from localStorage
       const storedRestaurantName = localStorage.getItem("restaurantName");
 
-      // 如果有已保存的名称就显示它，否则使用默认文字
+      // If there is a saved name, display it; otherwise use the default text
       if (storedRestaurantName && storedRestaurantName.trim() !== "") {
         successRestaurantName.textContent = storedRestaurantName;
       } else {
@@ -79,10 +79,10 @@
       }
     </script>
 
-    <!-- 共享主脚本 -->
+    <!-- Shared main script -->
     <script type="module" src="../src/main.js"></script>
 
-    <!-- 跳转到个人资料页的脚本 -->
+    <!-- Script to navigate to profile page -->
     <script type="module" src="../src/goToProfile.js"></script>
   
     <script type="module" src="/src/footer.js"></script>
